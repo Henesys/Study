@@ -38,6 +38,7 @@
 - Python for Data Science Handbook (VanderPlas)
 - Data Structures & Algorithms in Python (Canning, Broder & Lafore)
 - Python for Data Analysis (McKinney)
+- An Introduction to Data Science (Stanton)
 - Data Science from Scratch (Joel Grus)
 - [The Good Research Code Handbook (Mineault)](https://goodresearch.dev/index.html)
 - [Eloquent Javascript (Haverbeke)](https://eloquentjavascript.net/)
