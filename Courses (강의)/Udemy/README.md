@@ -3,14 +3,14 @@
 ## In Progress (진행 중)
 
 - <**Udemy**> 100 Days of Code
-- <**Udemy**> Web Development
 
 ## Completed (완성)
 
--
+- 
 
 ## Saved/ Bookmarked (저장)
 
+- <**Udemy**> Web Development
 - <**Udemy**> The Complete Python Bootcamp (Z2H)
 - <**Udemy**> The Complete SQL Bootcamp (Z2H)
 - <**Udemy**> Learn SQL in a Day
