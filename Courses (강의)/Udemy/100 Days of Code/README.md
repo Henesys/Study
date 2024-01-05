@@ -20,7 +20,7 @@
 
 ## In Progress
 
-- Day 3- (B) Control Flow & Logial Operators
+- Day 3- (B) Control Flow & Logical Operators
 
 ## Projects/ Completed Products
 
