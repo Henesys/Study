@@ -47,11 +47,11 @@
 - What is a confidence interval?
 - Explain the concept of a p- value to a customer.
 - Is p- value still valid in this day and age? When does p- value tend to mislead people?
-- How do we decide what tests (e.g. A/B test) we will conduct and determine whether or not it is statistically significant
+- How do we decide what tests (e.g. A/B test) we will conduct and determine whether or not it is statistically significant?
 
 ## Analysis
 
--
+- X
 
 ## Machine Learning
 
