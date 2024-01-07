@@ -12,6 +12,7 @@
 
 ### Machine Learning 🤖
 
+- [Approaching (Almost) Any Machine Learning Problem (Thakur)](https://github.com/abhishekkrthakur/approachingalmost/tree/master)
 - Applied Machine Learning and AI for Engineers (Prosise)
 - Hands-On Machine Learning w/ Sci-Kit Learn, Keras and TensorFlow (Géron)
 - Deep Learning (Goodfellow, Bengio & Courville)
@@ -22,6 +23,7 @@
 ### Statistics 📈
 
 - [An Introduction to Probability (Blitzstein & Hwang)](probabilitybook.net)
+- The Art of Statistics: Learning from Data (Spiegelhalter)
 - Practical Statistics for Data Scientists, 2nd Edition (Bruce, Bruce & Gedeck)
 - Bandit Algorithms for Website Optimization (White)
 - The Elements of Statistical Learning (Hastie, Tibshirani & Friedman)
