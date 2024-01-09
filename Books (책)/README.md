@@ -3,6 +3,7 @@
 ## In Progress (진행 중) ⚠️
 
 - [An Introduction to Statistical Learning (James, Witten, Hastie, Tibshirani & Taylor)](https://www.statlearning.com/)
+- [An Introduction to Probability (Blitzstein & Hwang)](probabilitybook.net)
 
 ## Completed (완성) ✅
 
@@ -22,7 +23,6 @@
 
 ### Statistics 📈
 
-- [An Introduction to Probability (Blitzstein & Hwang)](probabilitybook.net)
 - The Art of Statistics: Learning from Data (Spiegelhalter)
 - Practical Statistics for Data Scientists, 2nd Edition (Bruce, Bruce & Gedeck)
 - Bandit Algorithms for Website Optimization (White)
