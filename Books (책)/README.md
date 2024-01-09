@@ -15,8 +15,9 @@
 
 - [Approaching (Almost) Any Machine Learning Problem (Thakur)](https://github.com/abhishekkrthakur/approachingalmost/tree/master)
 - Applied Machine Learning and AI for Engineers (Prosise)
-- Hands-On Machine Learning w/ Sci-Kit Learn, Keras and TensorFlow (Géron)
+- Probabilistic Machine Learning: An Introduction (Murphy)
 - Deep Learning (Goodfellow, Bengio & Courville)
+- Hands-On Machine Learning w/ Sci-Kit Learn, Keras and TensorFlow (Géron)
 - Mining of Massive Datasets (Leskovec, Rajaraman & Ullman)
 - Pattern Recognition and Machine Learning (Bishop)
 - Generative Deep Learning, 2nd Edition (Foster)
