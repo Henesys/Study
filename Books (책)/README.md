@@ -2,8 +2,15 @@
 
 ## In Progress (진행 중) ⚠️
 
+### CS498 Cloud Computing Applications (MCSDS)
+
+- Amazon Web Services in Action, Third Edition (Wittig & Wittig)
+
+### Self Study
+
 - [An Introduction to Statistical Learning (James, Witten, Hastie, Tibshirani & Taylor)](https://www.statlearning.com/)
 - [An Introduction to Probability (Blitzstein & Hwang)](probabilitybook.net)
+- The Art of Statistics: Learning from Data (Spiegelhalter)
 
 ## Completed (완성) ✅
 
@@ -24,7 +31,6 @@
 
 ### Statistics 📈
 
-- The Art of Statistics: Learning from Data (Spiegelhalter)
 - Practical Statistics for Data Scientists, 2nd Edition (Bruce, Bruce & Gedeck)
 - Bandit Algorithms for Website Optimization (White)
 - The Elements of Statistical Learning (Hastie, Tibshirani & Friedman)
