@@ -9,7 +9,7 @@
 - Joseph K. Blitzstein
 - Jessica Hwang
 
-## Overview
+## Chapters
 
 - Chapter 1: Probability and Counting
 - Chapter 2: Conditional Probability
