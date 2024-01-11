@@ -25,10 +25,11 @@
 
 ## Math/ Statistics
 
-- What are eigenvalues and why are they important?
-- What are eigenvectors and why are they important?
-- Explain sampling and resample. What are the benefits of resampling?
-- What are probability models and random variables?
+- What are **eigenvalues** and why are they important?
+- What are **eigenvectors** and why are they important?
+- Explain **sampling** and **resampling**.  
+  - What are the benefits of resampling?
+- What are **probability models** and **random variables**?
 - What are **cumulative distribution functions** and why are they important?
 - What are **probability density functions** and why are they important?
 - What are **Bernoulli distributions** and why are they important?
@@ -41,21 +42,64 @@
 - What are **chi- square distributions** and why are they important?
 - What are **Beta distributions** and why are they important?
 - What are **Gamma distributions** and why are they important?
-- What is conditional probability?
-- What is covariance?
-- What is a correlation coefficient?
-- What is a confidence interval?
-- Explain the concept of a p- value to a customer.
-- Is p- value still valid in this day and age? When does p- value tend to mislead people?
+- What is **conditional probability**?
+- What is **covariance**?
+- What is a **correlation coefficient**?
+- What is a **confidence interval**?
+- Explain the concept of a **p- value** to a customer.
+- Is p- value still valid in this day and age?
+  - When does p- value tend to mislead people?
 - How do we decide what tests (e.g. A/B test) we will conduct and determine whether or not it is statistically significant?
+- Why is **$R^2$** important?
+- When should we use mean and when should we use median?
+- What is the **central limit theorem** and why is it important?
+- What is **entropy** and why is it important?
+- What is **information gain** and why is it important?
+- What is **information loss** and why is it important?
+- In the era of "big data", are normality tests still relevant?
+- When should you use **parametric** methodology?
+- When should you use **non- parametric** methodology?
+- What is the difference between **likelihood** and **probability**?
+- For an extremely small sample size, how can we establish a predictive model?
+- What are the key differences between **Bayesian** statistical approaches and **Frequentist** statistical approaches?
+- What is **statistical power** and why is it important?
+- If there is a missing value, how should you deal with it?
+- What is the criteria for judging outliers?
+- How do you calculate the appropriate sample size that you need?
+- How do you control **bias**?
+- In what cases are **logarithmic functions** useful?
 
 ## Analysis
 
-- X
+- What does it mean for a feature to be "good"?
+  - What are some ways to judge the performance of a feature?
+  - What are some ways to select a feature?
+- What does "correlation doesn't equate to causation" mean?
+- What are advantages/ disadvantages of the A/B test and how do we mitigate them?
+- You need to create a model that predicts what products customers will buy tomorrow.
+  - Choose which techniques (e.g. SVM, Random Forest, Logistic Regression) you will use and explain this to a practitioner who has no statistical & machine learning background.
+- What are some ways to deal with **high dimensional data**, expecially when dealing with clustering against hundreds of features?
 
 ## Machine Learning
 
-- X
+- What is **cross validation** and how do you perform it?
+- What is the right metric for **regression**?
+- What is the right metric for **classification**?
+- Give examples of metrics.
+  - (e.g. **RMSE**, **MAE**, **precision**, **recall**, **F- score**)
+- Why do we need to normalize?
+  - How do we normalize data?
+- What is **local minima**?
+- What is **global minima**?
+- Explain what the **Curse of Dimensionality** is.
+- Give examples of **dimensional reduction** techniques.
+  - **PCA** is a dimensional reduction technique, a data compression technique and a noise cancellation technique.
+  - Explain why.
+- What is the relationship between **LSA**, **LDA** and **SVD**?
+- What is a **Markov chain**?
+- Why does SVM project the data onto higher dimensions?
+  - Explain why this makes SVM suitable for high dimensionality work.
+- Explain how **Naive Bayes** compares to modern machine learning techniques.
 
 ## Deep Learning
 
@@ -71,7 +115,8 @@
 
 ### Natural Language Processing
 
-- X
+- You need to extract a topic from a data dump.
+  - Explain how you would approach this task.
 
 ### Reinforcement Learning
 
