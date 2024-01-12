@@ -2,7 +2,7 @@
 
 ## In Progress (진행 중)
 
-- <**Udemy**> 100 Days of Code
+- 100 Days of Code
 
 ## Completed (완성)
 
@@ -10,14 +10,14 @@
 
 ## Saved/ Bookmarked (저장)
 
-- <**Udemy**> Web Development
-- <**Udemy**> The Complete Python Bootcamp (Z2H)
-- <**Udemy**> The Complete SQL Bootcamp (Z2H)
-- <**Udemy**> Learn SQL in a Day
-- <**Udemy**> The Ultimate React Course
-- <**Udemy**> The Complete JavaScript Course
-- <**Udemy**> Java Coding Interview Preparation (Coding Exercises)
-- <**Udemy**> Python Interview Preparation (Coding Exercises)
-- <**Udemy**> React: The Complete Guide
-- <**Udemy**> Machine Learning: Python & R (A2Z)
-- <**Udemy**> Machine Learning: Neural Networks, AI & ChatGPT (A2Z)
+- Web Development
+- Machine Learning: Python & R (A2Z)
+- Machine Learning: Neural Networks, AI & ChatGPT (A2Z)
+- The Complete Python Bootcamp (Z2H)
+- The Complete SQL Bootcamp (Z2H)
+- Learn SQL in a Day
+- The Ultimate React Course
+- The Complete JavaScript Course
+- Java Coding Interview Preparation (Coding Exercises)
+- Python Interview Preparation (Coding Exercises)
+- React: The Complete Guide

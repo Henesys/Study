@@ -2,7 +2,7 @@
 
 ## In Progress (진행 중) ⚠️
 
-### CS498 Cloud Computing Applications (MCSDS)
+### CS498- Cloud Computing Applications (MCSDS)
 
 - Amazon Web Services in Action, Third Edition (Wittig & Wittig)
 
