@@ -1,6 +1,8 @@
-# Data Science Interview Questions [^1]
+# Data Science Interview Questions [^1][^2]
 
-[^1]: Translated and modified for ease of access, soure courtesy of [@zzsza](https://zzsza.github.io/data/2018/02/17/datascience-interivew-questions/)
+[^1]: Translated and modified for ease of access, primary source courtesy of [@zzsza](https://zzsza.github.io/data/2018/02/17/datascience-interivew-questions/)
+
+[^2]: Additional questions and considerations were taken from [here](https://github.com/ml874/Cracking-the-Data-Science-Interview) as a reference.
 
 ## Common
 
