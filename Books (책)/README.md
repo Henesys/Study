@@ -11,6 +11,7 @@
 - [An Introduction to Statistical Learning (James, Witten, Hastie, Tibshirani & Taylor)](https://www.statlearning.com/)
 - [An Introduction to Probability (Blitzstein & Hwang)](probabilitybook.net)
 - The Art of Statistics: Learning from Data (Spiegelhalter)
+- [Deep Learning (Goodfellow, Bengio & Courville)](https://www.deeplearningbook.org/)
 
 ## Completed (완성) ✅
 
@@ -20,10 +21,10 @@
 
 ### Machine Learning 🤖
 
+- Reinforcement Learning: An Introduction (Sutton & Barto)
 - [Approaching (Almost) Any Machine Learning Problem (Thakur)](https://github.com/abhishekkrthakur/approachingalmost/tree/master)
 - Applied Machine Learning and AI for Engineers (Prosise)
 - Probabilistic Machine Learning: An Introduction (Murphy)
-- Deep Learning (Goodfellow, Bengio & Courville)
 - Hands-On Machine Learning w/ Sci-Kit Learn, Keras and TensorFlow (Géron)
 - Mining of Massive Datasets (Leskovec, Rajaraman & Ullman)
 - Pattern Recognition and Machine Learning (Bishop)
