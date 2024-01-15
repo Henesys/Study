@@ -6,12 +6,17 @@
 
 - Amazon Web Services in Action, Third Edition (Wittig & Wittig)
 
-### Self Study
+### SNU
 
 - [An Introduction to Statistical Learning (James, Witten, Hastie, Tibshirani & Taylor)](https://www.statlearning.com/)
+- Data Structures & Algorithms in Python (Goodrich, Tamassia & Goldwasser)
+- [Deep Learning (Goodfellow, Bengio & Courville)](https://www.deeplearningbook.org/)
+- Probabilistic Machine Learning: An Introduction (Murphy)
+
+### Self Study
+
 - [An Introduction to Probability (Blitzstein & Hwang)](probabilitybook.net)
 - The Art of Statistics: Learning from Data (Spiegelhalter)
-- [Deep Learning (Goodfellow, Bengio & Courville)](https://www.deeplearningbook.org/)
 
 ## Completed (완성) ✅
 
@@ -24,7 +29,6 @@
 - Reinforcement Learning: An Introduction (Sutton & Barto)
 - [Approaching (Almost) Any Machine Learning Problem (Thakur)](https://github.com/abhishekkrthakur/approachingalmost/tree/master)
 - Applied Machine Learning and AI for Engineers (Prosise)
-- Probabilistic Machine Learning: An Introduction (Murphy)
 - Hands-On Machine Learning w/ Sci-Kit Learn, Keras and TensorFlow (Géron)
 - Mining of Massive Datasets (Leskovec, Rajaraman & Ullman)
 - Pattern Recognition and Machine Learning (Bishop)
@@ -46,7 +50,6 @@
 ### Programming 💻
 
 - Python for Data Science Handbook (VanderPlas)
-- Data Structures & Algorithms in Python (Goodrich, Tamassia & Goldwasser)
 - Data Structures & Algorithms in Python (Canning, Broder & Lafore)
 - Python for Data Analysis (McKinney)
 - An Introduction to Data Science (Stanton)
