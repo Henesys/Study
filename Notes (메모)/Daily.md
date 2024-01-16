@@ -2,13 +2,12 @@
 
 ## TODO
 
-### CS498 Cloud Computing Applications
+### CS498- Cloud Computing Applications
 
 - Lectures
 - Readings
-- Weekly Quizzes <15%>
-- MP <55%>
-- Exams <15% | 15%>
+- Weekly Quiz
+- MP
 
 ### 독학 (Self Study)
 

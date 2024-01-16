@@ -9,8 +9,9 @@
 - Lectures
 - Readings
 - Weekly Quizzes (16 Total) <**15%**>
-- MP (12 Total) <**55%**>
-- Exams <**Midterm: 15% | Final: 15%**>
+- MP (11 Total) <**55%**>
+- Midterm <**15%**>
+- Final <**15%**>
 
 ## Schedule
 
