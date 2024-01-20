@@ -232,6 +232,7 @@
     - Volume
     - Velocity
     - Variety
+    - Veracity
 
   - ... to require specific technology and analytical methods for its transformation into useful values.
 
@@ -285,20 +286,513 @@
 
 ## Tiers of Cloud Services
 
-### Introduction
-
 ### Infrastructure as a Service (IaaS)
+
+- Infrastructure as a Service
+
+  - Allows user to rent computing resources.
+  
+  - The "product" is a virtual computer that can be accessed remotely.
+
+    - Users can choose the I/O specs for the "hard drives", operating system, middleware, applications and network connection.
+    - Users are responsible for managing everything running on the machine, including the security of the server.
+    - The offered resources are usually virtualized.
+
+- Virtualized Resources
+
+  - Different customers have different needs.
+  
+    - e.g. Ephemeral Needs
+
+  - Cloud providers cannot operate a pool of many different sized computers.
+
+    - The Solution: Cloud providers operate a fleet of similar, powerful hardware.
+
+  - Cloud providers carve out chunks of resources through virtualization:
+
+    - VM Instances
+    - CPU
+    - Memory
+    - Storage
+    - Network
+    - Accelerators
+
+  - Metal as a Service (MaaS)
+
+- Advantages of IaaS vs. On Premise (In House)
+
+  - No need to run a data center.
+
+    - No concerns about space, power supplies, physical building security, network, failing components etc.
+
+  - Operating Expenses (OpEx) vs. Capital Expenditures (CapEx)
+
+    - CapEx: major purchases a company makes that are used over a long term.
+    - OpEx: Day to day expenses that a company incurs to keep its business running.
+
+  - Use of different instances when needed.
+
+    - Rapid & flexible innovation.
+    - Quick responses to shifting business conditions.
+
+- IaaS Examples
+
+  - Microsoft Azure
+  - Amazon EC2 (Elastic Compute Cloud)
+  - Google Cloud Platform Compute Engine
+  - Oracle Cloud
+  - IBM Cloud
+  - Alibaba Cloud
+  - Rackspace
+  - Vultr
+
+- Instance Pricing
+
+  - On Demand
+
+    - Price is not based on use and is fixed.
+    - No long term commitment periods.
+
+  - Reserved
+
+    - Price is based on use (cheaper).
+    - Long term commitment periods, but high availability.
+
+  - Spot
+
+    - Cheapest, but carry the risk of interruption.
+    - Cloud provider attempts to maximize the utility of their infrastructure with spot pricing.
+
+- Containers and Orchestration
+
+  - Subcategory of IaaS between IaaS and PaaS.
+
+  - Containers are analogous to a lightweight VM.
+
+    - Time to spin up a VM is tens of seconds to a few minutes.
+    - Time to start a container is a fraction of a second to a few seconds.
+
+  - Linux only
+
+- IaaS in Perspective
+
+  - **SaaS**
+
+    - Hosted Applications/ Apps
+
+    - **PaaS**
+
+      - Development Tools
+
+      - Database Management
+
+      - Business Analytics
+
+      - Operating Systems
+
+      - **IaaS**
+
+        - Servers and Storage
+
+        - Networking Firewalls and Security
+
+        - Data Center (Physical) Plant/ Building
 
 ### IaaS: Regions and Zones
 
+- Virtual Machine Instance Location
+
+  - Cloud providers have multiple physical data centers all over the globe.
+
+  - Your virtual machine actually resides in a physical location.
+
+    - Regions
+    - Availability Zones
+
+- Data Center Location
+
+  - Some cloud providers (e.g. Vultr) allow you to choose the data center you want to use.
+
+- Availability Zones Locations & Regions
+
+  - The zones you choose may affect the probability of simultaneous failure, latency (ping) and coverage radius.
+
+  - Typically, each user ID gets access to a handful of availability zones to launch VM instances per region.
+
+    - AWS: us-east-1 --> us-east-1a, us-east-1b
+    - Azure: US East --> 1, 2, 3
+    - GCP: us-east1 --> us-east1-b, us-east1-c
+
+  - The availability zone "a" for user1 is *not* the same as the availability zone "a" for user2.
+
+  - Each zone is made up of 1+ datacenters equipped with independent power, cooling and networking.
+
+    - Therefore, the probability of simultaneous failure in all the separate availability zones in a region is extremely small.
+
+    - Local Zones: Extension of a region that is geographically close to your users.
+
+  - For high availability, the system must be designed such that multiple instances are running in multiple availability zones in a region.
+
+  - Data Traffic Cost:
+
+    - Region to Region > AZ to AZ in same region >>> Same AZ
+
 ### Platform as a Service (PaaS)
+
+- Platform as a Service
+
+  - The main goal is to *run the user's distributed web service in a managed environment*.
+
+    - It is much more opinionated than IaaS in that it assumes your web service has a certain architectural style and tries to prebuild it to match it.
+
+  - Think about the anatomy of a web service application to understand the role of PaaS.
+
+  - Scale Out vs. Scale Up
+
+    - Scale Out: Increasing the number of machines running a task.
+    - Scale Up: Replace machine with a machine with better specs.
+    - Cloud architecture *does not favor the scale up* methodology.
+
+  - Stateless Services
+
+    - Process does not retain information about the user's previous interactions.
+    - No stored knowledge of or reference to past transactions.
+
+  - Autoscaling Services
+
+    - Monitors your application and automatically adjust capacity to maintain steady performance at the lowest cost.
+    - Optimization of cost & performance for both the cloud provider and the user.
+
+  - PaaS provides environments where all the machinery needed for the distributed application is provided by the cloud provider and is managed by them.
+
+    - Autoscaling Groups
+    - Load Balancers
+    - Queues
+    - Daemons
+    - Data Storage Solutions
+
+- Examples
+
+  - Microsoft Azure App Service
+  - Google App Engine
+  - Amazon Elastic Beanstalk
+  - Heroku
+  - IBM Cloud Foundry
 
 ### PaaS Providers: Amazon AWS Elastic Beanstalk
 
-### MBAAS
+- AWS Elastic Beanstalk
+
+  - AWS solution for PaaS.
+
+    - Elastic Beanstalk is one layer of abstraction away from the EC2 layer.
+
+  - Allows deployment, management and scaling of web applications.
+
+  - Supports Java, PHP, Python, .NET, Ruby, Node.js & Docker.
+
+  - Environment is preloaded with Linux, the necessary libraries (e.g. Python) and web server software such as Apache HTTP server and Tomcat.
+
+  - Provisioning, load balancing, autoscaling and application health monitoring is automatic.
+
+- Elastic Beanstalk Security & Sandbox
+
+  - Applications run in a secure environment.
+
+  - Isolates applications from hardware and operating systems.
+  
+  - Imposes security limitations.
+
+  - Able to retain full control over AWS resources underlying the app, which isn't possible in SaaS.
+
+- Storing Elastic Beanstalk Data
+
+  - Both the program and data are stored in Amazon S3.
+
+  - Other data storage models:
+
+    - Elastic Beanstalk (can automatically provision relational data service (RDS) instances)
+    - Amazon DynamoDB
+    - Microsoft SQL Server
+    - Oracle
+    - Other relational databases running on Amazon EC2.
+
+- Other Supported Services
+
+  - Apache Tomcat for Java apps
+  - Apache HTTP Server for PHP apps
+  - Apache HTTP Server for Python apps
+  - Nginx or Apache HTTP Server for Node.js apps
+  - Passenger or Puma for Ruby apps
+  - Microsoft IIS 7.5, 8.0 and 8.5 for .NET apps
+  - Java SE
+  - Docker
+  - Go
+  - SSL
+  - XMPP API
+  - Memcache API
+
+### PaaS Providers: Google App Engine
+
+- Google App Engine (GAE)
+
+  - Developed by Google in 2008 as a PaaS.
+  - Support multitenancy and offers automatic scaling for web applications.
+  - Supports Python, Java and Go.
+
+- GAE Frameworks and Tools
+
+  - GAE supports Django web framework and the Grails web application framework.
+  - Provides infrastructure tools that enable users to deploy code without worrying about infrastructure challenges such as deployment, failover or scalability.
+  - However, GAE infrastructure limits the type of applications that can be run.
+
+- GAE Security and Sandbox
+
+  - Applications run in a secure environment.
+  - Isolates applications from the hardware and the operating system.
+  - Imposes security limitations.
+  - Application code only runs in response to requests and a request hanbdler cannot spawn potentially malicious sub- processes after the response has been sent.
+
+- Storing GAE Data
+
+  - Users can use the App Engine datastore, Google Cloud SQL and Google Cloud Storage.
+  - Users can use Google's database technology (e.g. Bigtable).
+
+- GAE's Use with Google Services
+
+  - Can take advantage of Google's single sign in feature when users want to access Gmail or Google Drive services.
+  - Can build Chrome and Android games on GAE.
+  - Google Cloud Endpoints can be used to access mobile services. 
+
+- Other Supported Services
+
+  - App Engine MapReduce
+  - Search API
+  - SSL Support
+  - Page Speed
+  - XMPP API
+  - Memcache API
+
+- Case Studies of GAE
+
+  - BugSense: An application error reporting service, used GAE to maintain logs of bugs in software and analyze them.
+  - Ubisoft: Used GAE to build its first web based game on Chrome.
+  - Claritics: Small social analytics company that analyzed game data sets.
+
+- GAE on Mobile
+
+  - Many mobile apps use GAE for their back- end.
+  - GAE excels at scaling up for small teams of developers.
+
+### Mobile Backend as a Service (MBaaS)
+
+- Why MBaaS?
+
+  - Does the grunt work of server setup, database creation, routing, social integration, UI binding etc for you so that you can focus on front- end code that would be bound by the remaining elements.
+
+- Introduction to MBaaS
+
+  - General Idea: Mobile apps need common services that can be shared amongst apps instead of being custom developed for each individual app.
+  
+  - Enables web and mobile app developers to link their applications to back- end cloud storage and back- end APIs.
+
+    - Cloud Storage
+    - User Management
+    - Push Notifications
+    - SNS Integration
+
+- MBaaS Examples
+
+  - Appcelerator, AnyPresence, Apple CloudKit (iCloud) etc
+
+  - Commonalities
+
+    - Many use MongoDB to serve JSON objects
+    - REST API
+    - MicroServices
+    - DevOps
+    - Front- end Design Framework
+
+  - Different levels of enterprise integration
+
+  - Can be in either on- premise or private clouds
+
+  - Some support complicance with HIPAA, PCI, FIPS and EU data security standards
 
 ### Software as a Service (SaaS)
 
+- Software Distribution
+
+  - Access to Software
+
+    - Retail --> Online Software Purchase --> SaaS
+    - SaaS relies on browser capability and broadband internet.
+
+- Software as a Service
+
+  - Brings a complete software solution to the consumer without any setup in a browser.
+
+  - Examples
+
+    - Web Based Email (Gmail)
+    - Internet Search Portals (Google, Bing)
+    - Project Management (Atlasian JIRA)
+    - Office Productivity (MS Office 365, Google Docs)
+
+  - Multitenant Architecture
+
+    - Same software for all customers.
+    - Data is specific for individual users.
+
+  - Client- side software runs in the user's browser.
+
+  - Server- side software runs in the cloud.
+
+    - Many SaaS solutions build themselves on IaaS and PaaS services.
+
+  - Customer's data may be stored locally, in the cloud or both.
+
+  - SaaS applications cannot access a company's internet systems, which is why many SaaS solutions allow API access to further customize their offerings.
+
+    - HTTP, REST, SOAP
+
+- Advantages and Disadvantages
+
+  - Advantages:
+
+    - No need to install software, licensing, maintenance, and support
+    - Flexible Payments
+    - Scalable Usage
+    - Automatic Updates
+    - Ease of Access
+
+  - Disadvantages:
+
+    - Loss of Control
+    - No access to source code
+    - Provider service disruptions impact you
+
 ### SaaS Example: Salesforce
 
+- Customer Relationship Management (CRM) Services
+
+  - Mainly SaaS and PaaS
+
+  - Examples
+
+    - Sales Cloud
+    - Service Cloud
+    - Marketing Cloud
+    - Analytics Cloud
+    - Community Cloud
+    - Lightening
+
+  - Social Software in the Workplace
+
+    - Microsoft
+    - IBVM
+    - Jive
+    - Salesforce
+
+  - Can form teams, communities or informal groups.
+
+  - Can collaborate on the same work tasks.
+
+  - Can connect to networks of contacts and acquaintances for references.
+
+  - Alert users to information or events that might be relevant to them.
+
 ### Comparison of Cloud Service Tiers
+
+- Cloud Fundamentals
+
+  - IaaS:
+
+    - Basic computing and storage resources
+    - On- demand servers
+    - e.g. Amazon EC2, VMWare, vCloud
+
+  - PaaS:
+
+    - Cloud application infrastructure
+    - On- demand application hosting environment
+    - e.g. Google App Engine, Salesforce, Windows Azure, Amazon
+
+  - SaaS:
+
+    - On- demand applications
+    - e.g. Gmail, Microsoft Office
+
+- Platform as a Service (PaaS)
+
+  - Cloud computing service that offers a platform for users to run applications on the cloud.
+
+  - Level above IaaS because it does not require users to develop their own operating system environment.
+
+  - Middle ground between SaaS and IaaS.
+
+  - Development Platform
+
+    - Customers use it to develop applications that benefit from the scalability of the cloud without fully developing their own solution using an IaaS provider.
+
+  - Offers an application development platform that will automatically scale with demand.
+
+  - The customer does not manage or control the underlying cloud infrastructure, including network, servers, operating systems and storage.
+
+  - The customer has control over the deployed application.
+
+- Example: Windows Azure
+
+  - PaaS
+
+    - Application platform in the cloud.
+
+  - Provides
+
+    - Computing Power
+
+      - Web, worker and VM
+
+    - Storage
+
+      - Blob, Table, Queue and Azure SQL server
+
+    - Application Fabric
+
+      - Service bus and access control
+      - Future: cache, integration and composite
+
+- Cost Effectiveness
+
+  - PaaS can be more cost effective than IaaS because systems are optimized to run applications efficiently.
+
+  - IaaS may only provide hardware and clients must be in charge of load balancing and networking themselves.
+
+- Multitenancy
+
+  - PaaS is better suited for multitenancy because it optimizes its infrastructure for use by many providers.
+  - Multitenancy means that many users may share the same physical computer and database.
+  - PaaS is better than IaaS in this regard because IaaS provides each user with their own VM and creates a clear separation of resources, as opposed to a collective pool.
+
+- Vendor Lock In
+
+- PaaS may lock in applications by requiring users to develop apps using proprietary interfaces and languages.
+- This makes it difficult for users to seek an alternate vendor to host their applications.
+
+- Development Tools
+
+  - PaaS can offer browser based development tools, which allows users to create their applications online.
+  - The platform automatically scales for you.
+
+- Principles of Software Development
+
+  - The objective of the developer is to create an application in the quickest and most effective way possible.
+  - Applications should not be created using convoluted methods that may take a long time to complete.
+
+- PaaS vs. IaaS
+
+  - PaaS has an inherent risk in that the chosen vendor may greatly increase their prices.
+  - App migration is difficult in this scenario due to the exclusivety of some platforms.
+  - Apps designed for a temporary purpose should be handled with a *PaaS* solution.
+  - Apps designed for an urgent purpose should be handled with a *PaaS* solution.
+  - Apps designed by a small software team should be handled with a *PaaS* solution since it handles the operating system and networking side of things for your team.
