@@ -48,6 +48,10 @@
 - Probabilistic Graphical Models: Principles and Techniques (Koller & Friedman)
 - Bayesian Data Analysis (Gelman, Carlin, Stern, Dunson, Vehtari & Rubin)
 
+### Linear Algebra? (TBD)
+
+- X
+
 ### Programming 💻
 
 - Python for Data Science Handbook (VanderPlas)
