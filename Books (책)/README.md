@@ -17,6 +17,7 @@
 
 - [An Introduction to Probability (Blitzstein & Hwang)](probabilitybook.net)
 - The Art of Statistics: Learning from Data (Spiegelhalter)
+- Practical Statistics for Data Scientists, 2nd Edition (Bruce, Bruce & Gedeck)
 
 ## Completed (완성) ✅
 
@@ -26,6 +27,7 @@
 
 ### Machine Learning 🤖
 
+- [Deep Learning: Foundations and Concepts (Bishop & Bishop)](https://www.bishopbook.com/)
 - Reinforcement Learning: An Introduction (Sutton & Barto)
 - [Approaching (Almost) Any Machine Learning Problem (Thakur)](https://github.com/abhishekkrthakur/approachingalmost/tree/master)
 - Applied Machine Learning and AI for Engineers (Prosise)
@@ -36,7 +38,6 @@
 
 ### Statistics 📈
 
-- Practical Statistics for Data Scientists, 2nd Edition (Bruce, Bruce & Gedeck)
 - Bandit Algorithms for Website Optimization (White)
 - The Elements of Statistical Learning (Hastie, Tibshirani & Friedman)
 - Statistical Learning with Sparsity (Hastie, Tibshirani & Wainwright)
