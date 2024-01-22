@@ -2,7 +2,7 @@
 
 | Day | Day | Day | Day | Day | Day | Day | Day | Day | Day |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| ~~1~~ | ~~2~~ | ~~3~~ | ~~4~~ | ~~5~~ | ~~6~~ | ~~7~~ | ~~8~~ | ~~9~~ | 10  |
+| ~~1~~ | ~~2~~ | ~~3~~ | ~~4~~ | ~~5~~ | ~~6~~ | ~~7~~ | ~~8~~ | ~~9~~ | ~~10~~ |
 | 11    | 12  | 13  | 14  | 15  | 16  | 17  | 18  | 19  | 20  |
 | 21    | 22  | 23  | 24  | 25  | 26  | 27  | 28  | 29  | 30  |
 | 31    | 32  | 33  | 34  | 35  | 36  | 37  | 38  | 39  | 40  |
@@ -24,10 +24,11 @@
 - Day 7- (B) Hangman
 - Day 8- (B) Function Parameters & Caesar Cipher
 - Day 9- (B) Dictionaries, Nesting and the Secret Auction
+- Day 10- (B) Functions with Outputs
 
 ## In Progress
 
-- Day 10- (B) Functions with Outputs
+- Day 11- (B) The Blackjack Capstone Project
 
 ## Projects/ Completed Products
 
