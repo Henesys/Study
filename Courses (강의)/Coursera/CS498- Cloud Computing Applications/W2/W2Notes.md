@@ -1,5 +1,7 @@
 # CS498- Week 2
 
+#cloud_computing
+
 ## Cloud Computing Glue: Introduction
 
 - Cloud Computing Glue
@@ -471,8 +473,159 @@
 
 ### VPC Subnets
 
+- Subnets
+	- Creates subnets to isolate resources per the project requirements.
+		- DMZ/ Proxy
+		- Load Balancer
+		- Web Applications
+		- Mail Servers
+		- Databases
+	- An example of this is having a public subnet to host internet facing resources and a private subnet for databases that accept web requests.
+	- Create multiple subnets (public or private) in multiple AZs to host a high availability multi- AZ infrastructure, which avoids a single point of failure.
+		- Each subnet can communicate with every other subnet in the same VPC.
+- Private Subnets
+	- Any incoming traffic from the internet cannot directly access the resources within a private subnet.
+	- Outgoing traffic from a private subnet cannot directly access the internet.
+		- Restricted
+		- Routed through a Network Address Translation (NAT)
+			- NAT gateways allow instances in a private subnet to connect to services outside your VPC but external services cannot initiate a connection with those instances.
+	- Each resource (instance) gets a private IP.
+		- From the CIDR range associated with the subnet.
+	- Technically, a subnet is private if there is no route in the routing table to an internet gateway.
+- Public Subnets
+	- A subnet that has access to an internet gateway defined in the routing table.
+	- Each resource in a public subnet gets a private IP within the CIDR range *and* a public IP accessible from the internet.
+		- The public IP can be dynamic (only remains valid while the instance in alive and then AWS will reclaim it).
+		- It can be an elastic IP where the user pays for it and the ownership will still lie with the user even if the instance shuts down.
+	- Outgoing traffic can directly access the internet.
+		- Unlike private subnets, public subnets do not require a NAT to access the internet.
+- Route Tables
+	- Each VPC has an associated "main route table" (MRT).
+		- The default VPC has a route in its MRT to an internet gateway.
+		- Custom VPCs usually only have the local route in the MRT.
+	- Subnets can have their own custom route table.
+		- If no custom route table is explicitly associate with a subnet, it is associated with the VPC's main route table.
+	- Possible route table targets:
+		- Local, IGW, NAT, VGW, a peering connection or a VPC endpoint (e.g. Amazon S3)
+	- Selection of optimal route for network traffic is done based on the longest prefix match.
+		- The most specific routes that match the network traffic are selected.
+
 ### VPC Gateways
+
+- Internet Gateways
+	- Internet gateways are a logical construct, not a specific instance or resource.
+		- They are attached to a VPC.
+	- AWS does a lot of work to allow highly available internet to all the required AZs in the VPC.
+		- Highly available
+		- Redundant
+		- Horizontally scaled
+	- In the route tables, it is referred to by its name (e.g. igw-05ae7f551a8154d1a), not an IP address.
+- NAT Gateways
+	- Network Address Translation
+		- Similar to your home wireless router.
+	- Virtual router or a gateway in a public subnet that enables instances in a private subnet to interact with the internet.
+		- Exclusive to IPv4
+	- Modifies the network address information in the IP header.
+		- It receives traffic from an EC2 instance residing in a private subnet.
+		- Before forwarding the traffic to the internet, it replaces the reply to IPv4 address with its own public or elastic IP address.
+		- When a reply is received from the internet, it changes the reply to address from its IP address to the EC2 instance's private IP address.
+	- Types
+		- NAT Instance: Runs as an EC2 instance
+		- NAT Gateway: Fully managed by AWS, requires elastic IP.
+			- Better availability and higher bandwidth
+- Bastion Host
+	- A server whose purpose is to provide access to a private network from an external network (e.g. the internet).
+		- Due to potential exposure to an external attack, a bastion host must minimize the chances of penetration.
+	- Use a bastion host to access private machines hosted in a private network in a VPC.
 
 ### Advanced VPC Gateways
 
+- Virtual Private Gateway
+	- If a subnet doesn't have a route to the internet gateway, built has its traffic routed to a virtual private gateway for a site to site VPN connection, the subnet is known as a VPN only subnet.
+	- Subnet 3 is a VPC only subnet in the following diagram:
+		- ![](assets/VPNSubnet.png)
+	- Concepts
+		- VPN Connection
+			- A secure connection between your on premise equipment and your VPCs.
+		- VPN Tunnel
+			- Encrypted link where your data can pass from the customer network to or from AWS.
+				- Each VPN connection includes two VPN tunnels, which you can simultaneously use for high availability.
+		- Customer Gateway
+			- AWS resource which provides information to AWS about your customer gateway device.
+		- Customer Gateway Device
+			- Physical device or software application on your side of the site to site VPN connection.
+		- Virtual Private Gateway
+			- VPN concentrator on the Amazon side of the site to site VPN connection. 
+			- Users use a virtual private gateway or a transit gateway as the gateway for the Amazon side of the site to site VPN connection.
+		- Transit Gateway
+			- Transit hub that can be used to interconnect VPCs and on premise networks.
+			- Users use a transit gateway or a virtual private gateway as the gateway for the Amazon side of the site to site VPN connection.
+	- As of 2020, VPN connections into AWS are exclusive to IPv4.
+	- It is recommended that you use non- overlapping CIDR blocks for your networks.
+- VPC Peering
+	- Can be used to make communication between VPCs within the same account, different AWS accounts or any two VPCs within the same region or different regions.
+	- Initially, it was supported only within the same region but AWS later added support for VPC peering across regions.
+	- Two VPCs cannot have CIDR blocks that overlap with each other. 
+- VPC Endpoints
+	- Generally, AWS services are different entities and do not allow direct communication with each other without going through either an IGW, NAT, a VPN connection or AWS Direct Connect.
+	- VPC endpoints enable private connections between your VPC, supported AWS services and VPC endpoint services.
+		- S3
+		- DynamoDB
+	- AWS PrivateLink
+		- Private IP addresses
+		- Traffic does not leave the Amazon network
+		- Does not require an internet gateway, virtual private gateway, NAT, VPN or AWS Direct Connect connection
+- VPC with Private & Public Subnets
+	- ![](assets/PrivatePublicSubnet.png)
+- Routing in VPC vs. Physical Networks
+	- VPC Network
+		- Amazon's backend intercepts any MAC ARP request.
+		- Looks up routing tables and returns the destination without implementing ARP.
+	- Physical Network (e.g. Ethernet)
+		- Link Layer
+			- Lowest layer in the Internet Protocol
+			- Layer 2 in Open Systems Interconnection (OSI) Model
+		- In a traditional network, this layer uses MAC address and ARP messaging to discover unknown MAC addresses.
+
 ### VPC Security and Firewalls
+
+- Security & Firewalls
+	- Security
+		- Security Groups
+			- EC2 Instance- Level Firewall
+		- Network Access Control Lists (NACL)
+			- Subnet Firewall
+	- Monitoring
+		- Flow Logs
+		- Enable VPC flow logs for auditing purposes
+		- Studying flow logs from time to time highlights unauthorized attempts to access resources
+	- ![](assets/SecurityFirewall.png)
+- Security
+	- Make sure that only required ports and protocols from trusted sources can access AWS resources using security groups and NACLs.
+	- Make sure that unwanted outgoing ports are not open in security groups.
+		- e.g. A security group for a web application does not need to open incoming mail server ports.
+- Network Access Control List
+	- NACLs acts as a virtual firewall at the subnet level.
+	- Each VPC has a default NACL.
+	- Every subnet (public or private) must be associated to one NACL.
+	- One NACL *can* be associated with one or more subnets, but each subnet can have *one* NACL associated with it.
+	- NACL rules are evaluated based on its rule numbers.
+		- Evaluates the rule starting from the lowest number to the highest number.
+	- NACL is stateless.
+		- Separate rules to allow or deny objects can be created for both inbound and outbound traffic.
+		- If a port is open for allowing inbound traffic,  it does not automatically allow outbound traffic.
+	- Default NACL for any VPC contains a rule number as "\*" in both inbound and outbound rules.
+		- This rule appears and executes *last*.
+- Anatomy of a VPC with Route Table, Network ACL & Security Group
+	- ![](assets/VPCAnatomy.png)
+- Security Group
+	- Firewall at the instance level.
+	- One or more security groups can be associated with each EC2 instance.
+	- A security group can be attached to many EC2 instances.
+	- Each security group contains rules allowing inbound and outbound traffic.
+	- Using CIDR notation, a source IP can be fixed to a particular IP, such as 10.108.20.107/32.
+	- Any source IP can be allowed by a 0.0.0.0/0.
+- Security Group as Source IP
+	- A security group ID can be specified as a source IP to allow communication from all the instances that are attached to that security group.
+	- For example, in the case of autoscaling, the number of EC2 instances and their IP addresses will keep changing.
+		- In such situations, it is best practice to *attach a security group to such EC2 instances* with the help of an autoscaling template and *place a security group ID as a source IP in another security group*.
