@@ -83,7 +83,7 @@
 		- Responsible for addressing *host interfaces*
 		- Encapsulating data into diagrams (including fragmentation and reassembly)
 		- Routing datagrams across one or more IP networks
-			- IP Address, IPV4, IPV6
+			- IP Address, IPv4, IPv6
 	- EE and network engineers live at the bottom level (a.k.a. "link" level).
 - Internet Protocol Stack: Transport Layer
 	- The transport level handles packetizing of data.
@@ -118,7 +118,7 @@
 	- Works on top of TCP for *reliable* transport.
 	- Client (user) can be a web browser or any other software.
 	- HTTP resources are identified and located on the network by Uniform Resource Locators (URLs), using the Uniform Resource Identifiers (URI's) schemes (e.g. http and https).
-	- ![[URLBreakdown.png]]
+	- ![](assets/URLBreakdown.png)
 	- In HTTP/1.0, a separate connection to the same server is made for every resource request.
 		- Establishment of TCP connections has overhead.
 	- HTTP/1.1 can reuse a connection multiple times to download images, scripts, stylesheets and more after the page has been delivered.
@@ -182,7 +182,7 @@
 		- Request:
 			- curl -X POST https://api.github.com/user/repos
 		- Response:
-			- ![[RESTResponse.png]]
+			- ![](assets/RESTResponse.png)
 - REST- Not a Standard
 	- REST is just an architectural style, it is not a standard.
 		- Instead, it incorporates other standards:
@@ -238,25 +238,236 @@
 	- How the data is represented or returned to the client for presentation.
 	- Formats
 		- JavaScript Object Notation (JSON)
-			- ![[JSON.png]]
+			- ![](assets/JSON.png)
 		- XML
-			- ![[XML.png]]
+			- ![](assets/XML.png)ML.png)
 	- It is common to have multiple representations of the same data.
 - Architecture Style
-	- ![[Architecture.png]]
+	- ![](assets/Architecture.png)
 		- Client issues a GET, POST and DELETE requests
 		- Requests are sent to a web/ proxy server
 		- REST engine generates appropriate responses to the requests
 
 ### Service Oriented Architecture & SOAP
 
+- Service Oriented Architecture (SOA)
+	- Architectural pattern that structures software as a collection of services. 
+		- Loosely coupled, reusable components that perform specific business tasks and can be combined to create more complex applications.
+	- Addresses the needs of the business sector, enterprise and business to business (B2B) applications.
+		- "SOA is the philosophy of encapsulating application logic in services with a uniformly defined interface and making these publicly available via discovery mechanisms."
+	- Benefits
+		- Reusable Code
+		- Interaction (Interoperability)
+		- Scalability (Loose Coupling)
+		- Cost Reduction
+	- "Web services" typically relates to this type of communication.
+		- Web services are one option to implement SOA.
+		- Other options include: Java Business Integration (JBI), Windows Communication Foundation (WCF) and Data Distribution Service (DDS).
+- Simple Object Access Protocol (SOAP)
+	- Protocol for exchanging structured information in web services. 
+		- Allows programs running on different operating systems to communicate with one another. 
+	- SOAP based web APIs use XML validation to ensure structural message integrity.
+		- XML schema documents (XSD) are provisioned with Web Services Definition Language (WSDL) documents.
+		- Evolved as the successor to XML-RPC.
+	- Characteristics
+		- Extensible
+		- Protocol Neutrality (From the Transport Layer)
+			- Can run on HTTP, WebSocket and SMTP, which allows it to run in different network environments. 
+		- Independence
+			- SOAP is designed to be *stateless*, meaning each request from a client to a server is independent. 
+	- Popularity has somewhat declined, but is still relevant in enterprise applications.
+		- In the enterprise world, communication between different services needs to conform to a set of rules and contracts.
+		- Due to the fact that it follows objects, rules and constraints, SOAP is a stricter protocol than REST, which may be why people deemed it too rigid for its own good.
+- SOA & Microservice
+	- Microservice Architecture is a modern reincarnation of SOA.
+		- SOA: 2000 ~ 2010
+		- Microservices: 2015 ~
+	- Microservices are independently deployable, whereas SOA services are often implemented in deployment monoliths.
+		- Adoption of...
+			- Containerization
+			- Asynchronous Programming
+			- Distributed Computing Mindset
+			- Continuous Integration/ Continuous Delivery (CI/ CD)
+			- Agile Workflows
+
 ### Asynchronous RPC & WebSocket
 
+- Asynchronous RPC (a.k.a. Streaming API)
+	- The remote server may take a long time if you're using old HTTP/0.9 and HTTP/1.0.
+		- The client can wait, block or keep the HTTP connection open (long polling).
+		- HTTP/1.1 in its currents state is not ready for real- time web.
+	- Web 2.0: Bidirectional client/ server communication
+		- Ajax
+		- Comet
+			- Umbrella term for Ajax Push, Reverse Ajax, Two way web, HTTP streaming and HTTP server push.
+		- Push Notifications
+		- XMLHttpRequest
+			- XMLHttpRequest (XHR) is an API in the form of an object whose methods transfer data between a web browser and a web server.
+			- Object is provided by the browser's JavaScript environment.
+			- jQuery provides a wrapper, which also encapsulates WebSockets and server pushes.
+- WebSocket
+	- RPC libraries can issue asynchronous methods to the server and the server can inform them of the response aftewards.
+	- Streaming architecture focuses on minimizing latency.
+	- WebSocket
+		- Part of the HTML5 standard
+		- Can handle interactive sessions better than RESTful architecture models
+	- Use Cases:
+		- Chat
+		- Stock price update
+		- Collaborative document editing
+		- Real time location updates
+		- Multiplayer games
+	- Once you allow asynchronous communication in a networked environment, you *should* handle faults.
+		- Wrapper packages that encapsulate WebSocket's functionality with additional features exist.
+			- e.g. Node.js supports WebSockets through plugins.
+		- Java 11 supports both HTTP and WebSocket protocols.
+- WebSocket Protocol
+	- WebSocket is an application protocol running on top of TCP.
+		- Uses URIs, but not http://
+		- Uses ws://
+		- Uses an initial HTTP session and HTTP port numbers to process the handshake phase
+	- Protocol
+		- Opening Handshake
+		- Data Transfer
+		- Closing Handshake
+	- The protocol is purely event driven.
+		- The application code listens for events on WebSocket objects to handle incoming data and changes in the connection status.
+	- Asynchronous Programming
+		- Client does not need to do anything (e.g. polling) to receive data.
+- WebSocket Phases
+	- Opening Handshake
+		- HTTP request/ response to open WebSocket connection.
+		- Example
+			- Client Request
+				- ![](assets/ClientRequest.png)
+			- Server Response
+				- ![](assets/ServerResponse.png)
+		- HTTP protocol is switched/ upgraded to WebSocket.
+	- Data Transfer
+		- Bidirectional communication
+		- WebSocket frame
+		- Field Description
+			- Opcode: Continuation, Text, Binary, Close, Ping, Pong
+	- Closing Handshake
+		- WebSocket frame with opcode 0x8 is sent.
+- WebSocket API
+	- Simple JavaScript W3C WebSocket API
+	- Events
+		- Open: fires to establish a connection
+		- Message: contains the data from the server
+		- Error: first in response to an unexpected event (e.g. failure)
+		- Close: fires when the WebSocket is closed
+	- Primary Methods & Events
+		- ![](assets/Events.png)
+- WebSocket in Cloud Computing
+	- Many cloud providers support WebSocket as the API of choice for interactive sessions with the cloud service and the client.
+		- Examples
+			- Amazon AWS API Gateway
+			- Salesforce
+			- Slack ("Real Time Messaging API")
+				- Slack also has a simple Event API based on HTTP/2 Push but only the RTM guarantees real time delivery of messages.
+			- Google App Engine Channel API
+				- Deprecated and has been replaced by Firebase, a MBaaS solution.
+				- You can run a Socket.io instance on a computer engine or an EC2 instance.
+				- AWS API Gateway to handle the deployment of WebSocket servers is also a viable solution.
+
 ### HTTP/2 Push & Streaming Videos
+
+- HTTP/2
+	- Published in 2015 and most browsers supported it by the end of 2015.
+		- By 2020, ~ 42% of the top 10 million websites supported HTTP/2.
+	- One of the main features of HTTP/2 is server push.
+		- Closely related to another feature of HTTP/2: data streaming.
+		- HTTP/2 server push is being progressively implemented.
+			- e.g. Nginx web server implemented it in 2018.
+	- It "proposed" new data in a new stream to the *browser*, to be stored in a cache.
+	- It does not send the pushed data directly into the client application itself.
+	- To make the application *aware*, HTTP/2 utilizes server side events (SSE).
+- Amazon AWS API Gateway
+	- REST API
+	- WebSocket API
+	- HTTP API
+		- Based on HTTP/2 push and notification
+- Video Streaming over the Internet
+	- Streaming Video Content
+		- RTMP
+			- Still prevalent but being phased out
+		- RTP (over UDP)
+		- HLS (over HTTP)
+		- MPEG-DASH
+		- WebRTC
 
 ## Virtual Private Clouds
 
 ### VPC- Virtual Private Clouds
+
+- Virtual Private Clouds
+	- Many cloud providers have a network virtualization solution.
+		- Amazon Virtual Private Cloud (VPC)
+		- Microsoft Azure Virtual Network
+		- Google Virtual Private Cloud (VPC)
+		- Oracle Virtual Cloud Network
+- Solving a Fundamental Problem
+	- The Problem
+		- Allow many different users to have their own private network in the cloud.
+		- Isolate different customers' network packets from each other.
+	- The Solution
+		- VPC
+- VPCs & Subnets
+	- Allows you to have your "own" network in the cloud.
+		- In AWS, a VPC is associated with a region (e.g. us-east-1).
+		- You can have more than one VPC, even in the same region.
+			- Default 5 quota
+		- The IP address range of all the nodes in this VPC can be defined with a CIDR.
+	- Your VPC is subdivided into logically separate segments.
+		- Subnet
+		- Each subnet gets a smaller CIDR range
+		- Each subnet is associated with one Availability Zone (AZ)
+	- You can then launch instances (e.g. EC2, RDS) in a subnet.
+- VPCs, Subnets & Availability Zones
+	- Main Routing Table
+		- ![](assets/RoutingTable.png)
+- Background Knowledge: CIDR
+	- Classless Inter- Domain Routing (CIDR)
+	- Method for allocating IP address ranges.
+	- In IPv4, each address is a 32 bit value.
+		- 4 bytes
+		- e.g. 192.168.0.1
+	- CIDR Notation:
+		- e.g. 100.101.102.103/24
+		- Take the mask (24 bits)
+		- Keep the upper 24 bits the same
+		- The lower bits can change --> range
+		- 100.101.102.0... turns into 100.101.102.255
+	- In IPv6, each address is 128 bits.
+		- The IPv6 block 2001:db8::/48 represents the block of IPv6 addresses from 2001:db8:0:0:0:0:0:0 to 2001:db8:0:ffff:ffff:ffff:ffff:ffff.
+		- In IPv6 notation, each segment is written in *hex*.
+- RFC 1918: Address Allocation for Private Internets
+	- The Internet Assigned Numbers Authority (IANA) has reserved the following three blocks of the IP address space for private internets.
+	- 10.0.0.0/8
+		- 10.0.0.0 - 10.255.255.255
+		- Number of Addresses: 16,777,216
+	- 172.16.0.0/12
+		- 172.16.0.0 - 172.31.255.255
+		- Number of Addresses: 1,048,576
+	- 192.168.0.0/16
+		- 192.168.0.0 - 192.168.255.255
+		- Number of Addresses: 16,777,216
+	- Rationale
+		- It is guaranteed that no other server on the public internet has an IP address in these ranges, which means that routing rules will not conflict.
+- RFC 1918 & AWS VPC
+	- You must specify an IPv4 CIDR block for the VPC when you create one.
+	- The allowed block size is between a /16 netmask (65,536 IP addresses) and /28 netmask (16 IP addresses).
+		- RFC 1918 would allow for 16 million distinct IP addresses in the 10.0.0.0/8, but Amazon only accepts at most a /16 netmask in a VPC or subset.
+		- ![](assets/RFCAWSVPC.png)
+- Reserved IP Addresses
+	- The first 4 IP addresses and the last IP address in each subnet CIDR block are not available for you to use and cannot be assigned to an instance (e.g. 10.0.0.0/24).
+		- 10.0.0.0: Network Address
+		- 10.0.0.1: VPC Router
+		- 10.0.0.2: The IP address of the DNS server is the base of the VPC network range + two
+		- 10.0.0.3: Reserved for future use
+		- 10.0.0.255: Network Broadcast Address
+			- AWS does *not* support broadcast in a VPC, which is why this address is reserved.
 
 ### VPC Subnets
 

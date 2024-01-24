@@ -17,8 +17,8 @@
 
 | Week | Dates | Topics | MP | MP Due (Sunday) | **Notes** |
 | ---- | ---- | ---- | ---- | ---- | ---- |
-| 1 | 01/16 - 01/21 | Cloud Computing Foundations, Cloudonomics & Cloud Models | MP1: Java/ Python Warmup (~ 3 hours) | **MP1** | [[W1Notes \| Week 1 Notes]] |
-| 2 | 01/22 – 01/28 | Networking, IP, HTTP, REST & VPC | MP2: AWS Load Balancer (~ 6 hours) | **MP2** | [[W2Notes \| Week 2 Notes]] |
+| 1 | 01/16 - 01/21 | Cloud Computing Foundations, Cloudonomics & Cloud Models | MP1: Java/ Python Warmup (~ 3 hours) | **MP1** | [Week 1 Notes](W1Notes.md) |
+| 2 | 01/22 – 01/28 | Networking, IP, HTTP, REST & VPC | MP2: AWS Load Balancer (~ 6 hours) | **MP2** | [Week 2 Notes](W2Notes.md) |
 | 3 | 01/29 - 02/04 | Serverless Computing | MP3: AWS Lex & Lambda (~ 6 hours) | **-** |  |
 | 4 | 02/05 - 02/11 | Big Data Programming: MapReduce, Hadoop, YARN, Spark & HDFS | MP4: Hadoop MapReduce (~ 8 hours) | **-** |  |
 | 5 | 02/12 - 02/18 | Data Storage (Part 1): Cloud Based Storage | MP5: Spark MapReduce (~ 6 hours) | **MP3** |  |
