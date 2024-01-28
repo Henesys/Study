@@ -19,5 +19,6 @@ pages: 0
 cover: 
 rating: 
 date read: 
-status:
+status: In Progress
 ---
+#books

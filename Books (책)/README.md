@@ -2,6 +2,12 @@
 
 ## In Progress (진행 중) ⚠️
 
+```dataview
+table author as Author, publishDate as "Publish Date"
+from #books 
+where status = "In Progress"
+```
+
 ### CS498- Cloud Computing Applications (MCSDS)
 
 - Amazon Web Services in Action, Third Edition (Wittig & Wittig)
