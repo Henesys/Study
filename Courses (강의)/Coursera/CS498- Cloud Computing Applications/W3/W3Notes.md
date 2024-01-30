@@ -147,25 +147,157 @@
 
 ### IAM Roles
 
-- X
+- IAM Roles
+	- Identity within the account with some permission
+	- Similar to a user but *NOT* associated with a specific person
+	- A trusted user (identity)  can *TEMPORARILY* assume a role
+		- Short term credentials can last anywhere from 1 to 12 hours
+	- An entity can assume one role at a time
+	- Role Chaining- using the credentials for one role to assume a different role
+	- AWS relies on Security Token Service (STS) for some scenarios
+		- Not all role access requires STS
+		- AWS usually automatically  manages role session credentials without needing an explicit STS call
+- Components of a Role
+	- Types of policies attached to roles:
+		- Trust
+			- "Which principals/ entities can assume this role?"
+			- A role can only have one trust policy
+			- AN identity, such as a user or service
+		- Permissions
+			- "What resources can a role access?"
+			- What actions it can perform on them
+			- Can be AWS managed policies, customer managed policies or inline policies attached directly to the role
+			- A role can have multiple permission policies
+- Role- based Access Control (RBAC)
+	- User identities in a RBAC do not, by default, have access or authorization for a given resource.
+		- By some authentication mechanism, user accounts will "assume" a role and with that assumption comes all of the access & authorization policies that are tied to the role.
+	- The IAM model in AWS is not a pure RBAC, since user identities have permanent authorizations.
+	- GCP and Azure integrate more RBAC than AWS.
 
 ### IAM Types of Roles
 
-- X
+- Service Roles
+	- Some AWS services perform actions on your behalf in your own account
+		- To perform these actions, they need permissions as well
+		- We can assign the permissions to an IAM role
+	- Common services that require roles include:
+		- EC2
+		- Lambda Functions
+		- Cloud Formation
+		- API Gateway
+		- EMR
+		- DynamoDB
+		- Step Functions
+- EC2 Instance Profiles
+	- Special type of role
+	- Can be attached to EC2 compute instances
+		- Eliminates the need for hard coded credentials for any application that runs on the instance itself
+	- Applications running on that instance can retrieve temporary security credentials and perform actions that the role allows
+	- Uses EC2 metadata service
+	- One role at a time per instance
+- Cross Account Access Roles
+	- If any user or service needs to access resources in another AWS account, they would require a cross account access role.
+	- Can be configured to issue fine grained permissions to only the resources and services needed in the second account.
+	- After you create the trust relationship, an IAM user or an application from the trusted account can use the AWS STS AssumeRole API operation.
 
-### IAM Temporary Credentials and Federation
+### [IAM Temporary Credentials and Federation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user.html#)
 
-- X
+- Temporary Security Credentials
+	- You can use the AWS STS to create and provide trusted users with temporary security credentials that can control access to your AWS resources.
+	- Temporary security credentials are not stored with the user but are generated dynamically and provided to the user when requested.
+- AssumeRole API & STS
+	- This operation provides temporary security credentials that enable access to AWS resources in your account.
+	- The administrator of the specified account can grant permission to assume a role to any IAM user in that account.
+		- Attach a policy to the user or a group, granting permission for the *sts:AssumeRole* action.
+		- The policy must specify the role's ARN as the resource.
+	- STS verifies the entity's authorization against the  role's trust policy, then provides temporary credentials for the assume role session.
+- Federated User Access through Roles
+	- Federated Identity- use identity providers (e.g. Google, Microsoft) instead of creating IAM users in AWS.
+		- Manage user identities outside of AWS, but give them permissions to access AWS resources in the account.
+			- Outsourcing security to a third party
+		- SAML 2.0, OIDC, Active Directory, OAuth 2.0
+		- Create a role and define permissions  for the role.
+		- When a federated identity authenticates:
+			- The identity is associated with the role.
+			- The identity is granted the permissions that are defined by the role.
 
-### IAM Recap
+### [IAM Recap](https://docs.aws.amazon.com/IAM/latest/User)
 
-- X
+- ![](assets/IAMRecap.png)
 
 ## Serverless Landscape and Compute
 
 ### Serverless Landscape
 
-- X
+- Serverless Cloud Computing Landscape
+	- Categories of Serverless Computing
+		- Compute
+			- Platform as a Service (Apps)
+			- Function as a Service (Functions)
+			- Container as a Service (Containers)
+		- Storage
+			- Blobs (Binary Large Objects)
+			- Key/ Value Datastores
+		- Analytics
+		- AI & ML
+- Compute: PaaS
+	- Unit of compute is a full app
+	- User selects which server/ platform they need, but do not need to manage it anymore.
+		- Amazon Elastic Beanstalk
+		- Google App Engine
+		- Microsoft Azure App Service
+		- IBM CloudFoundry
+			- Based on open source CloudFoundry
+				- Originally developed by VMware, transferred to Pivotal Software (a joint venture by EMC, VMware and General Electric), brought back into VMware by the end of 2019.
+		- Oracle Java Cloud Service
+- Function as a Service
+	- What most people think of as "serverless"
+	- Unit of compute is a function
+		- Functions run when "events" are triggered
+	- Amazon AWS Lambda
+	- Microsoft Azure Functions
+	- Google Cloud Functions
+	- IBM Cloud Functions
+		- Based on Apache Open Whisk
+	- Oracle Functions
+		- Apache Fn Project
+	- Open Lambda
+- Container as a Service
+	- Beefed up version of Function as a Service
+		- Containers have to be stateless
+		- Unit of compute is a whole container
+		- Container runs when "events" are triggered
+	- Examples
+		- Amazon Elastic Container Service (ECS)
+		- Elastic Kubernetes Service (EKS)
+		- Fargate
+		- Microsoft Azure Kubernetes Service (AKS)
+			- Build on top of open source KEDA
+		- Google Cloud Run & Anthos
+			- Build on top of open source Knative
+				- Kubernetes- based platform to deploy and manage modern serverless workloads
+		- IBM Cloud Kubernetes Service
+		- Oracle Container Engine for Kubernetes
+		- Open Source Kubernetes
+			- Google Borg
+- Serverless Storage: Blobs
+	- Binary Large Object (BLOB)
+	- Blob Storage
+		-  Cloud storage for unstructured data
+	- Examples
+		- Amazon Simple Storage Service (S3)
+		- Microsoft Azure Blob Storage
+		- IBM Object Storage
+		- Google Cloud Storage
+		- Oracle Object Storage
+- Serverless Storage: Key/ Value Database
+	- Distributed NoSQL Key/ Value Storage Service
+	- Examples
+		- Amazon DynamoDB
+		- Microsoft Azure Cosmos DB
+		- Google Cloud Database/ Firestore/ Cloud BigTable
+		- IBM Cloudant
+		- Open Source: Kassandra
 
 ### Serverless Compute & AWS Lambda
 
