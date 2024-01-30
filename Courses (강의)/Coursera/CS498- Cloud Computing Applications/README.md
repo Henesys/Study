@@ -19,7 +19,7 @@
 | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
 | 1 | 01/16 - 01/21 | Cloud Computing Foundations, Cloudonomics & Cloud Models | MP1: Java/ Python Warmup (~ 3 hours) | **MP1** | [Week 1 Notes](W1Notes.md) |  |
 | 2 | 01/22 – 01/28 | Networking, IP, HTTP, REST & VPC | MP2: AWS Load Balancer (~ 6 hours) | **MP2** | [Week 2 Notes](W2Notes.md) | [MP2- AWS Study](../../O'Reilly/Amazon%20Web%20Services%20(AWS),%203rd%20Edition/README.md) |
-| 3 | 01/29 - 02/04 | Serverless Computing | MP3: AWS Lex & Lambda (~ 6 hours) | **-** |  |  |
+| 3 | 01/29 - 02/04 | Serverless Computing | MP3: AWS Lex & Lambda (~ 6 hours) | **-** | [Week 3 Notes](W3/W3Notes.md) |  |
 | 4 | 02/05 - 02/11 | Big Data Programming: MapReduce, Hadoop, YARN, Spark & HDFS | MP4: Hadoop MapReduce (~ 8 hours) | **-** |  |  |
 | 5 | 02/12 - 02/18 | Data Storage (Part 1): Cloud Based Storage | MP5: Spark MapReduce (~ 6 hours) | **MP3** |  |  |
 | 6 | 02/19 - 02/25 | Data Storage (Part 2): Cloud Based Databases & Data | MP6: AWS RDS & ElastiCache (~ 6 hours) | **MP4** |  |  |
