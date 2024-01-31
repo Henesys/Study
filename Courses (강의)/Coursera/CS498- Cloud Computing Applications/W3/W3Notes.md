@@ -301,18 +301,198 @@
 
 ### Serverless Compute & AWS Lambda
 
-- X
+- Introduction to Serverless Architecture
+	- Applications where some amount of server- side logic is still written by the application developer but unlike traditional architectures, it is run in *stateless compute* containers that are event- triggered, ephemeral (lasts for ~ 1 invocation) and are fully managed by a 3rd party.
+	- Function as a Service (FaaS)
+		- AWS Lambda is one of the most popular implementations of FaaS at present
+	- ![](assets/ServerlessArchitectureIntro.png)
+- Desktop Platform
+	- ![](assets/DesktopPlatform.png)
+- AWS Cloud Platform (2010)
+	- ![](assets/AWSCP2010.png)
+- AWS Cloud Platform (2014)
+	- ![](assets/AWSCP2014.png)
+- AWS Cloud Platform (2016)
+	- ![](assets/AWSCP2016.png)
+- AWS Elastic Beanstalk 
+	- Deploy and scale web applications efficiently
+	- Languages
+		- Java, .NET, PHP, Node.js, Python, Ruby, Docker
+	- Servers
+		- Apache, Nginx, Phusion Passenger, IIS
+	- By uploading your code, AWS handles:
+		- Deployment
+		- Auto Scaling
+		- Capacity Provisioning
+		- Health Monitoring
+		- Load Balancing
+- AWS Lambda Event- Driven Compute
+	- Runs stateless, request- driven code called *Lambda functions* in Java, Node.js and Python
+	- Triggered by events (state transitions) in other AWS services
+	- Pay only for the requests served and the compute time
+	- Focusing on business logic, not infrastructure
+	- By uploading your code, AWS Lambda handles:
+		- Capacity
+		- Monitoring
+		- Fault Tolerance
+		- Scaling
+		- Logging
+		- Security Patching
+		- Deployment
+		- Web Service Front- End
+- AWS Lambda Event Sources
+	- ![](assets/EventSources.png)
+- AWS Lambda Execution Environment
+	- Stateless functions
+	- Multi- threading is possible
+	- 500 MB of temporary storage space
+	- Memory can be adjusted manually
+		- 128 MB to 1.5 GB
+		- 64 GB increments
+		- CPU scales accordingly
+	- Function should finish in a set timeline
+		- Default of 3 seconds, up to 300 seconds
+- AWS Lambda Pricing
+	- Pay per use of Lambda function
+	- Approximately $.20 per 1 million function call
+	- Approximately $.00001667 for every GB- second used
 
 ## Serverless Storage
 
 ### Amazon S3 BLOB Storage
 
-- X
+- Definition
+	- Online file storage web service offered by AWS
+	- Amazon S3 provides storage through web service interfaces REST, SOAP & BitTorrent
+- Use Case
+	- Scalability, high availability, low latency (~ 99 % availability)
+	- Files up to 5 terabytes
+	- Objects stored in buckets are owned by users
+	- User assigned keys refer to objects
+	- Amazon Machine Images (AMI) are exported as a bundle of objects
+	- Examples
+		- SmugMug, Hadoop file store, Netflix, Reddit, Dropbox
+- Simple Storage Service (S3)
+	- A **bucket** is a container for objects and describes location, logging, accounting and access control.
+		- Has a name that must be **globally unique**
+		- Example
+			- http://bucket.s3.amazonaws.com/
+			- http://bucket.s3-aws-region.amazonaws.com/
+	- A bucket can hold any number of objects, which are files that can be up to 5 terabytes
+		- Example
+			- http://bucket.s3.amazonaws.com/object
+			- http://johnsmith.s3.amazonaws.com/photos/puppy.jpg
+- Fundamental Operations Corresponding to HTTP Actions
+	- http://bucket.s3.amazonaws.com/object
+		- POST- a new object or update an existing object
+		- GET- an existing object from a bucket
+		- DELETE- an object from the bucket
+		- LIST- keys present in a bucket with a filter
+	- Buckets have a *flat directory structure*
+- S3 Weak Consistency Model
+	- Updates to a single key are *atomic*
+	- S3 achieves high availability by replicating data across multiple Amazon servers.
+		- If a PUT request is successful, data is safely stored
+		- However:
+			- <span style="background:#fff88f">A process writes a new object to Amazon S3 and immediately attempts to read it. Until the change is fully propagated, Amazon S3 might report "key does not exist".</span>
+			- <span style="background:#fff88f">A process writes a new object to Amazon S3 and immediately lists keys within its bucket. Until the change is fully propagated, the object might not appear in the list.</span>
+			- <span style="background:#fff88f">A process replaces an existing object and immediately attempts to read it. Until the change is fully propagated, Amazon S3 might return the prior data.</span>
+			- <span style="background:#fff88f">A process deletes an existing object and immediately attempts to read it. Until the deletion is fully propagated, Amazon S3 might return the deleted data”.</span>
+- S3 Command Line Interface
+	- ![](assets/S3CLI.png)
 
 ### DynamoDB- NoSQL
 
-- X
+- DynamoDB
+	- DynamoDB is a fully managed NoSQL database provided by AWS
+	- Its structure is similar to a massive distributed B- Tree data structure in the cloud
+	- Distributed System
+		- Using the consistent hashing algorithm in a ring
+		- ![](assets/DynamoStructure.png)
+- Usage Model
+	- Create a table
+		- Since it's a managed service, create a table using the console (or CLI, API)
+			- Python Boto3 will be used in our lesson
+	- While creating the table, define the primary key
+		- This key will be used by DynamoDB to distribute key/ values in different partitions
+	- Optionally, you can identify a sort key
+		- This key is used to keep the items in a partition sorted
+		- Will be useful for query and scanning purposes
+- Using the Table: Put
+	- Once the table has been defined, you can input values into it
+		- DynamoDB items are limited to 400 KB
+	- ![](assets/BotoPut.png)
+- Using the Table: Get
+	- Retrieving an item from the table
+	- ![](assets/BotoGet.png)
+- Query & Scanning
+	- In the Relational Database Management System (RDBMS) software world, **query** is usually defined as an operation where there is a usable index available and we can quickly retrieve the item in *$\log(n)$ time.
+	- In comparison, **scan** happens where there is no usable index, the engine has to read every record and test for a condition.
+	- An RDBMS engine parses a SELECT statement and performs query optimization behind the curtains.
+	- DynamoDB allows you to be your own database engine.
+- Query
+	- Query only works on the **primary** key already defined for the table or any attribute that we have explicitly made a secondary index for.
+	- If a composite primary key was used (e.g. hash key + sort key), we can ask query to return a conditional range of value.
+	- ![](assets/Query.png)
+- Scan
+	- In the event that we want to perform a query conditioned on attributes and there is no index for them, scan will return everything.
+		- It allows you to filter based on any arbitrary condition.
+	- ![](assets/Scan.png)
+- Secondary Index
+	- Similar to the main index, requires a partition key and a sort key
+	- Local (LSI)
+		- Released by AWS in 2013
+		- Immediately consistence
+		- Once created, the size of the table cannot grow
+			- All the records that share the same partition key need to fit in 10 GB
+			- Once the allocation is full, writes to the table will fail
+	- Global (GSI)
+		- Released a few months after local indexes
+		- Eventual consistency model
+		- Does not constrain the size of the table
 
 ### Dropbox API
 
-- X
+- Cloud Storage
+	- Dropbox offers cloud file storage
+		- Synced across multiple devices
+		- Accessible through web interface, mobile apps and directly integrated with file systems on PCs
+	- Dropbox itself uses clouds
+		- Metadata stored in Dropbox servers
+		- Actual files stored in Amazon S3
+		- Amazon EC2 instances run the logic
+- Dropbox Architecture
+	- ![](assets/DropboxArchitecture.png)
+- Dropbox API
+	- Drop- Ins
+		- Cross- platform UI components that can be integrated in minutes
+		- *Chooser* allows instant access to file in Dropbox
+		- *Saver* makes saving files to Dropbox easy
+	- Core API
+		- Support for advanced functionality like search, revisions and restoring files
+		- Better fit for deeper integrations
+- Drop- In API
+	- Simple objects
+		- *Chooser* available for JavaScript, Android and iOS
+		- *Saver* on web and mobile web
+	- Handles all the authentication (OAuth) & file browsing
+	- Chooser object returns the following:
+		- Link- URL to access the file
+		- File Name
+		- File Size
+		- Icon
+		- Thumbnails
+	- Saver
+		- Passes in the URL, file name and options
+- Core API
+	- Many languages and environments
+		- e.g. Python, Ruby, PHP, iOS, Android, OS X, HTTP
+	- Based on HTTP and OAuth
+		- OAuth v1, OAuth v2
+	- Low level calls to access and manipulate a user's Dropbox account
+		- Create URL schemes
+		- Upload & download files
+		- List files and folders
+		- Delta
+		- Metadata access
+		- Create & manage file sharing
