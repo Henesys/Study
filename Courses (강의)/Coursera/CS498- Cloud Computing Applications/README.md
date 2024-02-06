@@ -15,6 +15,9 @@
 
 ## Schedule
 
+- Notes were created using [Obsidian](https://obsidian.md/), which may cause links to break when viewed on GitHub directly.
+- All notes were tagged with the #cloud_computing tag functionality on Obsidian.
+
 | Week | Dates | Topics | MP | MP Due (Sunday) | **Notes** | Additional |
 | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
 | 1 | 01/16 - 01/21 | Cloud Computing Foundations, Cloudonomics & Cloud Models | MP1: Java/ Python Warmup (~ 3 hours) | **MP1** | [W1Notes](W1Notes.md) |  |
