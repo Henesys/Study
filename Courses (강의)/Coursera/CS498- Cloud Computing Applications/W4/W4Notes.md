@@ -398,22 +398,185 @@
 
 ### Motivation for Spark
 
-- X
+- Motivation
+	- Iterative algorithms and interactive data exploration are commonly used in many domains
+	- Traditional MapReduce & classical parallel runtimes cannot solve iterative algorithms efficiently
+		- Hadoop- repeated data access to HDFS, no optimization to data caching & transfers
+		- MPI- no natural support of fault tolerance & programming interface is complicated
+- Retrofitting Iterations on MapReduce
+	- MapReduce does not support iteration out of the box
+		- However, we still need PageRank and clustering capabilities of MapReduce
+			- Apache Mahout
+			- Apache Nutch
+	- "Obvious" Solution
+		- Split iterations into multiple MapReduce jobs
+		- Write driver for orchestration
+- MapReduce Implementation of Iterative Algorithms
+	- ![](assets/MapReduceIterative.png)
+		- Issues
+			- Repeated reads of constant (input) data in each iteration
+				- Must continue until convergence has been achieved
+			- Runtime overheads in each iteration (for each MapReduce job)
+			- Intermediate communication resulting from model updates
+			- Model Update Traffic
+			- Granularity of parallelism limited by iteration
 
 ### Apache Spark
 
+- Apache Spark
+	- Extending the MapReduce model to better support two common classes of analytics apps:
+		- **Iterative** algorithms (ML, graphs)
+		- **Interactive** data mining
+	- Enhance programmability
+		- Integrate into Scala
+		- Allow interactive use from Scala interpreter
+- Motivation
+	- ![](assets/Acyclic.png)
+	- Most current cluster programming models are based on acyclic data flow, from stable storage to stable storage
+	- With data flow, runtime can decide where to run tasks and can automatically recover from failures
+	- Acyclic data flow is inefficient for applications that repeatedly reuse a *working* set of data:
+		- **Iterative** algorithms (ML, graphs)
+		- **Interactive** data mining tools (R, Excel, Python)
+	- With current frameworks, apps reload data from stable storage on each query
+- Solution: Resilient Distributed Datasets (RDDs)
+	- Allow apps to keep working sets in memory for efficient reuse
+	- Retain the attractive properties of MapReduce & address the shortcomings of fault tolerance, data locality and scalability
+	- RDDs support a wide range of applications
+- Programming Model
+	- Resilient Distributed Datasets (RDDs)
+		- Immutable, partiioned collections of objects
+		- Created through parallel transformations (map, filter, groupBy, join...) on data in stable storage
+		- Can be *cached* for efficient reuse
+	- Actions on RDDs
+		- Count, Reduce, Collect, Save
+
 ### Spark Example: Log Mining
+
+- Example
+	- ![](assets/LogMining.png)
+	- Load error messages from a log into memory, then interactively search for various patterns
 
 ### Spark Example: Logistic Regression
 
+- Example
+	- ![](assets/LogisticRegression.png)
+	- Goal: Find the best line separating two sets of points
+	- Scala
+		- ![](assets/LogisticRegressionCode.png)
+	- Performance
+		- You'll find that as the number of iterations increase, the runtime of Hadoop becomes exponentially greater than the runtime of Spark
+
 ### RDD Fault Tolerance
+
+- RDD Fault Tolerance
+	- RDDS maintain **lineage** information that can be used to reconstruct *lost* partitions
+	- ![](assets/RDDFaultTolerance.png)
 
 ### Interactive Spark
 
+- Interactive Spark
+	- Modified Spark interpreter that allows Spark to be used interactively from the command line
+	- Required two changes:
+		- Modified wrapper code generation so that each line typed has references to objects for its dependencies
+		- Distribute generated classes over the network
+- Frameworks Built on Spark
+	- Pregel on Spark (GraphX)
+		- Google message passing model for graph computation
+	- Hive on Spark (SparkSQL)
+		- Compatible with Apache Hive
+		- ML operators in Scala
+	- MLLib
+		- Scalable Machine Learning Library
+
 ### Spark Implementation
+
+- Implementation
+	- Runs on Apache Mesos or YARN to share resources with Hadoop & other apps
+	- Can read any Hadoop input source (e.g. HDFS)
+- Spark Scheduler
+	- ![](assets/Spark.png)
+	- Dryad- like (distributed data parallel program) DAGs (Directed Acyclic Graphs)
+	- Pipelines functions within a stage
+	- Cache- aware work reuse & locality
+	- Partitioning- aware to avoid shuffles
 
 ## HDFS
 
 ### HDFS Introduction
 
-- X
+- Large- Scale Data Processing
+	- Numerous tasks
+		- Processing massive amounts of data in parallel to produce other data
+	- Large- Scale Data Processing
+		- We want to use 1000+ CPUs
+		- We **do not** want overhead of **managing** storage
+		- Storage devices fail ~1.7% in Year 1, ~8.6% in Year 3 (Google, 2007)
+		- 10,000 nodes, 7 disks per node results in ~1190 failures per year or ~3.3 failures per day
+	- MapReduce provides:
+		- User defined functions
+		- Automatic parallelization & distribution
+		- Fault tolerance
+		- I/O scheduling
+		- Status & monitoring
+- HDFS
+	- Synergistic with Hadoop
+		- Apache Project inspired by Google MapReduce & GFS
+	- Throughput scales with attached HDs
+	- Large production clusters are built in many companies
+	- Doesn't try to be POSIX (Portable Operating System Interface) compliant
+	- Optimized for reads, sequential writes & appends
+- References
+	- Google File System 
+		- SOSP 2003
+	- Hadoop Distributed File System
+		- 2010 IEEE 26th Symposium on Mass Storage Systems and Technologies (MSST)
+- Stable Storage
+	- Question:
+		- "If node failure is the norm and not the exception, how can we store data persistently?"
+	- Answer:
+		- Distributed File System replicates files
+			- Provides global file namespace
+			- e.g. Google GFS, Hadoop HDFS, Kosmix KFS
+	- Typical usage pattern
+		- Large files (100+ GB ~ TBs)
+		- Data is rarely updated in place
+		- Multiple copies improves availability
+		- Read & appends are common 
+			- Truly living up to its name of "stable storage"
+- Distributed File System
+	- DataNode Server
+		- File is split into contiguous chunks
+		- Each chunk is 16 ~ 64 MB
+		- Each chunk replicated usually twice or thrice
+		- Sends heartbeat and BlockReport to NameNode
+	- Replicas are placed: one on a node in a local rack, one on a different node in the local rack and one on a node in a different rack 
+- HDFS Architecture
+	- ![](assets/HDFS.png)
+- Distributed File System
+	- Master Node
+		- Equivalent to NameNode in HDFS
+		- Stores metadata
+		- Might be replicated
+	- Client library for file access
+		- Talks to master to find data node chunk
+		- Connects directly to data node servers to access data
+- Replication Pipelining
+	- When the client receives response from NameNode, it flushes its block in small pieces (4K) to the first replica, that in turn copies it to the next replica and so on
+		- Data is pipelined from data node to the next
+- Staging
+	- Client request to create a file that does not reach NameNode immediately
+		- Think "Git Add"
+	- HDFS client caches the data into a temporary file.
+		- When the data reaches an HDFS block size, the client contacts the NameNode
+	- NameNode inserts the filename into its hierarchy and allocates a data block for it
+	- NameNode responds to the client with the identity of the data node and the destination of the replicas (data nodes) for the block
+	- Client flushes it from its local memory
+- Application Programming Interface
+	- HDFS provides Java API for applications to use
+	- Python access is also used in many applications
+	- C language wrapper for Java API available
+	- CLI provided in Hadoop
+	- Command syntax similar to bash
+		- Example
+			- ```/bin/hadoop dfs -mkdir /foodir```- creates a directory called ```/foodir```
+	- HTTP browser can be used to browse the files of an HDFS instance

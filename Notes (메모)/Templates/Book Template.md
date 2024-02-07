@@ -1,11 +1,11 @@
-<%"---"%>
-tags: Book
-title: "{{title}}"
-author: [{{author}}]
-total: {{totalPage}}
-isbn: {{isbn10}} {{isbn13}}
-cover: {{coverUrl}}
-status: unread
----
+<%"---"%> 
+tags: #book
+title: "{{title}}" 
+author: [{{author}}] 
+publish: {{publishDate}} 
+cover: {{coverUrl}} 
+status: unread <%"---"%> 
 
-<%"---"%>
+![cover|150]({{coverUrl}}) 
+
+# {{title}}
