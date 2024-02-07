@@ -174,23 +174,231 @@
 
 ### MapReduce Summary
 
+- MapReduce Advantages/ Disadvantages
+	- It's easy to program for many CPUs
+		- Communication management is effectively obsolete since I/O scheduling is automatically done for us
+		- Fault Tolerance & Monitoring
+			- Machine failures, sudden hardware issues etc. are handled quickly
+		- It's easier to design and program
+		- Can scale/ cascade several MapReduce tasks
+	- This comes at the cost of restricting solvable problems
+		- Expressing or representing a problem in MapReduce may be challenging
+		- Data parallelism is key
+			- Ability to break down a problem into palatable data chunks
+- MapReduce Conclusions
+	- MapReduce has proven to be a useful abstraction
+	- Greatly simplifies large- scale computations
+	- Functional programming paradigm can be applied to large- scale applications
+	- Allows us to focus on problem, let the middleware deal with the messy details
+
 ## Hadoop
 
 ### Introduction to Hadoop
 
+-  Execution
+	- ![](assets/HadoopExecution.png)
+		- Input file is divided into arbitrary sized pieces
+		- Pieces are stored (e.g. via HDFS)
+		- Map is run on input data chunks
+		- Intermediate key- value pairs are created
+		- Key- value pairs are integrated into the framework
+		- Framework groups by key
+		- Framework then passes them into Reduce invocations, which will create the output
+- Hadoop
+	- Task Workflow
+		- ![](assets/HadoopWorkflow.png)
+			- Client submits "wordcount" job, indicating code and input files
+				- Code is typically stored in a Java archive (JAR) file format
+				- Code comes with metadata that tells the location of its file, typically stored on HDFS
+			- JobTracker breaks input file into $k$ chunks, (in this case 6) and assigns work to TaskTrackers
+			- After map(), TaskTrackers exchange map- output to build reduce() keyspace
+			- JobTracker breaks reduce() keyspace into $m$ chunks, (in this case 6) and assigns work
+			- reduce() output may go to HDFS
+		- JobTracker is the "Master" node in the cluster that coordinates everything
+		- TaskTracker is the daemon that listens to the instructions of the JobTracker
+- Execution Initialization
+	- Split input file into 64 MB sections (Google File System- GFS)
+		- Read in parallel by multiple machines
+	- Fork off program onto multiple machines
+	- One machine is designated as "Master"
+	- Master assigns idle machines to either Map or Reduce tasks
+	- Master coordinates data communication between map and reduce machines
+		- Akin to test- train- validation split in ML
+- Partition Function
+	- Inputs to map tasks are created by contiguous splits of input files
+	- For reduce, we need to ensure that records with the same intermediate key ends up at the same worker
+	- System uses a default partition function 
+		- e.g. hash(key) mod R (hash based key- value mapping)
+	- It may be useful to override
+		- e.g. hash(hostname(URL)) mod R
+		- Ensures URLS from a host ends up in the same output file
+- Map- Machine
+	- Reads contents of assigned portion of input file
+	- Parses & prepares data for input to Map
+		- e.g. read <a /> from HTML
+		- Classes implementing InputFormat
+	- Passes data into map function and saves result in memory 
+		- e.g. <target, source>
+	- Periodically writes completed work to local disk
+	- Notifies Master of this partially completed work (intermediate data)
+- Reduce- Machine
+	- Receives notification from Master of partially completed work
+	- Retrieves intermediate data from Map- Machine via remote- read
+	- Sorts intermediate data by key
+		- e.g. target page
+	- Iterates over intermediate data
+		- For each unique key, send corresponding set through reduce function
+	- Appends result of reduce function to final output file (via GFS)
+- Data Flow
+	- Input & final output are stored on a distributed file system
+		- Scheduler tries to schedule map tasks "close" to the physical storage location of input data
+	- Intermediate results are stored on local FS of map and reduce workers
+	- Output is often input to another map reduce task
+
+
 ### Big Data Pipelines- The Move to Hadoop
+
+- Why Pipelines Are Behind Everything
+	- The rise of large datasets begets the need for a system that can reliably and quickly organize the data
+	- "Big data" may be a trend, but *how* to get it reliably is the big question
+	- Use Cases
+		- Relevant content tailored to users
+		- Programmatic digital advertising
+		- Data analytics for research
+	- Data keeps growing exponentially
+		- Google has spent bullions on infrastructure spending
+- What is a Data Pipeline?
+	- System that transforms events into a usable format
+		- Input
+			- Raw logs, interactions, activities
+		- Output
+			- Datasets for specific users (filtered, aggregated, joined etc.)
+	- Scale
+		- Billions of transactions per day (millions per minute)
+		- TBs of data per day (GBs per minute)
+- Where We Came From
+	- Customized mini- clusters of hardware
+		- Tailored to specific types of jobs
+			- Transformation, Joins, Aggregations
+		- Pro
+			- Mix of memory/ CPU configuration specifications for job types
+		- Con
+			- Scaling issues, overhead of HW setup & maintenance
+	- Lack of well- defined interfaces & API
+		- No standard schema format or data model
+	- Data access limitations
+		- Access was limited to core developers with advanced data and programming knowledge
+- Past Architecture
+	- ![](assets/PastArchitecture.png)
+- Why Move to Hadoop?
+	- Legacy systems were not performing well (< 1 TB per day)
+	- Customers wanted access to raw feeds (> 1 TB per day per customer)
+	- Advertising roadmap called for a 3 ~ 5x increase in traffic (new features, new customers onboarding)
+	- Cost of physical storage grew exponentially cheaper
+- The Promise of Hadoop
+	- PB+ storage capabilities
+		- Multi- tenant internal clusters made up of 1000's of nodes can handle TBs of data easily
+		- Storage was fault- tolerant with default 3x replication
+		- Easy to scale up as new growth occurred
+	- Hosted service for job execution and data storage
+		- No more need for separate clusters as Map/ Reduce could handle all types of jobs
+		- ETL operations easily handled using Pig Latin interface
+		- New innovative frameworks were starting up (HBase, Hive, Oozie), promising more platform adoption
+- Architecture on Hadoop
+	- ![](assets/HadoopArchitecture.png)
+- Life on Hadoop
+	- Platform hardening has its own consequences
+		- Migrating data users and customers to the new system took longer than expected
+		- Running large- scale data pipelines on multi- tenant clusters caused customer issues
+	- Data for everyone (for those who are permitted)
+		- Number of data users increased dramatically on Hadoop
+	- Scaled better than expected (over the past 5 years of its inception)
+		- As data size continues to grow, job runtime and data latency has continued to shrink
 
 ### Introduction to YARN
 
+- Hadoop 1.X
+	- ![](assets/Hadoop1.XArchitecture.png)
+- Issues with Hadoop
+	- Hadoop JobTracker was a barrier for scaling
+		- Primary reason why Hadoop 1.X is recommended for clusters <= 4000 nodes
+		- Thousands of applications each running tens of thousands of tasks
+		- JobTracker was not able to schedule resources as fast as they became available
+		- Distinct map and reduce slots led to artificial bottlenecks and low cluster utilization
+	- MapReduce was being abused by other application frameworks
+		- Frameworks trying to work around sort and shuffle methods
+		- Iterative algorithms were suboptimal
+	- YARN strives to be application framework agnostic
+		- Different application types can share the same cluster
+		- Runs MapReduce "out of the box" as part of Apache Hadoop
+- What is YARN?
+	- Yet Another Resource Negotiator (YARN)
+	- Provides resource management services
+		- Scheduling
+		- Monitoring
+		- Control
+	- Replaces the resource management services of the JobTracker
+	- Bundled with Hadoop 0.23 and Hadoop 2.X
+- YARN High- Level Architecture
+	- ResourceManager
+		- Single, centralized daemon for scheduling containers
+		- Monitor nodes and applications
+	- NodeManager
+		- Daemon running on each worker node in the cluster
+		- Launches, monitors and controls containers
+	- ApplicationMaster
+		- Provides scheduling, monitoring and controlling capabilities for an application instance
+		- RM launches an AM for each application submitted to the cluster
+		- AM requests containers via RM & launches containers via NM
+	- Containers
+		- Unit of allocation and control for YARN
+		- AM and application- specific tasks run within containers
+	- ![](assets/YARNArchitecture.png)
+
 ### MapReduce on YARN
+
+- MapReduce
+	- ![](assets/MapReduce.png)
+- MapReduce on YARN
+	- MapReduce AM determines the number of map and reduce tasks
+		- Split meta- info file indicates the number of map tasks based on number of splits
+		- Job config determines number of reducers
+	- AM schedules when to request containers for map and reduce tasks
+		- Split meta- info file has data locality for each map task
+		- Reducers have no locality
+		- Users headroom provided by RM to avoid livelocks where reducers consume all available resources but need more maps to run
+	- Tasks connect back to AM upon startup via TaskUmbilicalProtocol
+		- Report progress, liveliness
+		- AM kills tasks that do not report progress in a timely manner
+		- AM provides reducers with shuffle data locations
+		- Reducers notify AM of shuffle fetch failures; AM relaunches map tasks if necessary
+	- Shuffle provides as a plugin service to NodeManagers
+		- Shuffle port configurable, passed to reducers via AM
+	- AM responsible for job history
+		- Job history events written to a file as job progresses
+		- Copied to a drop location in HDFS when job completes
+		- Used to provide recovery when AM crashes and is retried by RM
+	- MapReduce AM provides client interface
+		- Report job and tasks status
+		- Kill job or task attempts
+		- Web app and services
+		- Client can redirect to job history server if application has completed
 
 ### MapReduce on YARN in Diagram
 
-### Hadoop at Yahoo!
+- MapReduce on YARN
+	- ![](assets/MapReduceYARN1.png)
+	- ![](assets/MapReduceYARN2.png)
+	- ![](assets/MapReduceYARN3.png)
+	- ![](assets/MapReduceYARN4.png)
+	- ![](assets/MapReduceYARN5.png)
+	- ![](assets/MapReduceYARN6.png)
 
 ## Apache Spark
 
 ### Motivation for Spark
+
+- X
 
 ### Apache Spark
 
@@ -207,3 +415,5 @@
 ## HDFS
 
 ### HDFS Introduction
+
+- X
