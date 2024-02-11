@@ -134,9 +134,37 @@
 ### Module 15.4: DynamoDB Table Resilience (Console)
 
 - Demo
+	- Select the DynamoDB table that was previously created in the demo
+	- View the information and metrics of the selected table
+	- DynamoDB Streams are required in order to create global tables
+		- You can explicitly enable DynamoDB Streams or you can do it as part of the process of enabling global tables
+			- Create a replica and select a replication region
+			- AWS will automatically enable DynamoDB Streams for new and old images
+			- Launch
 
 ## Lesson 18: Other High Availability Options
 
 ### Module 18.1: API Gateway
 
-- 
+- API Gateway Basics
+	- Region Scope
+	- Managed REST API
+	- Serverless
+	- SSL/ TLS Support
+- API Gateway Endpoint Types
+	- Edge- Optimized ("Global")
+	- Regional (Default)
+	- Private (VPC)
+- API Gateway API Types
+	- HTTP APIs
+	- REST APIs
+	- WebSocket APIs
+- API Gateway Architecture
+	- Clients
+		- Connected users
+		- Web & mobile applications
+		- Private internal applications
+		- IoT
+	- Methods cache results, push metrics & logs
+		- These requests can be pushed to a backend such as AWS Lambda
+		- These requests can also be pushed to a backend like DynamoDB as well
