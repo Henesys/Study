@@ -66,12 +66,38 @@
 		- Company A decides to build a chatbot for their employees to access HR policies in an efficient manner
 	- Chatbot team will take a phased approach to building the chatbot in question
 		- Bot will be trained to answer queries related to leaves & vacations
+	- Employees should be able to:
+		- Authenticate themselves
+		- Check for their leave balance
+		- Apply for leaves
 
 ### Conversation Flow
 
+- Decision tree that describes the possible list of outcomes based on events or decisions at any point in the conversation
+- Visual representation of the user journey
+	- Depicts different paths through which the interaction between the user and the bot can traverse
+	- Build in collaboration with the business users (customers)
+- ![](assets/Flowchart.png)
+
 ### Conversation Flow Demo
 
+- Demo at [Botsociety](app.botsociety.io)
+
 ### Terminology of a Chatbot
+
+- Vocabulary
+	- Intent
+		- Particular goal that the user wants to achieve
+	- Utterances
+		- Phrases that invoke the intent
+	- Prompts
+		- Questions that will ask user to input data
+	- Slots
+		- Data the user provides to fulfill intent
+	- Confirmation Prompts
+		- To clarify whether the user wants to fulfill the intent
+	- Fulfillment
+		- Business logic required to fulfill the user intent
 
 ### Summary
 

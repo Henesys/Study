@@ -162,21 +162,227 @@
 
 ### Cloud Object Storage
 
-- 
+- Cloud Object Storage
+	- Distributed file systems are not easy to achieve
+		- Considerable overhead, complexity & cost
+		- Maintaining consistency while providing transparency is challenging
+	- CAP: Consistency, Availability, Partition Tolerance
+	- Transparency
+		- "Invisible" to client programs, which "see" a system which is similar to a local file system
+			- Behind the scenes, the distributed file system handles locating files, transporting data and potentially providing other features listed below
+			- While transparency may seem trivial, these semantics can incur a significant performance penalty at scale despite not being strictly necessary
+- Internet Scale Storage: Breaking the Chains of Transparency & Consistency
+	- "What if we want to scale to unlimited storage?"
+		- We would need to sacrifice a component of CAP
+			- Availability: Important to keep, otherwise customer data may be unavailable
+			- Partition Tolerance: Networks do fail, cloud providers need to be resilient
+			- Consistency: Can be sacrificed
+	- Typical BLOB storage by a cloud provider can scale "infinitely", by being "eventually consistent"
+		- Typically not POSIX compliant
+	- Access Model
+		- REST APIs: GET, PUT, DELETE
+	- Examples
+		- AWS S3
+		- OpenStack Swift
+- AWS S3 Consistency Model
+	- Objects have a URI and are accessible by REST API calls.
+	- If you PUT to an existing key, a subsequent read might return the old data *or* the updated data, but it never returns corrupted or partial data.
+	- Availability wise, data will be replicated across AWS datacenters (AZ).
+		- <span style="background:#fff88f">If a PUT request is successful, data is safely stored. However, temporarily:</span>
+			- A process writes a new object to Amazon S3 and immediately lists keys within its bucket. **Until the change is fully propagated, the object might not appear in the list.**
+			- A process replaces an existing object and immediately tries to read it. **Until the change is fully propagated, Amazon S3 might return the previous data.**
+			- A process deletes an existing object and immediately tries to read it. **Until the deletion is fully propagated, Amazon S3 might return the deleted data.**
+			- A process deletes an existing object and immediately lists keys within its bucket. **Until the deletion is fully propagated, Amazon S3 might list the delete object.**
+		- Amazon S3 does not currently support object locking. If two PUT requests are simultaneously made to the same key, the request with the latest timestamp wins.
+		- Updates are key- based, there is no way to make atomic updates across keys.
+- Cloud Object Storage
+	- By relaxing the consistency model, building the distributed storage system becomes simpler
+		- Storage costs are significantly cheaper
+		- Bandwidth can be higher
+			- Up to ~ 25 GB per second
+		- Unlike previous models (e.g. Block Storage, Managed File System), data can be accessible from outside the cloud
+			- Examples
+				- Mobile app customers from around the world
+				- Personal computers
+- AWS S3 Tiers
+	- ![](assets/S3Tiers.png)
+- Summary
+	- Cloud Object Storage
+	- Consistency Model
+	- API
+	- Tiers
 
 ### OpenStack SWIFT
 
-- 
+- Definition
+	- Binary Large Object (BLOB) is a collection of binary data  stored as a single entity in a  database management system
+- Use Case
+	- Store unstructured object data like  text or binary data
+	- Images
+	- Movies
+	- Audio, Signal Data
+	- Large queue of messages
+- Examples
+	- Windows- Azure Blob Storage
+	- LinkedIn- Ambry
+	- Facebook- Warm BLOB Storage
+	- Amazon- AWS Simple Storage Services (S3)
+	- Apache- Open Stack Blob Service (SWIFT)
+- Goals
+	- 50% ~ 70% of data is unstructured or archival
+	- RESTful API (HTTP)
+	- High Availability (no single point of failure)
+	- Agile Data Centers
+	- Open Source
+	- Multi- Region, Geographic Distribution of Data
+	- Storage Policies
+	- Erasure Coding
+- Swift API
+	- Example
+		- `PUT /version2/roy/myblobs/classvideo1`
+		- `GET/version2/reza/hisblobs/yesterdaysdataforhadoop`
+- Swift Components
+	- ![](assets/SwiftComponents.png)
+- Write Requests: Load Balancer & Proxy
+	- ![](assets/WriteRequests.png)
+- Read Requests: Load Balancer & Proxy
+	- ![](assets/ReadRequests.png)
+- Details
+	- MD5 checksums with each object
+	- Auditing and active replication
+	- Any sized disks
+- Swift Partitions
+	- 1 node, 8 disks, 16 partitions per disk- 8 \* 16 = 128 partitions
+	- 2 nodes, 8 disks each, 8 partitions per disk- 8 \* 16 = 128 partitions
+	- Use a hashing ring to map objects into storage partitions
 
 ## File System on the Cloud
 
 ### Cloud Managed File Systems
 
-- 
+- Clustered File Systems
+	- Allows files to be accessed using the same interfaces and semantics as local files
+	- Functionalities
+		- Mounting/ Unmounting
+		- Listing Directories
+		- Read/ Write at Byte Boundaries
+		- System's Native Permission Model
+		- Fencing
+		- Concurrency
+		- Consistency
+	- Examples
+		- NFS
+			- Unix
+			- v4, v4.1 (pNFS extension)
+		- SMB
+			- Windows
+		- Lustre
+			- HPC
+		- Ceph
+			- Many OpenStack implementations use Ceph as the storage substrate
+		- Gluster
+			- Classic file serving, second- tier storage & deep archiving
+- Clustered File System Consistency
+	- Ideally, a parallel file system would completely hide the complexity of distributed storage and exhibit a behavior as it is specified by POSIX
+		- Fencing
+	- Easy to accomplish on a single machine, much harder to achieve on a cluster of servers as maintaining CAP is harder
+		- Consistency: Every read receives the most recent write or an error
+		- Availability: Every request receives a non- error response, without the guarantee that it contains the most recent write
+		- Partition Tolerance: The system continues to operate despite an arbitrary number of messages being dropped (or delayed) by the network between the nodes
+- Cloud- Based File Systems
+	- Rolling your own clustered distributed file system
+		- Grab a number of "storage optimized" VMs or metal machines
+			- Each machine has a large & fast instance block store
+				- e.g. SSDs/ HDDs attached to the instance
+			- Instances are maintained 24/7
+			- Distributed file system is installed onto the instance
+				- e.g. Lustre, MS DFS, NFS, Ceph, Hadoop 
+	- The managed file system is deployed by the cloud provider
+- Cloud- Managed File Systems
+	- Amazon
+		- AWS FSx for Lustre
+		- AWS FSx for Windows File Server
+		- AWS EFS
+	- Azure
+		- Azure Files
+			- SMB access protocol
+			- REST API
+		- Azure Data Lake Storage
+			- Hadoop compatible file system
+	- Google
+		- Cloud Filestore
+			- NFS v3
+			- Up to 64 TB
+- Google Filestore, IBM Cloud File Storage & AWS EFS
+	- Google Filestore
+		- Simple commands to create a Filestore instance with Google cloud
+	- IBM Cloud File Storage
+		- Up to 12 TB
+		- Up to 48,000 IOPS
+- Are Managed File Systems Distributed?
+	- FSx for Windows File Server
+		- Max: 64 TB
+		- Can utilize Microsoft DFS to unify data from many file servers for hundreds of petabytes
+			- Shared Namespace (Location Transparency)
+			- Replication (Redundancy)
+	- FSx for Lustre
+		- Max: 100 TB
+		- Throughput: Read 50 ~ 200 MB per second per TB, can burst to 3,000 MB per second per TB
+			- e.g. 50.4 TB runs on 22 file servers
+	- AWS EFS
+		- Max: Petabytes
+		- Throughput is available to a file system that scales as a file system grows
+			- 50 MB per second per TB, can burst up to 100 MB per second per TB
+		- Supports NFS v4.1
+	- Azure
+		- Azure Files
+		- Max: 100 TB
+		- Data Lake Storage (Generation 2)
+			- HDFS Semantics
+			- Built on top of Azure Blob Storage
+			- Distributed File System
+				- Can serve exabytes
+				- Throughput is measured in gigabits per second (Gbps)
+- Distributed File Systems Design Goals
+	- **Access Transparency**
+		- Clients are unaware that files are distributed and can access them in the same way as local files are accessed
+	- **Location Transparency**
+		- A consistent namespace exists encompassing local as well as remote files
+		- The name of a file does not give its location
+	- **Concurrency Transparency**
+		- All clients have the same view of the state of the file system
+		- If one process is modifying a file, any other processes on the same system or remote systems that are accessing the files will see the modifications in a coherent manner
+	- **Failure Transparency**
+		- Client and client programs should operate correctly after a server failure
+	- **Heterogeneity**
+		- File service should be provided across different hardware and operating system platforms
+	- **Scalability**
+	- File system should work well in small environments (1 machine ~ a dozen machines) and also scale gracefully to bigger ones (hundreds ~ tens of thousands of systems)
+	- **Replication Transparency**
+		- Clients should be unaware of the file replication performed across multiple servers to support scalability
+	- **Migration Transparency**
+		- File should be able to move between different servers without the client's knowledge
+- Summary
+	- Clustered File Systems
+	- File Systems in the Cloud
 
 ### Amazon AWS Elastic File System
 
-- 
+- Amazon AWS EFS
+	- Elastic File System (EFS)
+	- Motivation
+		- Enterprise customers need a large distributed file system
+		- S3 is large and distributed, but it is an object store without performance guarantees and eventual consistency models
+		- Block storage (e.g. EBS, instance store) are small
+			- Enterprise can build a distributed file system on top of these, but it requires additional operation expenses
+		- Glacier is only good for archival storage
+	- EFS provides a fully NFSv4 compliant network file system
+	- SSD backed
+		- Highly available and durable
+			- Files, directories and links are stored redundantly across multiple AZs within an AWS region
+	- Can grow or shrink as needed
+		- No need to pre- provision capacities
+	- ![E](assets/EFSPerformance.png)
 
 ### Ceph: Case Study
 
