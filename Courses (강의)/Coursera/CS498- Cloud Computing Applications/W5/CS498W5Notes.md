@@ -386,24 +386,185 @@
 
 ### Ceph: Case Study
 
-- 
+- Motivation
+	- Ceph is an emerging technology in the production- clustered environment sector
+	- Designed for:
+		- Performance- striped data over data servers
+		- Reliability- No single point of failure
+		- Scalability- Adaptable metadata cluster
+		- More general than HDFS
+			- Smaller files
+	- Gluster FS more or less has similar ideas
+		- Uses a hashing ring, whereas Ceph uses CRUSH maps (Controlled Replication Under Scalable Hashing)
+- Overview
+	- Orientations
+		- MDS- Meta Data Server
+		- ODS- Object Data Server
+		- MON- Monitor
+	- Decoupled data and metadata
+		- I/O directly with object servers
+	- Dynamic distributed metadata management
+		- Multiple metadata servers handling different directories (subtrees)
+	- Reliable autonomic distributed storage
+		- ODS's manage themselves by replicating and monitoring
+- Ceph Components
+	- ![](assets/CephComponents.png)
+- Decoupled Data & Metadata
+	- Increases performance by limiting interacting between clients and servers
+	- Decoupling is common in distributed file systems
+		- e.g. HDFS, Lustre
+	- In contrast to other file systems, Ceph uses a function to calculate the block's locations
+- Dynamic Distributed Metadata Management
+	- Metadata is split among cluster of servers
+	- Distribution of metadata changes with the number of requests to even load among metadata servers
+	- Metadata servers can also quickly recover from failures by taking over neighbors' data
+	- Improves performance by leveling metadata load
+- Reliable Autonomic Distributed Storage
+	- Data storage servers act on events by themselves
+	- Initiates replication `and`
+	- Improves performance by offloading decision making to data servers
+	- Improves reliability by removing central control of the cluster (single point of failure)
 
 ## Archive Storage, Backups, Storage Gateways & Massive Data Transfers
 
 ### Cloud Archive Storage & Backup
 
-- 
+- Cloud Archive Storage
+	- Storage availability affects costs directly
+	- If file requests are infrequent, you can store them in cold storage
+	- Cloud providers offer archive storage at reduced costs
+		- Access to them may prove to be relatively expensive however
+- Amazon Archive Storage: S3 Glacier
+	- AWS S3 Glacier
+		- $.004 per GB per month
+		- Compared with S3:
+			- Frequent Access Tier: $.023 per GB per month
+			- Infrequent Access Tier: $.0125 per GB per month
+	- Glacier Retrieval
+		- ![](assets/GlacierRetrieval.png)
+	- S3 Glacier Deep Archive
+		- For long term data archiving that is accessed once or twice in a year (infrequent) and can be restored within 12 hours
+		- ~ $.00099 per GB per month
+- Cloud- Managed Backups
+	- Some cloud providers allow managed backups from their block stores, managed file systems or other data stores
+		- Examples
+			- Amazon Backup
+			- Amazon Restore
+			- Azure
+				- Only supports backups of VMs (block stores) and SQL workloads
 
 ### AWS Glacier
 
-- 
+- Amazon AWS Glacier
+	- Allows you to archive your data at a low cost of $.007 per GB per month
+	- Durable
+		- Average annual durability of 99.999999999%
+	- Each single archive can be up to 40 TB
+	- Archives are stored in *vaults*
+	- Main access point to Glacier is S3
+	- Typically takes between 3 to 5 hours to prepare a download request
+		- After that, you have 24 hours to download from the staging location
+- Key Concepts
+	- ![](assets/GlacierConcepts.png)
 
 ###  Storage Gateway & Mass Data Transfer
 
-- 
+- Cloud Storage Gateways
+	- Hybrid Cloud
+		- Some VMs on your infrastructure, some on public clouds
+		- Needs a way to connect storage locations
+	- Amazon Storage Gateway
+		- File Gateway
+			- NFS (Network File System), SMB (Server Message Block)
+			- S3 REST API Access
+				- POSIX- style metadata, which includes ownership, permissions and timestamps stored as S3 user metadata
+		- Tape Gateway
+		- Volume Gateway
+			- Presented as iSCSI protocol
+			- Stored in AWS as EBS
+	- Azure
+		- Data Box Gateway
+			- NFS, SMB
+			- Azure Block Storage
+			- Azure Files
+		- File Sync
+		- StorSimple
+- Cloud Mass Data Transfer
+	- Once a company decides to move to the cloud, there is a mass of data that needs to be transferred to the cloud
+	- Others may need to transfer data into and out of the cloud itself
+	- Issues
+		- Cost of mass data transfer could be burdensome
+		- Network reliability could be a liability for this task
+	- Typical Solution
+		- Cloud provider sends you a physical device
+		- Example
+			- AWS Snowball
+				- $250 / 80 TB
+				- Moving data into Amazon is free, same as S3
+				- In comparison, transferring the same amount of data into/ out of S3 can take 7 ~ 8 days on a 1 Gbps internet connection (assuming no data transmission error)
+					- $\frac{80 \: TB \: * \: 8 \: days \: * \: 1024}{60 \: * \: 60 \: * \: 24} = 7.58 \: days$
+				- Moving 80 TB out of S3 can cost:
+					- $80 \: * \: 1024 \: * \: 0.08 = \$ \: 6,553$
+				- Moving 80 TB out through Snowball:
+					- $80 \: * \: 1024 \: * \: 0.03 = \$ \: 2,457$
+			- Azure Data Box
+				- Data Box: $250 / 100 TB
+				- Data Box Disk: $50 / 8 TB
+				- Heavy Data Box: $4,000 / 1 PB
+- Summary
+	- Storage Gateway
+	- Mass Data Transfer
 
 ## Internet- Level Personal File Systems
 
 ### Internet Level Personal File System
 
-- 
+- Internet- Level File System Storage
+	- Examples:
+		- Object Storage
+			- AWS S3, Azure Blob Storage
+		- Dropbox
+		- Google Cloud
+		- Box
+		- Apple iCloud Drive
+	- Sync and access your file system across a limited number of owned devices
+	- Block- level file copying
+	- Sync throttling
+	- Shared folders and links
+	- Data recovery 
+		- e.g. 30 days, 180 days
+	- File sync with a local file system
+	- Web- based access
+	- Shared folders with other users
+	- Analytic services
+		- e.g. Text search in documents and images
+- Data Access Frequency
+	- Unlike object stores, this market segment does *not* accept access pattern limits
+	- Cloud providers use statistics to extract average access patterns and set pricing
+		- They may lose money on some customers that access/ change their data very frequently
+		- On average, they do generate a profit from their predictive analytics
+	- Case Study: Dropbox
+		- Started by storing customer data on Amazon S3
+		- Moved away from Amazon in 2016 and created their own datacenters for storage
+			- Economy of scale dictated that they should build over rent
+			- Amazon AWS as an "incubator" for startups
+			- Netflix moved off of its CDN (content delivery network) from third parties to its own network once it grew large enough
+				- Netflix still uses AWS & Google Cloud for everything else, but does not use a datacenter
+- Integration
+	- Customer integration in a company ecosystem
+		- Microsoft OneDrive
+			- Comes with Office365
+		- Google Cloud
+			- Integration with Google Docs, Gmail
+		- Apple iCloud Drive
+			- Integration with iPhones, Mac, iOS Environment
+		- Dropbox
+			- First to market
+			- Typically more robust
+			- Integration with MS Office and Google Docs
+		- Box
+			- Enterprise & government features
+- Summary
+	- End- User Facing Cloud Storage
+	- Competing Offerings
+	- Low Frequency Access Patterns for Low Cost Offerings

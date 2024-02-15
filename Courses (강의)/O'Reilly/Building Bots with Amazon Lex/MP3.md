@@ -107,9 +107,15 @@
 
 ### Introduction
 
-- X
+- Part 2
+	- Creating our first bot
+	- Creating intents, utterances and slots
 
 ### Creating an Amazon Lex Bot
+
+- In the AWS console, go to "Amazon Lex"
+- Ensure that the Lex console you access is using Lex v2
+- Click "Create Bot"
 
 ### Creating Intents
 
