@@ -116,22 +116,70 @@
 - In the AWS console, go to "Amazon Lex"
 - Ensure that the Lex console you access is using Lex v2
 - Click "Create Bot"
+	- Create a blank bot
+	- Name the bot
+	- Configure IAM permissions & COPPA settings
+		- IAM permissions can be created with basic AWS Lex permissions (enables things like CloudWatch)
+		- Mark the COPPA setting as "No" since we need to log the conversations of the bot
+	- Add language to bot
+		- English (US)
+		- Decide whether bot needs voice interaction or not
+			- Choose "None"
+	- Click "Done", which creates the bot
 
 ### Creating Intents
 
+- **Intents will be "created" by linking the Lambda function created in Section 3.1 with the Lex bot created in Section 3.2**
+
 ### Creating Utterances
+
+- **Slot type will be set to `AMAZON.city` in MP3**
+- **Example Utterance from MP3**
+	- User: "What is the distance from Chicago to Springfield?"
+		- Reply from Chatbot: "2"
+	- User: "I need to find the distance between two cities?"
+		- Reply from Chatbot: "Source?"
+			- User: "Chicago"
+				- Reply from Chatbot: "Destination?"
+					- User: "Urbana"
+						- Reply from Chatbot: "1"
+- Configure a `FallbackIntent`
+	- Create intents for each utterance
 
 ### Creating Prompts, Slot & SlotTypes
 
+- X
+
 ### Creating Dynamic Prompts & Utterances 
+
+- Modification of "Closing Responses" to create dynamic responses to dynamic prompts
 
 ### Creating Custom SlotTypes
 
+- X
+
 ### Creating Context
+
+- X
 
 ### Creating a Follow Up Intent
 
+- X
+
 ### Miscellaneous Settings
+
+- **Will most likely not require some of these features for MP3**
+- Potentially useful features:
+	- Conversation Logs
+		- Can be configured as text logs
+		- Text logs can be imported into CloudWatch
+			- Will require a log group created beforehand
+	- Inspect Window
+		- Shows which intent you're working on and what its slot values are
+		- Shows a trace of I/O that is being internally used by Lex
+- Other features:
+	- Retry Count
+	- Sentiment Analysis
 
 ### Summary
 
@@ -141,23 +189,63 @@
 
 ### Introduction
 
-- X
+- Part 3
+	- Create AWS Lambda functions & Lex integration
+	- Deployment of Lex chatbots
+	- Signoff
 
 ### Introduction to AWS Lambda
 
+- Serverless offering from AWS
+- Introduced in 2015
+- Natively supports code written in Java, Go, Node.js, Python etc
+
 ### Overview on JSON Format of Lex
+
+- Format
+	- ![](assets/InputJSON.png)
+	- ![](assets/OutputJSON.png)
+- `invocationSource`
+	- Indicates the status of the Lex code currently
+		- `DialogCodeHook`: when we are capturing slots
+		- `FulfillmentCodeHook`: when all slots have been captured
+- `inputMode`
+	- Indicates mode in which the user is interacting with the bot
+		- `Speech`: User is interacting by talking
+		- `Text`: User is interacting by typing
 
 ### Validating & Initializing Slots
 
+- X
+
 ### Fulfillment in Lex
+
+- Fulfillment function is equivalent to the closing responses section on Lex
+- **The Lambda code hook must be enabled for fulfillment in MP3, not initialization and validation**
 
 ### Publishing the Bot
 
+- Version & Alias
+	- **Bot for MP3 must be given an alias, by default Amazon Lex v2 creates an alias called `TestBotAlias`**
+	- When you create an alias, make sure to associate with the version you have created beforehand
+	- Go to "Languages" and apply the Lambda function to invoke for **fulfillment**
+
 ### Testing for Voice and Text Inputs
+
+- Click on the version of the bot you want to test
+	- Go to "Languages"
+	- Click "Test"
+	- Select which alias you want to test
 
 ### Channels for Consuming the Bot
 
+- CloudFormation
+	- `us-east-1` for MP3
+	- Configure the bot to **Lex v2** not Lex v1
+
 ### Further Steps
+
+- X
 
 ### Summary
 
