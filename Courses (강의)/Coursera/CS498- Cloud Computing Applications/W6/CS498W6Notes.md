@@ -381,14 +381,198 @@
 
 ### Google Cloud Spanner
 
-- X
+- Google Cloud Spanner
+	- Spanner is a distributed data layer that uses optimized sharded Paxos to guarantee consistency even in a system that spans multiple geographic locations
+		- Query API is SQL (e.g. `SELECT`)
+		- Inserts and updates are done through a specialized gRPC interface
+	- Two- phase commit to achieve serializability
+	- TrueTime for external consistency, consistent reads without locking and consistent snapshots
+		- External > Strong > Weak
+- Spanner and CAP
+	- CAP
+		- C: consistency, which implies a single value for shared data
+		- A: 100% availability, for both reads and updates
+		- P: tolerance to network partitions
+	- "Is Spanner CAP?"
+		- No, it is CP
+		- In some partition instances, Spanner chooses C and forfeits A
+	- Availability is in the 5 9's range
+		- Practically CA (sufficient availability for most people)
+	- Spanner uses Paxos as part of its operation to shard (partitioning) data across hundreds of servers
+	- 2PC (2 Phase Commit) is known as the anti- availability protocol
+		- All members must be up for it to work
+		- In Spanner, each member is a Paxos group
+		- Ensures that each 2PC member is highly available even if some of its Paxos participants are down
+	- Cloud Spanner provides stale reads, which offer similar performance benefits as eventual consistency but with much stronger consistency guarantees
+		- Stale reads return data from an "old" timestamp, which cannot block writes because old versions of data are immutable
+- TrueTime
+	- Heavy use of hardware assisted clock synchronization using GPS clocks and atomic clocks to ensure global consistrency
+		- Avoids communication in a distributed system
+		- GPS and atomic clocks have different failure conditions
+	- "Global wall clock time" has unbounded uncertainty
+		- $\epsilon$ is the worst- case clock divergence
+		- Timestamps function as intervals, not single values
+		- ![](assets/Timestamps.png)
+		- ![](assets/TTTable.png)
+		- Consider an event $e_{now}$ which invoked $tt = TT.now()$
+			- Guarantee: $tt.earliest <= t_{abs}(e_{now}) <= tt.latest$
+- Spanner
+	- TrueTime exposes clock uncertainty
+		- Commit wait ensures transactions end after their commit time
+		- Read at $TT.now.latest()$
+	- Read (Dominant) --> Make them lock- free
+		- Read Only Transaction
+			- Replica can satisfy a read at a timestamp `t` if $t <= t_{safe}$
+		- Snapshot Read, client- provided **timestamp**
+			- Read at a particular time in the past
+		- Snapshot Read, client- provided **bound**
+	- Read- Write Transaction (Less Common)
+		- Pessimistic --> Use 2 Phase Locking
+	- Globally Distributed Database
+		- 2PL w/ 2PC > Paxos
+- HW- Based Time Synchronization
+	- Network Time Protocol (NTP)
+		- Software time synchronization with one server
+		- Stratum 2
+		- Network Delays
+		- .5 to 100 `ms` accuracy
+	- Google Spanner
+	- Microsoft Azure offers GPS clock synchronization
+		- VMICTimeSync Provider
+		- Precision Time Protocol (PTP)
+		- Stratum 1
+			- Direct connection to a reference time server (e.g. Stratum 0)
+			- No connection through a shared network
+			- 10 $\mu s$ accuracy
+	- Amazon time Sync Service
+		- Chrony vs NTP
+		- Aurora Multi- Master
 
 ### Cloud Databases- Azure CosmosDB
 
-- X
+- Azure CosmosDB
+	- Globally distributed, multi- model DB
+		- Wire compatible with Cassandra
+		- Table API
+			- 5 types of consistency levels
+		- MongoDB API
+		- `etcd` API
+			- `etcd` is a consistent distributed key value storage
+			- Comparable to Zookeeper
+			- Backend of Kubernetes
+		- Gremlin API
+	- Replicated State Machine (RSM) for concurrency
+		- Specific algorithm not published
+		- RAFT is also a state machine consensus algorithm
+	- Write- optimized, resource- governed and schema- agnostic DB engine
+		- Automatically indexes everything it ingests
+			- Internally based on a document store model
+			- All JSON documents are a tree
+			- Makes an index for each path of the tree
+		- **Synchronously** makes the index durable and highly available before acknowledging the client's updates while maintaining low latency guarantees
+	- BW- Tree Indexing
+		- Log Structure Record
+		- Latch Free Updates
+		- Atom Record Sequence (ARS) System
+	- Uses Lamport's TLA+ specification language to describe SLAs at each consistency level
+- CosmosDB Consistency Models
+	- **Strong**
+		- With strong consistency, you are guaranteed to always read the latest version of an item similar to read committed isolation in SQL server
+		- Can only ever see data which is durably commited
+		- Strong consistency is scoped to a single region
+	- **Bounded- Staleness**
+		- Consistency read will lag behind writes and guarantees global order
+		- Not scoped to a single region
+		- When configuring bounded- staleness consistency, need to specify the maximum lag by:
+			- Operations
+				- For a single region, the maximum operations lag must be between 10 and 1,000,000 
+				- For a multi- region, it will be between 100,000 and 1,000,000
+			- Time
+				- Maximum lag must be between 5 seconds and 1 day for either single or multi- regions
+	- **Session**
+		- Most popular consistency level, since it provides consistency guarantees but also has better throughput
+	- **Consistent Prefix**
+		- Global order is preserved and prefix order is guaranteed
+		- User will never see writes in a different order than that the way it is written
+	- **Eventual**
+		- Similar to asynchronous synchronization
+		- Guarantees that all changes will be replicated eventually
+		- Also has the lowest latency because it does not need to wait on any commits
+- Azure CosmosDB Implementation
+	- CosmosDB service is deployed on several replicated shared- nothing nodes across geographical reigns for high availability, low latency and high throughput
+	- Some or all of these distributed nodes form a replica set for serving requests on a data shard that contains documents
+	- Among the replicas, one of them is elected as a master to perform totally ordered writes on the data shard
+	- Writes are done on the write- quorum (W), asubset of the replica ndoes, to ensure that the data is durable
+	- Reads are performed on read- quorum (R), a subset of replica nodes, to get the desired consistency levels (St, BS, Se, CP, E) as configured by users
+	- Data is partitioned at logic level and is replicated at storage layer in terms of physical partition to achieve desired availability and throughput
+	- Storage
+		- Transactional storage engine
+		- Analytical storage engine
+		- Storage engines are log- structured and write- optimized
 
 ## NoSQL Databases on the Cloud
 
 ### Cloud NoSQL Databases
 
-- X
+- Key/ Value DB
+	- Key- value DB are optimized for common access pattern, typically to store and retrieve large volumes of data
+	- DB delivers quick response times, even in extreme volumes of concurrent requests
+	- High- traffic web apps, ecommerce systems and gaming apps
+	- Examples
+		- AWS DynamoDB
+		- Azure CosmosDB
+- Wide Column DB
+	- Google BigTable
+		- Cloud BigTable is a fully managed, wide- column NoSQL DB that offers low latency and replication for high availability
+		- What HBase was modeled after
+	- Managed Cassandra
+		- Cassandra was modeled after Dynamo
+		- DynamoDB was modeled after Cassandra
+		- AWS managed Cassandra
+	- Cassandra AMI for any cloud provider
+- In Memory (Cache) DB
+	- In memory DB are used for applications that require real- time access to data
+	- By storing data directly in memory, these DB deliver microsecond latency to applications for whom millisecond latency is not enough
+	- Caching, game leaderboards and real- time analytics
+	- Common Usage Pattern
+		- Cache RDS
+		- Document DB
+	- Examples
+		- AWS ElastiCache (Redis/ Memcached)
+		- Azure Cache for Redis
+		- Google Memory Store (Redis/ Memcached)
+		- IBM Redis
+- Document DB
+	- Document DB is designed to store semi- structured data as JSON- like documents
+	- Makes it easy to store, **query** and index JSON data
+	- Content management, catalogs and user profiles
+	- Non- relational DB service
+	- Examples
+		- AWS DocumentDB (MongoDB Compatibility)
+		- Azure CosmosDB
+		- Google Firestore 
+			- Targeted for mobile app support
+		- IBM Cloudant/ IBM MongoDB
+- AWS DocumentDB
+	- Managed instance
+	- Implements MongoDB 3.6 API
+	- Storage and compute are decoupled, allowing each to scale independently
+	- Automatically grows the size of storage volume as the database storage needs to grow
+		- Grows in increments of 10 GB, up to 64 TB
+	- Up to 15 low latency read replicas to increase read capacity
+	- Replicates 6 copies of data across 3 AZs
+	- Access to Amazon DocumentDB clusters must be done through the Mongo shell or with MongoDB drivers
+- Other Types of Cloud Databases
+	- Graph DB
+		- Covered in a different module
+	- Time Series DB
+		- AWS Timestream
+	- Blockchain/ Ledgers
+		- Immutable & cryptographically verifiable transactions
+		- AWS QLDB
+	- Data Warehouses
+		- Covered in a different module
+		- Columnar (Column Oriented) Storage
+			- AWS Redshift
+			- Google BigQuery
+			- Azure Synapse (formerly Azure SQL Data Warehouse)
