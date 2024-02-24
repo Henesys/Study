@@ -223,7 +223,159 @@
 
 ### Amazon AWS Aurora
 
-- X
+- Relational Database on the Cloud
+	- Traditional RDBMS rely on concepts such as B+ Trees and replication to optimize usage on one or a few servers
+	- Cloud brings many new things to the table:
+		- Backend storage
+		- Network
+		- Worldwide scalability
+	- "How can we optimize RDBMS for the cloud?"
+		- Separate storage layer from transactional logic
+			- Decoupling storage from compute
+	- [Deuteronomy](https://www.cidrdb.org/cidr2015/Papers/CIDR15_Paper15.pdf)
+		- Repeated law
+		- Transaction Component (TC) provides concurrency control and recovery
+		- Data Component (DC) provides access methods on top of LLAMA, a latch- free log- structured cache and storage manager
+		- Aurora and CosmosDB are both inspired by Deuteronomy
+- Amazon AWS Aurora
+	- Optimized DB engine build from MySQL (later PostgreSQL) with a **distributed storage layer**
+		- API compatible with MySQL or PostgreSQL (existing application)
+	- Separate storage and compute
+		- Query processing, transactions, concurrency, buffer cache and access
+		- Logging, storage and recovery that are implemented as a scale out service
+			- Scale Out (Horizontal) --> Adding more replica units
+			- Scale Up (Vertical) --> Adding more compute resources
+	- Moving caching and logging layers into a purpose- build, scale- out, self- healing, multitenant, database- optimized storage service
+	- Each instance still includes most of the components of a traditional kernel (query processor, transactions, locking, buffer cache, access methods and undo management)
+	- Several functions (redo logging, durable storage, crash recovery and backup/ restore) are off- loaded to the storage service
+- Redo Logging
+	- Traditional relation databases organize data in pages (e.g. 16 KB) and as pages are modified, they must be periodically flushed to disk
+		- B+ Tree
+	- For resilience against failures and maintenance of ACID semantics, page modifications are also records in ***do- redo- undo*** log records, which are written to disk in a continuous stream
+		- Redo Log Records- Difference between the after and the before- image of a page
+	- This method is very inefficient
+		- e.g. A single logical DB write turns into multiple (up to 5) physical disk writes, resulting in performance issues
+		- Write amplification
+			- Can be combated by reducing the frequency of page flushes
+			- However, this comes at the cost of increasing crash recovery duration
+- Burden of Amplified Writes
+	- Systems like MySQL write data pages to objects that they expose (e.g. heap files, B Trees) as well as redo log records to a write- ahead log (WAL)
+	- The writes made to the primary EBS volume are synchronized with the standby EBS volume using software mirroring
+	- Data that needs to be written:
+		- Redo logs are typically a few bytes, transaction commit requires the log to be written
+		- Binary (statement) log that is archived to Amazon S3 to support point- in- time restores
+		- Modified data pages (the data page write may be deferred e.g. 16 KB)
+		- A secondary temporary write of the data page (double- write) to prevent torn pages (e.g. 16 KB)
+		- Metadata (FRM) files
+	- Stages 1, 3 and 5 are sequential and synchronous
+		- Latency is key as many writes are sequential
+		- 4/4 write quorum requirements exist and are vulnerable to failures & outlier performance
+- Log is the Database
+	- Logs serve as the DB in Aurora
+	- Database instances write redo log records to the distributed storage layer and the storage takes care of constructing page images from log records on demand from the database
+		- Write performance is improved due to elimination of write amplification and the use of a scale- out storage fleet
+		- 5x write IOPS on SysBench benchmark compared to Amazon RDS for MySQL running on similar hardware
+		- Database crash recovery time is reduced since a database instance is no longer needed to perform a redo log stream replay
+- Aurora Replication & Quorum
+	- Dealing with Failure
+		- Traditional approaches of blocking I/O processing until a failover can be carried out and operating in a "degraded" mode until recovery are problematic when scaled
+			- In a large system, the probability of operating in the degraded mode approaches infinitely close to 1
+	- Aurora uses quorums to combat the problems of component failures and performance degradation
+		- Writes to as many replicas as appropriate to ensure that a quorum read always finds the latest data
+	- Ideal goal is "AZ + 1"
+		- Tolerates a loss of a zone + 1 more failure without any data durability loss and with a minimal impact on data availability
+			- 4/6 quorum
+			- For each logical write, issue 6 physical replica writes
+				- Write operation is successful when 4 of those writes are completed
+				- Instance only write redo log records to storage
+				- Typically 10's to 100's of bytes, makes a 4/6 write quorum possible without overloading the network
+	- If a zone goes down and an additional failure occurs, can still achieve read quorum (3/6) and quickly regain the ability to write by doing a *fast repair*
+- Offloading Redo Processing to Storage
+	- The only writes that cross the network in Aurora are redo log records
+		- No pages are written from the DB tier, not for background writes, not for checkpointing and not for cache eviction
+	- Log applicator is pushed to the storage tier to generate database pages in background or on demand
+		- Generating each page from the complete chain of its modifications from the beginning of time is prohibitively expensive
+		- Continually materialize database pages in the background to avoid regenerating them from scratch on demand every time
+	- The storage service can scale out I/O in an embarrassingly parallel fashion without impacting write throughput of the DB engine
+	- Primarily, only writes log records to the storage service and streams those log records & metadata updates to the replica instances
+	- DB engine waits for acknowledgements from 4 out of 6 replicas in order to satisfy the write quorum
+- Aurora Fast Repair
+	- ![](assets/AuroraFastRepair.png)
+	- Amazon Aurora's approach to replication, which is based on sharding and scale out architecture
+	- Aurora DB volume is logically divided into 10 GiB logical units (*protection groups*) and each protection group is replicated 6 ways into physical units (*segments*)
+		- When a failure takes out a segment, the repair of a single protection group only requires moving ~ 10 GiB of data, which is done in seconds
+		- When multiple protection groups must be repaired, the entire storage fleet participates in the repair process
+			- Massive bandwidth to complete the entire batch of repairs
+		- A zone loss followed by another component failure may result in Aurora losing the write quorum for a few seconds for a given protection group
+			- Fortunately, recovery is quickly done
+- Quorum Reads
+	- Expensive and is best avoided
+	- Do not need to perform a quorum read on routine page reads
+		- Always knows where to obtain an up- to- date copy of a page
+		- Client- side Aurora storage driver tracks which writes were successful for which segments
+		- Driver tracks read latencies and always tries to read from the storage node that has demonstrated the lowest latency in the past
+	- Only scenario where one might employ the use of a quorum read is during the recovery on a DB instance restart
+- Amazon Aurora Storage Nodes
+	- ![](assets/AuroraStorageNode.png)
+		- Receive log records and add to in- memory queue
+			- Foreground path potentially impacting latency
+		- Persist record on disk and ACK + ACK to DB
+			- Foreground path potentially impacting latency
+		- Organize records & identify gaps in log since some batches may have been lost
+		- "Gossip" with peers to fill in holes
+		- Coalesce log records into new page versions
+		- Periodically stage log and new page versions to S3
+		- Periodically garbage- collect old versions
+		- Periodically validate CRC codes on blocks
+	- All steps are asynchronous
+- Database Engine Implementation
+	- Database engine is a fork of "community" MySQL/ InnoDB and diverges primarily in how InnoDB reads & writes data to disk
+		- In community InnoDB, a write operation results in data being modified in buffer pages and the associated redo log records written to buffers of the WAL (Write- ahead logging) in LSN (Log sequence) order
+		- On transaction commit, the WAL protocol requires only that the redo log records of the transaction are durably written to the disk
+		- The actual modified buffer pages are also written to disk eventually through a double- write technique to avoid partial page writes
+		- These page writes take place in the background, during eviction from the cache or while taking a checkpoint
+	- In addition to IO subsystem, InnoDB also includes the transaction subsystem, the lock manager, a B+- Tree implementation and the associated notion of a "mini transaction" (MTR)
+		- MTR is a **construct only used inside InnoDB** and models groups of operations that must be executed atomically (e.g. split/ merge of B+- Tree pages)
+	- Concurrency control is implemented entirely in the database engine without impacting the storage service
+- Aurora & Consensus
+	- Aurora leverages only quorum I/O, locally observable states and monotonically increasing log ordering provide high performance, non- blocking, fault- tolerant I/O, commits and membership changes
+	- Aurora is able to avoid much of the work of consensus by recognizing that, during normal forward processing of a system, there are local oases of consistency
+	- Using backward chaining of redo records, a storage node can tell if it is missing data and "gossip" with its peers to fill in gaps
+	- Using the advancement of segment chains, a database instance can determine whether it can advance durable points and reply to clients requesting commits
+	- Use of monotonically increasing consistency points (SCL, PGCL, PGMRPL, VCL and VDL) ensures the representation of consistency points is compact and comparable
+		- Extension of familiar DB notions of LSN and SCN (System Change Number @ Oracle)
+- Aurora Multi- Master
+	- For high availability and ACID transactions across a cluster of database nodes with configurable read after write consistency
+	- With single- master Aurora, a failure of the single writer node requires the promotion of a read replica to be the **new** writer
+		- For Aurora Multi- Master, the failure of a writer node merely requires the application using the writer to open connections to **another** writer
+	- When designing for high availability, ensure that you are not overloading writers
+	- Conflicts arise when concurrent transactions or writes executing on different writer nodes attempt to modify the same set of pages
+- Aurora Multi- Master Replication & Quorum
+	- Steps
+		- Application layer starts a write transaction
+		- For cross- clutter consistency, the writer node proposes the change to all 6 storage nodes
+		- Each storage node checks if the proposed change conflicts with a change in flight or a previously committed change and either confirms the change or rejects it
+			- Each storage node compares the LSN (alike to a page version) of the page submitted by the writer node with the LSN of the page on the node itself
+			- Approves the change if they are the same and rejects the change with a conflict if the storage node contains a more recent version of the page
+			- System is conceptually similar to GitHub's VCS structure
+		- If the writer node that proposed the change receives a positive confirmation from a quorum of storage nodes:
+			- It commits the change in the storage layer, causing each storage node to commit the change
+			- It replicates the change records to every other writer node in the cluster using a low latency, P2P replication protocol
+		- After peer writer nodes receive the change, they apply the change to their in- memory cache (buffer pool)
+		- If the writer node that proposed the change does **NOT** receive a positive confirmation from a quorum of storage nodes, it cancels the entire transaction and raises an error to the application layer
+		- Upon successfully committing changes to the storage layer, writer nodes replicate the redo change records to peer writer nodes for buffer pool refresh in the peer node
+- Aurora vs RDS
+	- Aurora
+		- Offers superior performance due to unique storage subsystem
+		- Offers superior scalability due to unique storage subsystem
+		- Offers higher availability due to unique storage subsystem
+		- Offers 5x throughput of standard MySQL
+			- Performance on- par with commercial DB at $\frac{1}{10}$ the cost
+			- According to AWS marketing
+			- 3rd party sources confirm that cost claims are roughly correct, but performance of Aurora in real world applications is closer to 30%
+	- RDS
+		- Offers greater range of DB engines and versions
+		- Generally cheaper to implement for the same DB workload
 
 ## NewSQL Cloud Databases
 
