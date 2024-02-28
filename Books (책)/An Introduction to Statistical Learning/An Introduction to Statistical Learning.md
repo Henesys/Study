@@ -1,5 +1,5 @@
 --- 
-tags: #book 
+tags: #book #statistics #data_science 
 title: "An Introduction to Statistical Learning" 
 author: [Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani] 
 publish: 2013-06-24 

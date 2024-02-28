@@ -1,5 +1,5 @@
 --- 
-tags: #book 
+tags: #book #statistics 
 title: "Introduction to Probability" 
 author: [Joseph K. Blitzstein, Jessica Hwang] 
 publish: 2014-07-24 

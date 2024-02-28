@@ -1,5 +1,5 @@
 --- 
-tags: #book 
+tags: #book #deep_learning #machine_learning
 title: "Understanding Deep Learning" 
 author: [Simon J.D. Prince] 
 publish: 2023-12-05 
