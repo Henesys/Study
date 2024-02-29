@@ -364,7 +364,7 @@
 		- After peer writer nodes receive the change, they apply the change to their in- memory cache (buffer pool)
 		- If the writer node that proposed the change does **NOT** receive a positive confirmation from a quorum of storage nodes, it cancels the entire transaction and raises an error to the application layer
 		- Upon successfully committing changes to the storage layer, writer nodes replicate the redo change records to peer writer nodes for buffer pool refresh in the peer node
-- Aurora vs RDS
+- Aurora vs. RDS
 	- Aurora
 		- Offers superior performance due to unique storage subsystem
 		- Offers superior scalability due to unique storage subsystem
@@ -445,7 +445,7 @@
 			- No connection through a shared network
 			- 10 $\mu s$ accuracy
 	- Amazon time Sync Service
-		- Chrony vs NTP
+		- Chrony vs. NTP
 		- Aurora Multi- Master
 
 ### Cloud Databases- Azure CosmosDB

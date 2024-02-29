@@ -2,6 +2,8 @@
 
 A repository made to hold books, course materials, notes and papers.
 
+A majority of the Markdown notes available on this repository has been created with [Obsidian](https://obsidian.md/), so some documents may look strange when viewed on GitHub directly.
+
 ## Overview (목차)
 
 1. [Books (책)](https://github.com/Henesys/Study/tree/main/Books%20(%EC%B1%85))

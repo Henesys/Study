@@ -17,7 +17,7 @@
 	- Caching is a universal concept
 	- Based on the principle of locality (a.k.a. locality of reference)
 		- Tendency of the "processor" to access the same set of memory locations repetitively over a short period of time
-		- Temporal Locality vs Spatial Locality
+		- Temporal Locality vs. Spatial Locality
 	- Whenever you have "large + slow" source of information and "small + fast" storage technology, you can use the latter to *cache* the former
 		- Can see this concept being put to use anywhere from CPUs, processors, to OS and to large web applications on the cloud
 - Caching in Processors: Data & Instructions
@@ -361,29 +361,231 @@
 
 ### Redis
 
-- X
-
-### Redis Demonstration
-
-- X
+- Redis: `REmote DIctionary Server`
+	- Open Source
+	- Written in C
+	- Data model is a dictionary which maps keys to avlues
+	- Supports not only strings, but also abstract data types
+		- Lists of strings
+		- Sets of strings (collections of non- repeating unsorted elements)
+		- Sorted sets of strings (collections of non- repeating elements ordered by a floating point number called a "score")
+		- Hashes where keys and values are strings
+- Redis
+	- Fast response time
+		- Everything is in memory
+		- Non- blocking I/O, single threaded
+		- 100,000+ read/ writes per second
+	- Periodically checkpoints in- memory values to disk every few seconds
+	- In case of failure, only the very last few seconds' worth of key/ values are lost
+- Potential Uses
+	- Session Store
+		- One or more sessions per user
+		- Many reads, few writes
+		- Throwaway data
+		- Timeouts
+	- Logging
+		- Rapid, low latency writes
+		- Low level data
+		- Small amounts of data (must be in- memory)
+- General Cases
+	- Data that you don't mind losing
+	- Records that can be accessed by a single primary key
+	- Schema that is either a single value or is a a serialized object
+- Simple Programming Model
+	- `GET`, `SET`,` INCR`, `DECR`, `EXISTS`, `DEL`
+	- `HGET`, `HSET`, `KEYS`, `HDEL`
+	- `SADD`, `SMEMBERS`, `SREM`
+	- `PUBLISH`, `SUBSCRIBE`
+- Summary
+	- Redis is not a database
+		- Complements your *existing* data storage layer
+	- Publish/ Subscribe support
 
 ## Scalable Data Storage
 
 ### HBase Usage API
 
-- X
+- HBase: Overview
+	- HBase is a distributed column- oriented data store build on top of HDFS
+	- HBase is an Apache open source project whose goal is to provide storage for Hadoop's distributed computing environment
+	- Data is logically organized into tables, rows and columns
+- HBase: Part of Hadoop's Ecosystem
+	- ![](assets/HBase.png)
+- HBase vs. HDFS
+	- **HDFS**
+		- Good for...
+			- Batch processing (scans over large files)
+		- Not good for...
+			- Record lookup
+			- Incremental addition of small batches
+			- Updates
+	- **HBase**
+		- Fast record lookup
+		- Support for record- level insertion
+		- Support for updates
+- Data Model
+	- A table in Bigtable is a sparse, distributed, persistent multidimensional sorted map
+	- Map is indexed by a row key, column key and a timestamp
+		- `(row: string, column: string, time: int64` --> Uninterpreted byte array
+	- Supports lookups, inserts, deletes
+		- Single row transactions only
+- Notes on Data Model
+	- ![](assets/DataModel.png)
+	- HBase schema consists of several **tables**
+	- Each table consists of a set of **column families**
+		- Columns are not part of the schema
+	- HBase has **dynamic columns**
+		- Column names are encoded inside the cells
+		- Different cells can have different columns
+	- **Version number** can be user- supplied
+		- Does not have to be inserted in increasing order
+		- Version numbers are unique within each key
+	- Table can be very sparse
+		- Many cells are empty
+	- **Keys** are indexed as the primary key
+- Rows and Columns
+	- Rows are maintained in sorted lexicographic order
+		- Applications can exploit this property for efficient row scans
+		- Row ranges dynamically partitioned into tablets
+	- Columns grouped into column families
+		- Column key = `family:qualifer`
+		- Column families provide locality hints
+		- Unbounded number of columns
+- HBase Lookup
+	- ![](assets/HBaseLookup1.png)
+	- ![](assets/HBaseLookup2.png)
 
 ### HBase Internals (Part 1)
 
+- HBase
+	- ![](assets/HadoopEnvironment.png)
+- HBase Building Blocks
+	- HDFS
+	- Apache ZooKeeper
+		- ZooKeeper uses ZAB (ZooKeeper's Atomic Broadcast)
+	- HFile
+- HFile
+	- Basic building block of HBase
+	- On- disk file format representing a map from string to string
+	- Persistent, ordered immutable map from keys to values
+		- Stores in HDFS
+	- Sequence of blocks on disk plus an index for block lookup
+		- Can be completely mapped into memory
+		- `MemStore`
+	- Supported operations:
+		- Lookup values associated with key
+		- Iterate key/ value pairs within a key range
+- HRegion
+	- Dynamically partitioned range of rows
+	- Built from multiple HFiles
+- HBase Master
+	- Assigns HFiles to HRegion servers
+	- Detects addition and expiration of HRegion servers
+	- Balanced HRegion server load
+		- HRegions are distributed randomly on nodes of the cluster for load balancing
+	- Handles garbage collection
+	- Handles schema changes
+- HRegion Servers
+	- Each HRegion server manages a set of regions
+		- Typically 10 to 1,000 regions
+		- Each 100 to 200 MB by default
+	- Handles read and write requests to the regions
+	- Splits regions that have grown too large
+- HRegion Location
+	- ![](assets/HRegionLocation.png)
+
 ### HBase Internals (Part 2)
+
+- HRegion Assignment
+	- HBase Master keeps track of: 
+		- Set of live HRegion servers
+		- Assignment of HRegions to HRegion servers
+		- Unassigned HRegions
+	- Each HRegion is assigned to one HRegion server at a time
+		- HRegion server maintains an exclusive lock on a file in ZooKeeper
+		- HBase Master monitors HRegion servers and handles assignment
+	- Changes to HRegion structure
+		- Table creation/ deletion (HBase Master initiated)
+		- HRegion Merging (HBase Master initiated)
+		- HRegion Splitting (HRegion Server initiated)
+- HRegion in Memory Representation
+	- ![](assets/HRegionMemory.png)
 
 ### Spark SQL
 
-### Spark SQL Demo
+- Spark SQL
+	- Structured Data Processing in Apache Spark
+	- built on top of RDD (Resilient Distributed Dataset) data abstraction
+	- Need more information about the columns (schema)
+		- Used in optimizations
+	- Spark can read data from HDFS, HIVE tables, JSON etc.
+	- Can use SQL to query the data
+		- When needed, can switch between SQL and Python/ Java/ Scala
+	- Strong query engine
+- Dataset
+	- Distributed collection of data
+	- Provides benefits of RDDs (strong typing, ability to use powerful lambda functions) with the benefits of Spark SQL's optimized execution engine
+		- Can be constructed from JVM objects and manipulated using function transformations (map, `flatMap`, filter etc.)
+		- Dataset API is publicly available in Scala and Java
+			- Python (as of v2.0.0) is currently not supported by the API
+			- However, portions of the API can be implemented via Python due to its dynamic nature
+- DataFrame
+	- Dataset that is organized into *named* columns
+	- Equivalent to a table in relational database or a data frame in R/ Python
+	- DataFrames can be constructed from:
+		- Structured data files
+		- Tables in HIVE
+		- External databases
+		- Existing RDDs
+	- DataFrame API is available in Scala, Java, Python and R
 
 ### HIVE
 
-- X
+- HIVE: Background
+	- Started at Facebook
+	- Data was collected by nightly [`cron`](https://en.wikipedia.org/wiki/Cron) jobs into Oracle DB
+	- ETL (Extract, Transform, Load) via hand- coded Python
+	- HQL, a variant of SQL
+	- Translated queries into map/ reduce jobs
+		- Hadoop YARN
+		- Tez
+		- Spark
+	- Notes
+		- No `UPDATE` or `DELETE` support
+		- Focuses primarily on the query part of SQL
+- HIVE: Example
+	- ![](assets/HIVE.png)
+	- Looks similar to SQL databases
+	- Relational join on two tables:
+		- Table of word counts from Shakespeare collection
+		- Table of word counts from Homer's works
+- HIVE: Behind the Scenes
+	- ![](assets/HIVEExample.png)
+- HIVE Components
+	- Shell
+		- Allows interactive queries
+	- Driver
+		- Session that handles, fetches and executes
+	- Compiler
+		- Parse, plan, optimize
+	- Execution Engine
+		- DAG of Stages (MR, HDFS, metadata)
+	- `Metastore`
+		- Schema, location in HDFS etc.
+- `Metastore`
+	- HIVE uses a traditional database to store its metadata
+		- Namespace containing a set of tables
+		- Holds table definitions (column types, physical layout)
+		- Holds partitioning information
+	- Can be stored in MySQL, Oracle and other relational databases
+- Physical Layout
+	- Warehouse directory in HDFS
+		- e.g. `/user/hive/warehouse`
+	- Tables stored in subdirectories of warehouse
+		- Partitions form subdirectories of tables
+	- Actual data stored in flat files
+		- Control char- delimited text, or `SequenceFiles`
+		- Can be customized to use arbitrary format
 
 ## Message/ Publish/ Subscribe Queues
 
