@@ -591,12 +591,214 @@
 
 ### Decoupling in Cloud Architectures
 
-- X
+- Multi- Tier Distributed Architecture
+	- Enterprise architectures require elasticity and scalabilty
+		- Scalability
+			- Response to increasing demand
+		- Elasticity
+			- Response to decreasing demand
+	- Fault tolerance
+		- Component failure is commonplace in cloud environments
+	- Changing demand patterns
+		- Difficult to predict how many resource will be needed in the future
+	- Complexity
+		- Multiple platforms and development teams need to integrate themselves with each other
+- Decoupling
+	- Key to achieving reliable, scalable, elastic architectures
+	- Building applications from individual components that each perform a discrete function
+	- A reliable queue between components
+		- Allows for many integration patterns for connecting services
+	- Loose Coupling
+		- Increases an architecture's resiliency to failure and ability to handle traffic spikes
+			- Producer and consumer operate independently of each other
+	- Asynchronous Communication
+- Message Queries
+	- Message Queues
+		- Decouple and scale microservices, distributed systems and serverless applications
+			- Send, store and receive messages between software components
+			- Any volume is possible
+			- Prevents loss of messages
+			- No need to rely on other services
+			- High availability
+	- Can easily handle momentary spikes in demands
+	- Guaranteed message delivery
+		- "At least once"
+		- "Exactly once"
+- Example
+	- ![](assets/AWSQueue.png)
+- Message Queue Platforms
+	- Open Source
+		- Apache ActiveMQ
+		- Apache RabbitMQ
+		- Apache Kafka
+	- Proprietary/ Cloud
+		- AWS Simple Queue Service (SNS)
+		- Amazon MQ
+			- Apache Active MQ
+			- Apache RabbitMQ
+		- Amazon Kinesis
+		- Amazon Managed Kafka
+- Publish- Subscribe Model
+	- Sibling of the message queue system
+	- Producers publish messages to the queue
+	- Consumers who have subscribed to a specific producer/ topic all receive the message
+	- Publishers and subscribers are decoupled
+	- Examples
+		- Kafka
+		- AWS SNS
 
 ### AWS Simple Queue Service (SQS)
 
+- AWS SQS
+	- Simple Queue Service
+	- `put-get-delete` Paradigm
+		- Requires a consumer to explicitly state that its data has finished processing the message it pulled from the queue
+		- Message data is kept safe with the queue and gets deleted from the queue only after confirmation that it has been processed has been received
+	- Multiple producers and consumers
+	- Pull model
+		- Consumers must explicitly pull the queue
+	- Redundant infrastructure
+- Guaranteed Message Delivery: At Least Once
+	- When a process retrieves the message from the queue, it temporarily makes the message invisible
+	- When the client informs the queue that it has finished processing the message, SQS deletes the message from the queue
+	- If the client does not respond back to the queue in a specific amount of time, SQS makes it visible again
+	- Generally in- order message delivery
+- Guaranteed Message Delivery: Exactly Once
+	- *Only true under limited conditions*
+	- FIFO
+		- Queues work in conjunction with publisher APIs to avoid introducing duplicate messages
+		- Content- based deduplication
+			- SQS generates an SHA-256 hash of the body of the message to generate the content- based message deduplication ID
+			- When an application sends a message to the FIFO queue, with a message deduplication ID, it is used to deduplicate
+		- Message order guarantee
+	- Bandwidth limits
+- Short Pull vs. Long Pull
+	- Short Pull
+		- Returns empty if there's nothing in the queue
+	- "What then?"
+		- Pull again
+		- Note that AWS does charge based on the number of requests
+	- Long Pull
+		- `ReceiveMessageWaitTime`
+			- Maximum amount of time that a long- polling receive call waits for a message to become available before returning an empty response
+- Handling Failures
+	- Visibility of messages in the queue
+		- Consumer has to explicitly "delete" a message after processing is done
+		- Timeout Period
+			- Message becomes visible again after the timeout
+	- "What if there's something wrong with a message?"
+		- Infinite loop of visible- invisible?
+		- Dead Letter Queue (DLQ)
+			- Store failed messages that are not successfully consumed by the consumer processes
+			- Isolate unconsumed or failed messages and subsequently troubleshoot these messages to determine the reason for their failures
+		- Redrive Policy
+			- If a queue fails to process a message a predefined number of times, the message is moved to the DLQ
+
 ### AWS Simple Notification Service (SNS)
+
+- Amazon SNS
+	- Simple Notification Service
+	- `PubSub` Model
+	- One to Many Architecture
+		- Fan- Out Architecture
+	- Endpoint Protocols
+		- SQS
+		- Lambda
+		- HTTP/ HTTPS
+		- Email
+		- SMS
+		- Mobile Device Push Notification
+- SNS Topic
+	- Publisher sends a message to an SNS topic
+	- Subscribers subscribe to SNS topics
+	- Each SNS topic can have multiple subscribers
+		- Each subscriber may use the same protocols or different protocols
+	- SNS will "push" messages to all subscribers
+- SNS Messages
+	- Subject
+	- Time to Live (TTL)
+		- Specifies time for a message to expire
+		- Within a specified time, Apple Push Notification Service (APNs) or Google Cloud Messaging (GCM) must deliver messages to the endpoint
+		- If the message is not delivered within the specified time frame, the message will be dropped with no further attempts to deliver the message
+	- Payload
+		- Can be the same or different for each endpoint protocol type
+- Managing Access
+	- AWS utilizes a mechanism based on the policies
+		- Policy
+			- JSON document, consists of statements
+		- Statement
+			- Describes a single permission written in an access policy language (e.g. JSON)
+	- Example
+		- User with AWS account 1111-2222-3333 can publish message to the topic action (e.g. Publish)
+			- ![](assets/ExampleJSON.png)
 
 ### Kafka
 
-- X
+- Kafka
+	- Distributed, partitioned, replicated publish subscribe system providing commit log service
+	- ![](assets/Kafka.png)
+- Description
+	- Kafka maintains feeds of messages in categories called *topics*
+	- Processes that publish messages to a Kafka topic are *producers*
+	- Processes that subscribe to topics and process the feed of published messages are *consumers*
+	- Kafka is run as a cluster comprised of one or more servers each of which is called a *broker*
+	- Communication uses TCP
+		- Clients include Java
+- Characteristics
+	- Scalability (Backed by file system)
+		- Hundred of MB per sec per server throughput
+		- TBs per server
+	- Strong guarantees about messages
+		- Strictly ordered within parittions
+		- All data is persistent
+	- Distributed
+		- Replication
+		- Partitioning Model
+- Topics
+	- ![](assets/KafkaTopics.png)
+		- A **topic** has several **partitions**
+		- **Partitions** of a **topic** are distributed across **brokers**
+- Topics & Logs
+	- ![](assets/KafkaLogs.png)
+		- Kafka stores messages about a topic in a partition as an append only log
+		- Each partition is an ordered, numbered, immutable append only sequence of messages like a commit log
+- Kafka Server Cluster Implementation
+	- Each partition is an ordered, numbered, immutable append only sequence of messages like a commit log
+	- Leader handles read and write requests
+	- Follower replicates the leader and acts as a backup
+	- Each server is a leader for some of its partitions and a follower for others to load balance off of
+	- ZooKeeper is used to keep the servers consistent
+- Kafka in Practice (LinkedIn)
+	- ![](assets/KafkaLinkedInOverview.png)
+- Producer in Kafka
+	- Sends messages to Kafka **brokers**
+	- Messages are sent to a **topic**
+		- Messages with the same **key** go to the same partition (so that they are sorted)
+		- Messages without a key go to a random partition (order is not guaranteed here)
+		- If the number of partitions changes, messages with the same key may go to another partition
+- Consumer in Kafka
+	- Consumer *can* belong to a **Consumer Group (CG)**
+	- Consumers in the same CG
+		- Coordinate with each other to determine which consumer will consume from which partition
+		- Shares the **consumer offsets**
+- Offset
+	- From the brokers' POV:
+		- Index of a message in a log
+		- **Message offset** does not change
+	- From the consumers' POV:
+		- **Consumer offset** can change
+		- Position from where "I" am consuming
+- Consumer Offsets
+	- Consumer offsets are per Topic/ Partition/ Consumer Group
+		- For a given group, look up the last consumed position in a topic/ partition
+	- Consumer offsets can be commited as a checkpoint of consumption so that it can be used when:
+		- Another consumer in the same CG takes over the partition
+		- Resuming consumption later from commited offsets
+- Consumer Rebalance
+	- Each consumer can have several **consumer threads** (one queue per thread)
+		- Each consumer thread can consume from multiple partitions
+		- Each partition will be consumed by **exactly one** consumer **in the entire group**
+	- ![](assets/ConsumerRebalanceExample.png)
+		- **Consumer rebalance** occurs when Consumer 4 is down
+		- Consumers 1, 2 and 3 take over Consumer 4's partitions and **resume from the last commited consumer offsets of the CG**
+			- Transparent to the user
