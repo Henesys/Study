@@ -157,11 +157,30 @@
 
 ## Exploring the Data Distribution
 
+- Basic Terminology
+	- Density Plot
+		- Smoothed version of the histogram, often based on a kernel density estimate
+
 ### Percentiles and Boxplots
+
+- By default, the R function extends the whiskers to the furthest point beyond the box, except that **it will not go beyond 1.5 times the IQR (Interquartile Range)**
+	- `Matplotlib` uses this same policy
 
 ### Frequency Tables and Histograms
 
+- Frequency tables and percentiles summarize the data by creating bins
+	- Quartiles and deciles will have the same count in each bin, but the size of the bins will be different
+	- In frequency tables, there will be different counts in the bins, but the size of the bins will be equal
+- In statistical theory, location and variability are referred to as the 1st and 2nd *moments* of a distribution
+	- The 3rd and 4th *moments* of a distribution are called *skewness* and *kurtosis* respectively
+		- Skewness
+			- Refers to whether the data is skewed to larger or smaller values
+		- Kurtosis
+			- Indicates the propensity of the data to have extreme (outlier) values
+
 ### Density Plots and Estimates
+
+- 
 
 ## Exploring Binary and Categorical Data
 
