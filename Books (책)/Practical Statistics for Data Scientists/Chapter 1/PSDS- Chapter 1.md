@@ -180,28 +180,127 @@
 
 ### Density Plots and Estimates
 
-- 
+- Density Plot
+	- Can be thought of as a smoothed histogram, although it is computed directly via a *kernel density estimate*
+	- Unlike a histogram, a density plot corresponds to plotting the histogram as a proportion rather than counts
+	- Area under the curve of a density plot is 1
+		- Instead of counts in bins, the area under the curve between two points of the x- axis correspond to the proportion of the distribution
+- Density Estimation
+	- R
+		- `ASH`
+		- `KernSmooth`
+	- Python
+		- `pandas`
+		- `scikit-learn`
 
 ## Exploring Binary and Categorical Data
 
 ### Mode
 
+- Simple summary statistic for categorical data, but is generally not used for numeric data
+
 ### Expected Value
+
+- Expected Value
+	- Form of weighted mean, in which the weights serve as probabilities
+	- Calculation
+		- Multiple outcome by its probability of occurrence
+		- Sum of these values
 
 ### Probability
 
+- Probability
+	- Simple Explanation: Proportion of time an event will occur if the situation could be repeated infinitely
+
 ## Correlation
+
+- Correlation Coefficient
+	- Estimate of the correlation between two variables that always lie on the same scale
+- Pearson's Correlation Coefficient
+	- Calculation
+		- Multiply deviations from the mean from `Variable 1` times those for `Variable 2` and divide by the product of the standard deviations
+	- In Practice
+		- $r = \frac{{\sum (x_i - \bar{x})(y_i - \bar{y})}}{{\sqrt{{\sum (x_i - \bar{x})^2}} \sqrt{{\sum (y_i - \bar{y})^2}}}}$
+		- $r = \frac{{\sum (x_i - \bar{x})(y_i - \bar{y})}}{{\sqrt{{\sum (x_i - \bar{x})^2 / (n-1)}} \sqrt{{\sum (y_i - \bar{y})^2 / (n-1)}}}}$
+		- $r = \frac{{\sum (x_i - \bar{x})(y_i - \bar{y})}}{(n - 1){s_x s_y}}$
+			- $s_x$ and $s_y$ denote sample standard deviations of x and y respectively
+	- Interpretation
+		- `+1`: perfect positive correlation
+		- `-1`: perfect negative correlation
+		- `0`: no correlation
+	- For nonlinear relationships or dependencies, the correlation coefficient may not be as useful
+		- Additionally, correlation does not imply causation and only implies the degree of *linear association* between variables
+- Correlation Matrix
+	- R
+		- `corrplot`
+	- Python
+		- `seaborn.heatmap` (no implementations in common packages)
+- Other Correlation Estimates
+	- Rank- based estimates are mostly used for small datasets and specific hypothesis testing
+	- These two correlation coefficients still measure the association between variables, but particularly for relationships that are not necessarily linear
+		- Spearman's Rank Correlation Coefficient ($\rho$)
+			- **Non- parametric** measure of correlation that assesses how well the relationship between two variables can be described using a **monotonic** function
+			- Calculation
+				- Rank values of each variable
+				- Compute Pearson's on the ranked variables
+			- In Practice
+				- $\rho = 1 - \frac{{6 \sum d_i^2}}{{n(n^2 - 1)}}$
+			- Interpretation
+				- $\rho = 1$ : perfect monotonic relationship
+					- As one variable increases, the other variable increases monotonically
+				- $\rho = -1$: perfect negative monotonic relationship
+					- As one variable increases, the other variable decreases monotonically
+				- $\rho = 0$: no monotonic relationship
+			- Robust to outliers and does not assume that the relationship between variables is linear
+		- Kendall's Rank Correlation Coefficient ($\tau$)
+			- **Non- parametric** measure of correlation that assesses the *strength* and *direction* of the **ordinal association** between two variables
+			- Calculation
+				- Difference between number of concordant and discordant pairs of observations
+			- In Practice
+				- $\tau = \frac{{\text{Number of Concordant Pairs} - \text{Number of Discordant Pairs}}}{{\frac{1}{2} n (n - 1)}}$
+			- Interpretation
+				- $\tau = 1$: perfect positive rank correlation
+					- All pairs of observations are **concordant**
+					- Pairs increase and decrease together
+				- $\tau = -1$: indicates a perfect negative rank correlation
+					- All pairs of observations are **discordant**
+					- Pairs do not increase and decrease together
+				- $\tau = 0$: no association between ranks of variables
+			- Used for ordinal data or when the assumptions of linearity or normality are not met
+			- Robust to outliers and does not rely on the assumption of linearity
 
 ### Scatterplots
 
+- R
+	- `plot`
+- Python
+	- `pandas scatter`
+
 ## Exploring Two or More Variables
+
+- Univariate Analysis
+	- Using estimators such as mean and variance to analyze variables one at a time
+- Bivariate Analysis
+	- Using methods such as correlation analysis to compare two variables
+- Multivariate Analysis
+	- Using additional estimates and plots to observe more than two variables
 
 ### Hexagonal Binning and Contours (Plotting Numeric vs Numeric Data)
 
+- 
+
 ### Two Categorical Variables
+
+- 
 
 ### Categorical and Numeric Data
 
+- 
+
 ### Visualizing Multiple Variables
 
+- 
+
 ## Summary
+
+- 
