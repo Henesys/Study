@@ -40,8 +40,11 @@ Corresponds to [CS498W1Notes](../../W1/CS498W1Notes.md)
 ### Answer
 
 - **Cloud Computing**
+	- 
 - Hybrid Approach
+	- 
 - In- House Servers
+	- 
 
 ## Question 4
 
@@ -125,7 +128,43 @@ Corresponds to [CS498W1Notes](../../W1/CS498W1Notes.md)
 
 # CS498- Week 1 Practice Quiz
 
-## Question
+## Question 1
+
+### Answer
+
+## Question 2
+
+### Answer
+
+## Question 3
+
+### Answer
+
+## Question 4
+
+### Answer
+
+## Question 5
+
+### Answer
+
+## Question 6
+
+### Answer
+
+## Question 7 
+
+### Answer
+
+## Question 8
+
+### Answer
+
+## Question 9
+
+### Answer
+
+## Question 10
 
 ### Answer
 
