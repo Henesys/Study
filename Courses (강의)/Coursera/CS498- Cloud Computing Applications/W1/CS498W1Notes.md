@@ -106,7 +106,7 @@
     - Lower loss of revenue or reduce the service level agreement violation payout.
 - Useful Measure of "Smoothness"
   - Coefficient of Variation ($C_V$)
-  - $C_V = \frac{standard deviation \sigma}{mean |\mu|}$
+  - $C_V = \frac{standard \: deviation \: \sigma}{mean |\mu|}$
   - $C_V$ is a measure of smoothness (in relation to workloads).
     - Small Number = Smoother
     - Large Mean & Small Standard Deviation = Small Number
@@ -115,8 +115,8 @@
   - A fixed asset facility servicing *smooth* jobs yield high utilization.
   - **Multiplexing jobs with different distributions *may* reduce the coefficient of variation ($C_V$)**
 - Case Study of $C_V$ for Independent Jobs
-  - $X_1, ... X_n$ independent jobs with standard variation $\sigma$ and mean $\mu$.
-  - Aggregated jobs:
+  - $X_1, ... X_n$ independent jobs with standard deviation $\sigma$ and mean $\mu$.
+  - Aggregated Jobs:
     - Mean --> sum of means: $n \times \mu$
     - Variance --> sum of variances: $n \times \sigma ^ 2$
     - Aggregate $C_V$ --> $\frac{\sqrt{n}\sigma}{n\mu}$ = $\frac{\mu}{\sqrt{n}\mu}$ = $\frac{1}{\sqrt{n}}\times C_V$
@@ -348,72 +348,72 @@
 ### PaaS Providers: Google App Engine
 
 - Google App Engine (GAE)
-  - Developed by Google in 2008 as a PaaS.
-  - Support multitenancy and offers automatic scaling for web applications.
-  - Supports Python, Java and Go.
+	- Developed by Google in 2008 as a PaaS.
+	- Support multitenancy and offers automatic scaling for web applications.
+	- Supports Python, Java and Go.
 - GAE Frameworks and Tools
-  - GAE supports Django web framework and the Grails web application framework.
-  - Provides infrastructure tools that enable users to deploy code without worrying about infrastructure challenges such as deployment, failover or scalability.
-  - However, GAE infrastructure limits the type of applications that can be run.
+	- GAE supports Django web framework and the Grails web application framework.
+	- Provides infrastructure tools that enable users to deploy code without worrying about infrastructure challenges such as deployment, failover or scalability.
+	- However, GAE infrastructure limits the type of applications that can be run.
 - GAE Security and Sandbox
-  - Applications run in a secure environment.
-  - Isolates applications from the hardware and the operating system.
-  - Imposes security limitations.
-  - Application code only runs in response to requests and a request handler cannot spawn potentially malicious sub- processes after the response has been sent.
+	- Applications run in a secure environment.
+	- Isolates applications from the hardware and the operating system.
+	- Imposes security limitations.
+	- Application code only runs in response to requests and a request handler cannot spawn potentially malicious sub- processes after the response has been sent.
 - Storing GAE Data
-  - Users can use the App Engine datastore, Google Cloud SQL and Google Cloud Storage.
-  - Users can use Google's database technology (e.g. Bigtable).
+	- Users can use the App Engine datastore, Google Cloud SQL and Google Cloud Storage.
+	- Users can use Google's database technology (e.g. Bigtable).
 - GAE's Use with Google Services
-  - Can take advantage of Google's single sign in feature when users want to access Gmail or Google Drive services.
-  - Can build Chrome and Android games on GAE.
-  - Google Cloud Endpoints can be used to access mobile services. 
+	- Can take advantage of Google's single sign in feature when users want to access Gmail or Google Drive services.
+	- Can build Chrome and Android games on GAE.
+- Google Cloud Endpoints can be used to access mobile services. 
 - Other Supported Services
-  - App Engine MapReduce
-  - Search API
-  - SSL Support
-  - Page Speed
-  - XMPP API
-  - Memcache API
+	- App Engine MapReduce
+	- Search API
+	- SSL Support
+	- Page Speed
+	- XMPP API
+	- Memcached API
 - Case Studies of GAE
-  - BugSense: An application error reporting service, used GAE to maintain logs of bugs in software and analyze them.
-  - Ubisoft: Used GAE to build its first web based game on Chrome.
-  - Claritics: Small social analytics company that analyzed game data sets.
+	- BugSense: An application error reporting service, used GAE to maintain logs of bugs in software and analyze them.
+	- Ubisoft: Used GAE to build its first web based game on Chrome.
+	- Claritics: Small social analytics company that analyzed game data sets.
 - GAE on Mobile
-  - Many mobile apps use GAE for their back- end.
-  - GAE excels at scaling up for small teams of developers.
+	- Many mobile apps use GAE for their back- end.
+	- GAE excels at scaling up for small teams of developers.
 
 ### Mobile Backend as a Service (MBaaS)
 
 - Why MBaaS?
-  - Does the grunt work of server setup, database creation, routing, social integration, UI binding etc. for you so that you can focus on front- end code that would be bound by the remaining elements.
+	- Does the grunt work of server setup, database creation, routing, social integration, UI binding etc. for you so that you can focus on front- end code that would be bound by the remaining elements.
 - Introduction to MBaaS
-  - General Idea: Mobile apps need common services that can be shared amongst apps instead of being custom developed for each individual app.
-  - Enables web and mobile app developers to link their applications to back- end cloud storage and back- end APIs.
-    - Cloud Storage
-    - User Management
-    - Push Notifications
-    - SNS Integration
+	- General Idea: Mobile apps need common services that can be shared amongst apps instead of being custom developed for each individual app.
+	- Enables web and mobile app developers to link their applications to back- end cloud storage and back- end APIs.
+		- Cloud Storage
+		- User Management
+		- Push Notifications
+		- SNS Integration
 - MBaaS Examples
-  - Appcelerator, AnyPresence, Apple CloudKit (iCloud) etc.
-  - Commonalities
-    - Many use MongoDB to serve JSON objects
-    - REST API
-    - MicroServices
-    - DevOps
-    - Front- end Design Framework
-  - Different levels of enterprise integration
-  - Can be in either on- premise or private clouds
-  - Some support compliance with HIPAA, PCI, FIPS and EU data security standards
+	- Appcelerator, AnyPresence, Apple CloudKit (iCloud) etc.
+	- Commonalities
+	- Many use MongoDB to serve JSON objects
+		- REST API
+		- MicroServices
+		- DevOps
+		- Front- end Design Framework
+- Different levels of enterprise integration
+- Can be in either on- premise or private clouds
+- Some support compliance with HIPAA, PCI, FIPS and EU data security standards
 
 ### Software as a Service (SaaS)
 
 - Software Distribution
-  - Access to Software
-    - Retail --> Online Software Purchase --> SaaS
-    - SaaS relies on browser capability and broadband internet.
+	- Access to Software
+		- Retail --> Online Software Purchase --> SaaS
+		- SaaS relies on browser capability and broadband internet.
 - Software as a Service
-  - Brings a complete software solution to the consumer without any setup in a browser.
-  - Examples
+	- Brings a complete software solution to the consumer without any setup in a browser.
+- Examples
     - Web Based Email (Gmail)
     - Internet Search Portals (Google, Bing)
     - Project Management (Atlassian JIRA)
@@ -463,57 +463,56 @@
 ### Comparison of Cloud Service Tiers
 
 - Cloud Fundamentals
-  - IaaS:
-    - Basic computing and storage resources
-    - On- demand servers
-    - e.g. Amazon EC2, VMWare, vCloud
-  - PaaS:
-    - Cloud application infrastructure
-    - On- demand application hosting environment
-    - e.g. Google App Engine, Salesforce, Windows Azure, Amazon
-  - SaaS:
-    - On- demand applications
-    - e.g. Gmail, Microsoft Office
-
+	- IaaS:
+	    - Basic computing and storage resources
+	    - On- demand servers
+	    - e.g. Amazon EC2, VMWare, vCloud
+	- PaaS:
+	    - Cloud application infrastructure
+	    - On- demand application hosting environment
+	    - e.g. Google App Engine, Salesforce, Windows Azure, Amazon
+	- SaaS:
+	    - On- demand applications
+	    - e.g. Gmail, Microsoft Office
 - Platform as a Service (PaaS)
-  - Cloud computing service that offers a platform for users to run applications on the cloud.
-  - Level above IaaS because it does not require users to develop their own operating system environment.
-  - Middle ground between SaaS and IaaS.
-  - Development Platform
-    - Customers use it to develop applications that benefit from the scalability of the cloud without fully developing their own solution using an IaaS provider.
-  - Offers an application development platform that will automatically scale with demand.
-  - The customer does not manage or control the underlying cloud infrastructure, including network, servers, operating systems and storage.
-  - The customer has control over the deployed application.
-- Example: Windows Azure
-  - PaaS
-    - Application platform in the cloud.
-  - Provides
-    - Computing Power
-      - Web, worker and VM
-    - Storage
-      - Blob, Table, Queue and Azure SQL server
-    - Application Fabric
-      - Service bus and access control
-      - Future: cache, integration and composite
+	- Cloud computing service that offers a platform for users to run applications on the cloud.
+	- Level above IaaS because it does not require users to develop their own operating system environment.
+	- Middle ground between SaaS and IaaS.
+	- Development Platform
+		- Customers use it to develop applications that benefit from the scalability of the cloud without fully developing their own solution using an IaaS provider.
+- Offers an application development platform that will automatically scale with demand.
+- The customer does not manage or control the underlying cloud infrastructure, including network, servers, operating systems and storage.
+- The customer has control over the deployed application.
+	- Example: Windows Azure
+	  - PaaS
+	    - Application platform in the cloud.
+	  - Provides
+	    - Computing Power
+	      - Web, worker and VM
+	    - Storage
+	      - Blob, Table, Queue and Azure SQL server
+	    - Application Fabric
+	      - Service bus and access control
+	      - Future: cache, integration and composite
 - Cost Effectiveness
-  - PaaS can be more cost effective than IaaS because systems are optimized to run applications efficiently.
-  - IaaS may only provide hardware and clients must be in charge of load balancing and networking themselves.
+	- PaaS can be more cost effective than IaaS because systems are optimized to run applications efficiently.
+	- IaaS may only provide hardware and clients must be in charge of load balancing and networking themselves.
 - Multitenancy
-  - PaaS is better suited for multitenancy because it optimizes its infrastructure for use by many providers.
-  - Multitenancy means that many users may share the same physical computer and database.
-  - PaaS is better than IaaS in this regard because IaaS provides each user with their own VM and creates a clear separation of resources, as opposed to a collective pool.
+	- PaaS is better suited for multitenancy because it optimizes its infrastructure for use by many providers.
+	- Multitenancy means that many users may share the same physical computer and database.
+	- PaaS is better than IaaS in this regard because IaaS provides each user with their own VM and creates a clear separation of resources, as opposed to a collective pool.
 - Vendor Lock In
-- PaaS may lock in applications by requiring users to develop apps using proprietary interfaces and languages.
-- This makes it difficult for users to seek an alternate vendor to host their applications.
+	- PaaS may lock in applications by requiring users to develop apps using proprietary interfaces and languages.
+	- This makes it difficult for users to seek an alternate vendor to host their applications.
 - Development Tools
-  - PaaS can offer browser based development tools, which allows users to create their applications online.
-  - The platform automatically scales for you.
+	- PaaS can offer browser based development tools, which allows users to create their applications online.
+	- The platform automatically scales for you.
 - Principles of Software Development
-  - The objective of the developer is to create an application in the quickest and most effective way possible.
-  - Applications should not be created using convoluted methods that may take a long time to complete.
+	- The objective of the developer is to create an application in the quickest and most effective way possible.
+	- Applications should not be created using convoluted methods that may take a long time to complete.
 - PaaS vs. IaaS
-  - PaaS has an inherent risk in that the chosen vendor may greatly increase their prices.
-  - App migration is difficult in this scenario due to the exclusivety of some platforms.
-  - Apps designed for a temporary purpose should be handled with a *PaaS* solution.
-  - Apps designed for an urgent purpose should be handled with a *PaaS* solution.
-  - Apps designed by a small software team should be handled with a *PaaS* solution since it handles the operating system and networking side of things for your team.
+	- PaaS has an inherent risk in that the chosen vendor may greatly increase their prices.
+	- App migration is difficult in this scenario due to the exclusivity of some platforms.
+	- Apps designed for a temporary purpose should be handled with a *PaaS* solution.
+	- Apps designed for an urgent purpose should be handled with a *PaaS* solution.
+	- Apps designed by a small software team should be handled with a *PaaS* solution since it handles the operating system and networking side of things for your team.
