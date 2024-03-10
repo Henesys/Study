@@ -242,7 +242,7 @@
 		- JavaScript Object Notation (JSON)
 			- ![](assets/JSON.png)
 		- XML
-			- ![](assets/XML.png)ML.png)
+			- ![](assets/XML.png)
 	- It is common to have multiple representations of the same data.
 - Architecture Style
 	- ![](assets/Architecture.png)
