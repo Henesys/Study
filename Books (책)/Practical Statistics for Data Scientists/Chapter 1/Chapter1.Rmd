@@ -1,0 +1,165 @@
+---
+title: "Chapter1"
+author: "Henesys"
+date: "2024-03-15"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r include=FALSE}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(vioplot)
+library(corrplot)
+library(gmodels)
+library(matrixStats)
+```
+
+# PSDS- Chapter 1
+
+```{r}
+state <- read.csv("F:/Study/Books (책)/Practical Statistics for Data Scientists/Chapter 1/state.csv")
+
+head(state)
+```
+
+```{r}
+# Mean
+mean(state[["Population"]])
+
+# Trimmed Mean- Drop 10% from each end
+mean(state[["Population"]], trim = .1)
+
+# Median
+median(state[["Population"]])
+```
+
+```{r}
+# Weighted Mean
+weighted.mean(state[["Murder.Rate"]], w = state[["Population"]])
+
+# Weighted Median
+library("matrixStats")
+weightedMedian(state[["Murder.Rate"]], w = state[["Population"]])
+```
+
+```{r}
+# Standard Deviation
+sd(state[["Population"]])
+
+# Interquartile Range (IQR)
+IQR(state[["Population"]])
+
+# Mean Absolute Deviation from Median (MAD)
+mad(state[["Population"]])
+```
+
+```{r}
+# Percentiles of Murder Rate
+quantile(state[["Murder.Rate"]], p = c(.05, .25, .5, .75, .95))
+```
+
+```{r}
+# Boxplot
+boxplot(state[["Population"]] /1000000, ylab = "Population (millions)")
+```
+
+```{r}
+# Frequency Table
+breaks <- seq(from = min(state[["Population"]]),
+              to = max(state[["Population"]]), length = 11)
+
+population_frequency <- cut(state[["Population"]], breaks = breaks, right = TRUE, include.lowest = TRUE)
+
+table(population_frequency)
+```
+
+```{r}
+# Histogram
+hist(state[["Population"]], breaks = breaks)
+```
+
+```{r}
+# Density Estimate
+hist(state[["Murder.Rate"]], freq = FALSE)
+lines(density(state[["Murder.Rate"]]), lwd = 3, col = "navy")
+```
+
+```{r}
+dfw <- read.csv("F:/Study/Books (책)/Practical Statistics for Data Scientists/Chapter 1/dfw_airline.csv")
+
+head(dfw)
+```
+
+```{r}
+# Bar Chart
+barplot(as.matrix(dfw) / 6, cex.axis = .8, cex.names = .6, xlab = "Cause of Delay", ylab = "Count")
+```
+
+```{r}
+# RStudio has built in functions to unzip gzip files*
+sp500_data <- read.csv("F:/Study/Books (책)/Practical Statistics for Data Scientists/Chapter 1/sp500_data.csv", row.names = 1)
+
+# Exchange- Traded Funds (ETFs)
+head(sp500_data)
+```
+
+```{r}
+# RStudio has built in functions to unzip gzip files*
+sp500_sectors <- read.csv("F:/Study/Books (책)/Practical Statistics for Data Scientists/Chapter 1/sp500_sectors.csv", stringsAsFactors = FALSE)
+
+# Exchange- Traded Funds (ETFs)
+head(sp500_sectors)
+```
+
+
+```{r}
+# Correlation Plot
+etfs <- sp500_data[row.names(sp500_data) > "2012-07-01", sp500_sectors[sp500_sectors $ sector == "etf", "symbol"]]
+
+library(corrplot)
+
+corrplot(cor(etfs), method = "ellipse")
+```
+
+```{r}
+telecom <- sp500_data[, sp500_sectors[sp500_sectors$sector == "telecommunications_services", "symbol"]]
+telecom <- telecom[row.names(telecom) > "2012-07-01", ]
+
+# Scatterplot
+plot(telecom $ T, telecom $ VZ, xlab = "ATT (T)", ylab = "Verizon (VZ)")
+```
+
+```{r}
+kc <- read.csv("F:/Study/Books (책)/Practical Statistics for Data Scientists/Chapter 1/kc_tax.csv")
+
+head(kc)
+```
+
+```{r}
+# Hexagonal Binning
+kc_tax = subset(kc, TaxAssessedValue < 750000 &
+                  SqFtTotLiving > 100 &
+                  SqFtTotLiving < 3500)
+
+head(kc_tax)
+```
+
+```{r}
+# Hexagonal Plot
+hex_plot <- ggplot(kc_tax, (aes(x=SqFtTotLiving, y=TaxAssessedValue))) + 
+  stat_binhex(color="white") + 
+  theme_bw() + 
+  scale_fill_gradient(low="green", high="red") +
+  scale_y_continuous(labels = function(x) format(x, scientific = FALSE)) +
+  labs(x="Finished Square Feet", y="Tax- Assessed Value")
+
+hex_plot
+```
+

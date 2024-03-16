@@ -1,1 +1,0 @@
-print("Test R in VSCode")
