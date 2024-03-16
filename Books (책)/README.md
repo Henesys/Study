@@ -2,10 +2,6 @@
 
 ## In Progress (진행 중) ⚠️
 
-### CS498- Cloud Computing Applications (MCSDS)
-
-- Amazon Web Services in Action, Third Edition (Wittig & Wittig)
-
 ### SNU
 
 - [An Introduction to Statistical Learning (James, Witten, Hastie, Tibshirani & Taylor)](https://www.statlearning.com/)
@@ -22,6 +18,7 @@
 ## Completed (완성) ✅
 
 - Text Data Management and Analysis: A Practical Introduction to Information Retrieval and Text Mining (Zhai & Massung)
+- Amazon Web Services in Action, Third Edition (Wittig & Wittig)
 
 ## Saved/ Bookmarked (저장) 🔃
 

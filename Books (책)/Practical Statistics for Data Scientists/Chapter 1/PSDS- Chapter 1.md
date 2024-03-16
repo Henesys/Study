@@ -287,20 +287,34 @@
 
 ### Hexagonal Binning and Contours (Plotting Numeric vs Numeric Data)
 
-- 
+- Scatterplots are not adequate when dealing with millions of records as the data may be too dense
+	- Hexagonal bins groups the records and plots the hexagons with a color indicating the number of records within the bin
+	- Avoids plotting the points directly, which would only result in a monolithic blob
+- Contours serve as a topographical map plotted between two variables, with each contour band serving as a specific density of points
 
 ### Two Categorical Variables
 
-- 
+- Contingency Table
+	- Useful way to summarize two *categorical* variables
+	- Table of *counts* by *category*
 
 ### Categorical and Numeric Data
 
-- 
+- Boxplots are a way to visually compare the distributions of a numeric variable grouped according to a categorical variable
+	- Violin plots are an enhancement to the boxplot and plots the density estimate with the density on the `y axis`
+	- Violin plots show nuances within the distribution that aren't easily discernable with a boxplot
 
 ### Visualizing Multiple Variables
 
-- 
+- Charts used to compare two variables can be further enhanced to include more variables through *conditioning*
+	- R
+		- `lattice`
+		- `ggplot2`
+	- Python
+		- `seaborn`
+		- `bokeh`
 
 ## Summary
 
-- 
+- Idea of EDA is to *look at the data*
+	- Looking at the data allows you to gain intuition regarding the scope of what you're looking at and enhances your understanding of the project
