@@ -118,3 +118,83 @@
 	- $\text{Number of ways to arrange flavor preferences} \: *$
 	- $\text{Probability that 2 people prefer chocolate} \: *$ 
 	- $\text{Probability that 1 person prefers vanilla}$ 
+
+## The Poisson Distribution: Details
+
+- Example
+	- You can read an *average* of **10** pages per hour
+	- You can use the Poisson distribution to calculate the probability that you can read exactly **8** pages in an hour
+	- Formula
+		- $p(x | \lambda) = \frac{{\lambda^x e^{-\lambda}}}{{x!}}$
+		- $\lambda = 10$ pages per hour (average reading speed)
+		- $x = 8$ pages per hour (number of pages we think we can read in the next hour)
+		- $e = 2.71828$, Euler's number
+	- Process
+		- $p(x = 8 | \lambda = 10) = \frac{{\lambda^x e^{-\lambda}}}{{x!}} = \frac{{10 ^ 8 e ^ {-10}}}{8!} = .113$
+		- Probability that someone will read exactly **8** pages in the next hour, given that on average they read **10** pages per hour is **.113**
+
+## Discrete Probability Distributions: Summary
+
+- Summary
+	- Discrete probability distributions can be derived from histograms, but require a sizeable amount of data that can be costly to get and is not always about what to do regarding blank spaces
+	- Therefore, for discrete probability distributions, we opt to use statistical equations such as the equation for the binomial distribution instead
+		- Binomial distribution is useful for anything that has binary (2) outcomes (e.g. wins vs. losses, yes vs. no)
+		- When we have events that happen in discrete units of time or space, we can use the Poisson distribution
+
+## Continuous Probability Distribution: Main Ideas
+
+- The Problem
+	- Histograms have two main issues when it comes to continuous data:
+		- Gaps in the data aren't always clear cut and they're tricky to deal with
+		- Histograms can be sensitive to the size of the bins
+			- Extremely wide bins result in loss of precision from a visual perspective
+			- Extremely narrow bins result in loss of detail as the trends (if any) are impossible to observe
+- A Solution
+	- Using a **continuous distribution** allows us to avoid all of these problems by using statistical methods similar to the ones we used for discrete distributions
+	- Instead of using a histogram, we can opt to use a *normal distribution*, which create a bell- shaped curve
+
+## The Normal (Gaussian) Distribution: Main Ideas (Part 1)
+
+- Normal (Gaussian) Distribution
+	- Bell- shaped curve
+	- Symmetrical about the mean
+		- Maximum likelihood occurs at its mean
+	- `y- axis` represents the *likelihood* of observing an event
+
+## The Normal (Gaussian) Distribution: Main Ideas (Part 2)
+
+- Width of a normal distribution is defined by the standard deviation
+	- Normal curves are drawn such that 95% of the measurements fall between 2 standard deviations around the mean
+
+## The Normal (Gaussian) Distribution: Details
+
+- $f(x | \mu, \sigma^2) = \frac{1}{{\sqrt{2\pi\sigma^2}}} \exp\left(-\frac{{(x - \mu)^2}}{{2\sigma^2}}\right)$
+	- $f(x | \mu, \sigma^2)$, probability density function of the normal distribution with mean $\mu$ and variance $\sigma ^ 2$
+- Example
+	- Assume you have a normal distribution of the heights of adults
+		- `x- axis` is the heights in cm
+		- `y- axis` is the likelihood of an adult being a certain height
+		- Assume that the mean is **50**
+		- Assume that the standard deviation is **1.5**
+	- Process
+		- $f(x | \mu, \sigma) = \frac{1}{{\sqrt{2\pi} \sigma}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}$
+		- $f(x = 50 | \mu = 50, \sigma = 1.5) = \frac{1}{{\sqrt{2\pi} 1.5}} e^{-\frac{(50 - 50)^2}{2 * 1.5 ^ 2}} = .27$
+			- The likelihood for the tallest point (mean) of the normal distribution is **.27**
+
+## Calculating Probabilities with Continuous Probability Distributions: Details
+
+- For continuous probability distributions, the probabilities are the **area under the curve**
+	- The total area under the curve is **1**
+- Calculation of the Area
+	- Calculus (Integration)
+		- $\int_{a}^{b} f(x) \, dx$
+	- Computer (CDF- Cumulative Distribution Function)
+		- $F(x) = P(X \leq x)$
+		- CDF tells us the area under the curve *up to* a specific point 
+			- Example
+				- For a normal distribution with $\mu = 155.7$ and $\sigma = 6.6$, a $CDF(142.5)$ would tell us the area under the curve for *all* `x- axis` values to the left of **and** including $142.5$
+				- If we wanted to calculate the area under the normal distribution from $142.5$ to $155.7$, we would simple subtract $CDF(142.5) = .02$ from $.5$, which is simply half the area under the curve to get $.48$
+		- Check documentation for `R` or whatever platform you're using for $CDF$ function
+- Note
+	- Note that the `y- axis` is specifically measuring *likelihoods*, **not** probabilities
+		- Meaning, the probability at a specific point is **0**, since there is no "area" under the curve due to the nature of continuous distribution's infinite precision
