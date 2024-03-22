@@ -198,3 +198,115 @@
 - Note
 	- Note that the `y- axis` is specifically measuring *likelihoods*, **not** probabilities
 		- Meaning, the probability at a specific point is **0**, since there is no "area" under the curve due to the nature of continuous distribution's infinite precision
+
+## Other Continuous Distributions: Main Ideas
+
+- Exponential Distribution
+	- Commonly used in scenarios when we're interested in how much *time* passes between events
+- Uniform Distribution
+	- Commonly used to generate random numbers that are *equally* likely to occur
+
+## Continuous Probability Distributions: Summary
+
+- Similar to discrete distributions, continuous distributions spare us from the pain of having to collect large amounts of data for the histogram and decide the sizes of the bins for the histogram
+- Continuous distributions use equations that represent curves and can provide *likelihoods* and probabilities for all possible measurements
+- In the context of machine learning, **both** types of distributions allow us to create predictive models 
+
+## Models: Main Ideas (Part 1)
+
+- The Problem
+	- We can spend time and money to collect data for a precise histogram, but collecting *all* of the data in the world is usually impossible
+- A Solution
+	- A statistical, mathematical or machine learning model provides an *approximation* of reality that we can use 
+		- A **probability distribution** is a type of model that approximates a histogram with an infinite amount of data
+		- A linear relationship (straight line) can model a relationship between the x- axis and the y- axis
+
+## Models: Main Ideas (Part 2)
+
+- Models need training data
+	- We build models by *training* machine learning algorithms
+- Models can tell us about people we haven't measured yet by predicting the outcome based on inputs
+	- Due to the fact that models are only approximations, the ability to measure the *quality* of predictions is critical
+
+## Sum of the Squared Residuals: Main Ideas (Part 1)
+
+- The Problem
+	- We need to quantify the quality of the model, as well as its predictions
+- A Solution
+	- Calculating the **sum of the squared residuals** is one way to quantify the quality of a model and its predictions
+	- Residual
+		- $\text{Residual} = \text{Observed} - \text{Predicted}$
+		- Generally, the smaller the residual, the better the model fits the data
+			- Even though its tempting to compare the models by using the sums of their residuals, negative residuals will just cancel out the positive residuals, making this useless
+			- This is why we compare using the sum of the *squared* residuals
+				- Note that we want to *square* instead of taking the *absolute value* because it makes it easier to derive, which comes in handy when doing **gradient descent**
+	- **Sum of the Squared Residuals (SSR)**
+		-  $SSR = \sum\limits_{i=1}^{n} (y_i - \hat{y}_i)^2$
+			- $n$, the number of observations
+			- $i$, index of each observation (1 being the first observation)
+			- $y_i$, the observed value of the dependent variable for the $i^{th}$ observation
+			- $\hat{y_i}$, the predicted (fitted) value of the dependent variable for the $i^{th}$ observation
+
+## Sum of the Squared Residuals: Main Ideas (Part 2)
+
+- SSR can be flexibly used with other models (e.g. sinusoidal), not just linear ones
+	- Note that when we calculate residuals, we're not using the perpendicular distance from the observed to the predicted, we use the vertical distance
+		- Measuring the vertical distance helps us compare the difference between the observed fitted value and the predicted fitted value
+
+## SSR: Step by Step
+
+- Example
+	- **3** observations with the following observed and predicted values:
+		- $SSR = \sum\limits_{i=1}^{3} (1.9-1.7)^2 + (1.6-2.0)^2 + (2.9-2.2)^2 = .69$
+
+## Mean Squared Error (MSE): Main Ideas
+
+- The Problem
+	- SSR is not easy to interpret because it depends (partly) on how much data you have
+		- Assume for **3** points you have a SSR of **14**
+		- Assume you add **2** more data points and have a SSR of **22**
+		- Increase in the SSR from **14 to 22 does not** suggest that the second model, which is fit to the second dataset, is worse than the first model
+			- It only tells us that the model with more data has more residuals
+- A Solution
+	- One way to compare two models that may be fit to *different* sized datasets is to calculate the **Mean Squared Error (MSE)**, which is just the average of the SSR
+	- $\text{MSE} = \frac{SSR}{n} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$
+
+## Mean Squared Error (MSE): Step by Step
+
+- Example
+	- **3** points, SSR = **14**
+		- $MSE = 14/3 = 4.7$
+	- **5** points, SSR = 22
+		- $MSE = 22/5 = 4.4$
+- Unlike SSR, which increases when we add more data to the model, the **MSE** can **increase** or **decrease** depending on the average residual, which gives us a more accurate view of the model's performance
+- Still, MSEs are still difficult to interpret because the maximum values depend on the scale of the data
+	- The scale of the dataset can severely affect the MSE (e.g. cm vs. m)
+	- Both the SSR and the MSE can be used to calculate something called the $R^2$, which is **independent** of both the size of the dataset and the scale 
+
+## $R^2$: Main Ideas
+
+- The Problem
+	- MSE is non- robust and is sensitive to the scale of the dataset
+- A Solution
+	- Use $R^2$ (coefficient of determination), which is a metric that does not depend on the size of the dataset or its scale
+	- $R^2$ is calculated by comparing the SSR or MSE around the *mean* y- axis value with the SSE or MSE around the model we're interested in
+		- $R^2$ gives us a percentage of how much the predictions improved by using the model we're interested in instead of **just** the mean
+		- $0 < R^2 < 1$ and are interpreted as percentages, the closer the value is to **1**, the better the model fits the data relative to the mean y- axis value
+
+## $R^2$: Details (Part 1)
+
+- $R^ 2 = \frac{SSR(mean) - SSR(fitted)}{SSR(mean)}$
+	- $R^2 = 0$, means that the both models' predictions are equally good or equally bad
+	- $R^2 = 1$, means that the fitted line fits the data perfectly
+- $R^2 = 1 - \frac{{\text{SSR}}}{{\text{SST}}}$
+	- $R^2$, coefficient of determination
+	- $SSR$, sum of squared residuals
+	- $SST$, total sum of squares
+- $R^2 = 1 - \frac{{\text{MSE}}}{{\text{Var}(y)}}$
+	- $R^2$, coefficient of determination
+	- $MSE$, mean squared error
+	- $Var(y)$, variance of the observed values of the dependent variable $y$
+
+## $R^2$: Details (Part 2)
+
+- 
