@@ -224,11 +224,153 @@
 
 ### Graph Databases- Semantic Web
 
-- X
+- Semantic Web
+	- Links explicit "data" on the world wide web in a machine readable format
+		- Target semantic search
+		- Automated agents
+		- Fraud detection
+	- Technologies
+		- Data Model
+			- RDF, RDF*
+			- Collection of triplets
+			- RDF is the model, syntaxes may vary: 
+				- RDF/XML
+				- Turtle (Terse RDF Language)
+					- `Subject --> Predicate --> Object`
+				- JSON-LD
+		- Query Language
+			- SPARQL
+			- GQL
+		- Ontology Language
+			- OWL
+				- `<http://example.org/tea.owl> rdf:type owl:Ontology:Tea rdf:type owl:Class`
+- SPARQL
+	- `PREFIX`
+		- `foaf: http://xmlns.com/foaf/0.1/`
+	- `SELECT`
+		- `?name`
+		- `?email`
+	- `WHERE`
+		- `{`
+			- `?person    a          foaf:Person`
+			- `?person    foaf:name       ?name`
+			- `?person    foaf:mbox     ?email`
+		- `}`
+- Graph Query Languages
+	- RDF
+		- SPARQL --> Query
+	- Property Graph
+		- Cypher --> Query
+			- Neo4j
+			- Supported by SAP HANA
+		- Gremlin --> Traversal
+			- Apache TinkerPop
+				- DataStax
+		- Apache Spark GraphFrames `.find()` --> Query
+		- GQL --> Query
+			- Rooted in Cypher and Oracle's PGQL
+			- Voted as the new standard in 2019
+	- Competition for the best graph query language is still fierce
 
 ### Graph Databases- Apache Spark GraphFrames
 
-- X
+- Spark GraphFrames
+	- Spark 1.3+ moves away from RDD and more towards DataFrames
+		- DataFrames is more user friendly and simpler
+		- GraphX uses lower- level RDD- based API (vs. DataFrames)
+	- Simplified API
+		- Python Interface
+		- DataFrames
+			- Which benefits from optimizations made by DataFrames
+	- Supports motif finding for structural pattern searches
+	- Easier to do optimization under the hood
+- Comparison of Spark GraphX and GraphFrames
+	- ![](assets/GraphXGraphFrames.png)
+- GraphX Compatibility
+	- Easy to convert between GraphX and GraphFrame
+		- GraphFrame `-->` GraphX
+			- `val g: GraphFrame = ...`
+			- `val gx: Graph[Row, Row] = g.toGraphX`
+		- GraphX `-->` GraphFrame
+			- `val g2: GraphFrame = GraphFrame.fromGraphX(gx)`
+- Graph Construction
+	- To construct GraphFrames, you need **two** DataFrames
+		- Vertices (`v`)
+			- 1 vertex per row
+			- `id`: column with unique id
+		- Edges (`e`)
+			- 1 edge per row
+			- `src`, `dst` columns using ids from vertices.id
+		- `val g = GraphFrame(v, e)`
+	- Any Spark method to save and load DataFrames can be used
+		- `vertices = sqlContext.read.parquet(...)`
+		- `vertices.write.parquet(...)`
+- Graph Algorithms
+	- Finding important vertices
+		- PageRank
+			- Mostly wrappers around Spark GraphX algorithms
+			- `g.pageRank(resetProbability = .15, tol = .01)`
+			- `g.pageRank(resetProbability = .15, maxIter = 10)`
+	- Finding paths between sets of vertices
+		- Breadth- First Search (BFS)
+			- Some algorithms are implemented using DataFrames
+			- `paths = g.bfs("name = 'Esther'", "age < 32")`
+		- Shortest Path
+			- `g.shortestPaths(landmarks = ["a", "d"])`
+	- Find *groups* of vertices (components, communities)
+		- Connected components
+		- Strongly connected components
+		- Label Propagation Algorithm (LPA)
+	- Other
+		- Triangle Counting
+		- SVDPlusPlus
+	- Pregel
+- Simple Queries
+	- SQL queries on vertices & edges
+		- e.g. "What trips are most likely to have significant delays?"
+			- `Display(tripGraph.edges.groupBy("src", "dst).avg("delay").sort(desc("avg(delay)")))`
+	- Graph Queries
+		- Degrees of Vertex
+			- Number of edges per vertex (incoming, outgoing, total)
+- Motif Finding
+	- Search for structural patterns within a graph
+		- `motifs = g.find(`
+			- `"(a)-[e1]->(b);`
+			- `(b)-[e2]->(c);`
+			- `!(c)-[]->(a)")`
+		- `motifs.filter("e1.delay > 20 and b.id = 'SFO'")`
+	- GraphFrames `find()` Syntax
+		- `motifs = g.find("(a)-[e]->(b); (b)-[e2]->(a)")`
+		- `motifs.filter("b.age > 30").show()`
+	- `filter`
+		- `g1 = g.filterVertices("age > 30").filterEdges("relationship = 'friend'")`
+- Implementing Algorithms
+	- Method 1
+		- DataFrame & GraphFrame Operations
+			- Motif Finding
+				- Series of DataFrame joins
+			- use other pre- packaged algorithms
+	- Method 2
+		- Message Passing
+			- Send messages between vertices and aggregate messages for each vertex
+	- Method 3
+		- Pregel
+- GraphFrames Aggregate Messages
+	- Send messages between vertices and aggregate messages for each vertex
+	- `aggregateMessages()`
+		- Similar to GraphX
+		- Specify messages and aggregation using DataFrame expressions
+	- Joins
+		- Join message aggregates with the original graph
+		- GraphFrames rely on DataFrame joins
+	- Example
+		- ![](assets/GraphFrameAggregate.png)
+- Pregel in GraphFrames
+	- When a run starts, it expands the vertices DataFrame using column expressions defined by `[[withVertexColumn]]`
+	- Example (PageRank)
+		- ![](assets/PregelGraphFrames.png)
+			- Note that the first arrow is pointing at the creation of a column of `literal` value
+			- Note that the second arrow is pointing at the return of the first column that is not null
 
 ### Spark GraphX
 
