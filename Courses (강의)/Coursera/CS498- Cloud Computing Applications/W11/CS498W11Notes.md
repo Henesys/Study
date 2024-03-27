@@ -374,33 +374,223 @@
 
 ### Spark GraphX
 
-- X
+- Graph- Parallel Algorithms
+	- Collaborative Filtering
+		- Alternating Least Squares
+		- Stochastic Gradient Descent
+		- Tensor Factorization
+	- Structured Prediction
+		- Loopy Belief Propagation
+		- Max- Product Linear Programs
+		- Gibbs Sampling
+	- Semi- Supervised ML
+		- Graph SSL
+		- CoEM
+	- Community Detection
+		- Triangle Counting
+		- K- Core Decomposition
+		- K- Truss
+	- Graph Analytics
+		- PageRank
+		- Personalized PageRank
+		- Shortest Path
+		- Graph Coloring
+	- Classification
+		- Neural Networks
+- View a Graph as a Table
+	- ![](assets/GraphTable.png)
+- Constructing the Graph
+	- ![](assets/GraphConstruction.png)
+- Graph Operators
+	- ![](assets/GraphOperators.png)
 
 ## Graph Processing
 
 ### Graph Processing
 
-- X
+- Graph Processing
+	- Graph database is any storage system that provides *index- free* adjacency
+		- Has pointers to adjacent elements
+	- Nodes represent entities (e.g. people, businesses, accounts)
+	- Properties are pertinent information that relate to nodes
+	- Edges interconnect nodes to node or nodes to properties and they represent the relationship between the two
+- Graph and Relational Databases (Taken from *Introduction to Graph Database* Lesson)
+	- Relational Database
+		- Performs same operations on large numbers of data elements
+		- Uses relational model of data
+		- Entity type has its own table
+			- Rows are instances of the entity
+			- Columns represent values attributed to that instance
+		- Rows in one table can be *related* to rows in another table via unique key per row
+	- Graph Database
+		- Associative data sets
+		- Structure of object- oriented applications
+		- Does not require join operators
+- Graph
+	- ![](assets/Graph.png)
+- Relational Database
+	- Table is relation
+	- Rows (Tuple)
+	- Column (Attribute)
+- Graph Computing
+	- Think "like" a vertex
+	- Basic Operations
+		- Fusion
+			- *Aggregate* information from neighbors to a set of entities
+		- Diffusion
+			- *Propagate* information from a vertex to neighbors
+- Diffusion
+	- ![](assets/Diffusion.png)
+- Fusion
+	- ![](assets/Fusion.png)
+- Example: Graph Problem
+	- The Problem
+		- Return all sets of vertices (triad) with edges `(A, B), (A, C), (C,B)` from a directed graph
+	- A Solution
+		- Will need specific types of graphs and algorithmic operations to solve this in an efficient manner
+- Graph Processing
+	- Involve local data (small parts of the graph surrounding a vertex) and the connectivity between vertices is sparse
+		- Data may not all fit into one node
+		- Makes it difficult to fit always into the map/ reduce model
+	- ![](assets/GraphProcessing.png)
+- Scale of Graphs in Current MLDM Literature
+	- ![](assets/GraphScale.png)
 
 ### Pregel (Part 1)
 
-- X
+- Introduction
+	- Infrastructure for graph processing is expensive to design
+	- "What about MapReduce?"
+		- MapReduce is inefficient because the graph state must be stored at each stage of the graph algorithm and each computational stage will produce much communication between stages
+	- Single computer & library approach
+		- Not scalable
+	- Use existing shared memory parallel graph algorithms approach
+		- No fault tolerance
+- Vertex- Oriented
+	- Based on BSP model
+	- Provides directed graph to Pregel
+	- Runs your computation at each vertex (processor)
+	- Repeats until every computation at each vortex votes to halt
+	- Pregel returns the directed graph as a result
+- Primitives
+	- Vertices- first class
+	- Edges- not first class
+	- Both vertices can be created **and** destroyed
+- Pregel Organized via C++ API
+	- Superstep `S`
+	- Application code subclasses `Vertex`, writes a `Compute` method
+	- Can get/ set `Vertex` value
+	- Can get/ set outgoing edges values
+	- Can send/ receive messages
+	- Reads messages sent to `V` in superstep `S-1`
+		- Sends messages to other vertices that will be received at superstep `S+1`
+		- Modifies *state* of `V` and its outgoing edges
+- C++ API
+	- Message passing
+	- No guaranteed message delivery order
+	- Messages delivered exactly once
+	- Can send a message to *any* node
+	- If destination doesn't exist, the user's function is called
 
 ### Pregel (Part 2)
 
-- X
+- Parallel Breadth: First Search for Shortest Path
+	- ![](assets/ParallelBreadth.png)
+		- Accelerated Dijkstra's algorithm to explore all paths and determine the shortest one
+			- Propagate values are labelled in red
+		- The propagation is done in **parallel**
+- Writing a Pregel Program: C++ API
+	- Subclassing predefined `Vertex` class
+		- ![](assets/PregelC++.png)
+- Example: Vertex Class for SSSP
+	- ![](assets/ShortestClassVertex.png)
 
 ### Pregel (Part 3)
 
-- X
+- System Architecture
+	- Pregel system uses the **master/ worker** model
+		- Master
+			- Maintains worker
+			- Recovers faults of workers
+			- Provides web-UI monitoring tool of job progress
+		- Worker
+			- Process its task
+			- Communicates with the other workers
+	- Persistent data is stored as files on a distributed storage system (e.g. GFS, HDFS, BigTable)
+	- Temporary data is stored on local disk
+- Execution of a Pregel Program
+	- Many copies of the program begin executing on a cluster of machines
+	- Master assigns a partition of the input to each worker
+		- Each worker loads the vertices and marks them as active
+	- Master instructs each worker to perform a superstep
+		- Each worker loops through its active vertices and computes for each vertex
+		- Messages are sent asynchronously, but are delivered before the end of the superstep
+		- This step is repeated as long as any vertices are active, or any messages are in transit
+	- After the computation halts, the master may instruct each worker to save its portion of the graph
+- Fault Tolerance
+	- Checkpointing
+		- Master periodically instructs the workers to save the state of their partitions to persistent storage
+			- e.g. vertex values, edge values, incoming messages
+	- Failure Detection
+		- Using regular "ping" messages
+	- Recovery
+		- Master reassigns graph partitions to the currently available workers
+		- Workers all reload their partition state from most recent available checkpoint
 
 ### Introduction to Giraph 
 
-- X
+- Apache Giraph
+	- Open source implementation based on Pregel
+	- Giraph is currently in Apache Incubator
+	- Modifications are continuous
+- Giraph Framework
+	- ![](assets/GiraphFramework.png)
+- Task Assignment
+	- ZooKeeper
+		- Responsible for **computational state**
+		- Partition/ worker mapping
+		- Global state: `#superstep`
+		- Checkpoint paths, aggregator values, statistics
+	- Master
+		- Responsible for **coordination**
+		- Assigns partitions to workers
+		- Coordinates synchronization
+		- Requests checkpoints
+		- Aggregates aggregator values
+		- Collects health statuses
+	- Worker
+		- Responsible for **vertices**
+		- Invokes active vertices `compute()` function
+		- Sends, receives and assigns messages
+		- Computes local aggregation values
+- Anatomy of an Execution
+	- Overview
+		- `Setup --> Compute <--> Syncrhonize --> Teardown`
+	- Setup
+		- Load the graph from disk
+		- Assign vertices to workers 
+		- Validate workers health
+	- Compute
+		- Assign messages to workers
+		- Iterate on active vertices
+		- Call vertices `compute()`
+	- Synchronize
+		- Send messages to workers
+		- Compute aggregators
+		- Checkpoint
+	- Teardown
+		- Write back result
+		- Write back aggregators
 
 ### Giraph Example
 
-- X
+- Connected Components of an Undirected Graph
+	- Algorithm
+		- Propagate smallest vertex label to neighbors until convergence
+	- ![](assets/ConnectedUndirected.png)
+		- In the end, all vertices of a component will have the **same** label
+- Create a Custom Vertex
+	- ![](assets/CustomVertex.png)
 
 ## Machine Learning in the Cloud
 
