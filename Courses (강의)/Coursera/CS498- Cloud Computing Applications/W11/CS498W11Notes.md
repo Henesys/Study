@@ -596,35 +596,405 @@
 
 ### Introduction to Big Data Machine Learning
 
-- X
+- Machine Learning
+	- Includes machine learning and data mining tools
+		- Analyze, mine and summarize large datasets
+		- Extract knowledge from past data
+		- Predict trends in future data
+- Data Mining & Machine Learning
+	- Subset of AI
+	- Large amounts of related fields and applications
+		- Information Retrieval (IR)
+		- Statistics
+		- Biology
+		- Linear Algebra
+		- Marketing/ Sales
+- Tools & Algorithms
+	- Collaborative Filtering
+	- Clustering
+	- Classification
+	- Association
+	- Frequent Pattern Mining
+	- Statistical Libraries (e.g. Regression, SVM)
+- Common Use Cases
+	- Recommending friends/ dates/ products
+	- Classifying content into predefined groups
+	- Finding similar content
+	- Finding associations/ patterns in actions/ behaviors
+	- Identifying key topics/ summarizing text
+		- Documents/ Corpora (Text Corpus)
+	- Detecting anomalies/ fraud
+	- Ranking search results
+- In Our Context
+	- "Traditional"/ Conventional Machine Learning
+		- Workflows are efficient in analyzing and mining data
+		- Does not scale well
+	- e.g. Hadoop
+		- Efficient in managing big data
+		- Does not analyze or mine the data
+	- The goal is to integrate these two worlds together
+- Machine Learning & AI in the Cloud
+	- Many cloud providers offer PaaS and SaaS products targeting machine learning and AI services
+	- PaaS for Data Science
+		- Structured Data
+		- Rows & Columns
+	- PaaS/ SaaS for AI
+		- Vision/ Images
+		- Voice/ Audio
+		- Natural Language (for NLP)
 
 ### Cloud Machine Learning Workflow
 
-- X
+- Machine Learning Workflow
+	- AI/ ML Life Cycle Workflow
+		- 7 Step Model
+			- Gathering Data
+			- Data Preparation
+			- Data Wrangling
+			- Analyze Data
+			- Train Model
+			- Test Model
+			- Deployment
+	- OSEMN Data Science Model
+		- Obtain
+		- Scrub
+		- Explore
+		- Model
+		- Interpret
+	- Most providers offer PaaS solutions for the workflow steps
+- **O**SEMN: Obtain
+	- Data sources on the cloud
+		- Amazon
+			- AES Open Data Registry
+		- Azure
+			- Open Datasets
+		- Google
+			- Cloud Public Datasets
+	- Command Line
+	- API (e.g. REST)
+	- Jupyter Notebooks
+	- Spreadsheets
+	- Structured Data
+		- Rows & Columns
+	- Tools
+		- Cloud Storage
+		- Cloud Databases
+			- SQL
+			- NoSQL
+				- MongoDB
+		- Big Data
+			- Parquet
+			- HDFS
+			- HDF
+			- Pig
+			- Hive
+- O**S**EMN: Scrub Data
+	- Data Preparation & Data Wrangling
+		- Steps 2 & 3 of the AI/ ML Life Cycle Workflow
+	- Clean and filter data
+	- Consolidate multiple files
+	- Extracting and replacing values
+	- Split, merge and extract columns
+	- Jupyter Notebooks
+	- Python, R for data that can fit in one machine
+	- Spark, MapReduce for Big Data
+- OS**E**MN: Explore Data
+	- Inspect data, data wrangling, analyze data
+		- Steps 3 & 4 of the AI/ ML Life Cycle Workflow
+	- Descriptive statistics
+	- Test significant variables
+		- Correlation
+	- Feature selection
+	- Data visualization
+	- Jupyter Notebooks
+	- Small Data
+		- Python, R
+		- `numpy, Matplotlib, Pandas, Scipy`
+	- Big Data
+		- Spark
+		- EMR
+- OSE**M**N: Model Data (Part 1)
+	- Heavy Lifting
+		- Steps 5 & 6 of the AI/ ML Life Cycle Workflow
+	- Feature Engineering
+		- Dimensionality Reduction
+	- Model Training
+		- Regression
+		- Classification
+		- Clustering
+		- Frequent Pattern Mining
+		- Decision Trees, Random Forest
+		- XGBoost
+		- Deep Learning
+- OSE**M**N: Model Data (Part 2)
+	- Evaluation
+		- Precision
+		- Recall
+		- F1 Score
+		- Regression
+			- MAE (Mean Average Error)
+			- RMSE (Root Mean Square Error)
+	- Small Data
+		- Python, R
+		- `scikit-learn, H2O`
+	- Big Data
+		- Spark MLLib
+		- Mahout
+		- Google Cloud Dataproc
+			- Managed Apache Spark & Hadoop clusters
+- Hyperparameter Optimization & AutoML
+	- Hyperparameters
+		- Parameters about the training of the model
+			- Number of iterations
+			- Topology & size of a neural network
+			- Learning rate
+	- Time consuming to adjust manually
+	- Search space can be huge
+	- AutoML Strategies
+		- Grid Search
+		- Random Search
+		- Gradient Descent
+	- AutoML vs. Hyperparameter Optimization
+	- Notable Competitors
+		- Azure ML
+		- Google AutoML
+		- AWS SageMaker Autopilot
+		- H2O Driverless AI
+		- DataRobot
+- OSEM**N**: Interpreting Data
+	- Presentation of the model to a non- technical layman
+	- Visualizations
+		- `Matplotlib`
+		- Tableau
+		- D3.js
+		- `Seaborn`
+- Model Deployment
+	- Model Artifacts
+		- Program
+		- Parameters
+	- Keeping the model up to data
+		- Data drift detection
+		- Model drift detection
+		- Version management
+	- Example
+		- Google AI Platform Prediction
 
 ### Cloud Machine Learning Offerings
 
-- X
+- Cloud Based Machine Learning
+	- ML frameworks built on VMs
+		- Pre- built images
+		- TensorFlow
+		- MXNet
+		- Mahout
+	- Cloud managed platforms
+- Google Cloud AI Platform
+	- AI Platform Notebooks
+		- Managed notebooks
+	- AI Platform Training
+		- Training with hyperparameter optimizations
+	- Continuous Evaluation
+		- Model optimization
+	- AI Platform Predictions
+		- Server model hosting deployment
+	- Kubeflow
+		- Deployment of machine learning workflows on Kubernetes
+	- AutoML Tables
+- Microsoft Azure Machine Learning
+	- ![](assets/AzureMLWorkspace.png)
+	- Managed Platform
+	- Visual workflow designed for no- code ML tasks (designing)
+	- Managed Jupyter notebooks
+		- Platform can launch the backend VM for you
+- Azure Machine Learning Algorithm Cheat Sheet
+	- ![](assets/MLAlgorithmCheatSheet.png)
+	- [Original Link](https://learn.microsoft.com/en-us/azure/machine-learning/algorithm-cheat-sheet?view=azureml-api-1)
+- Big Data Deployment on the Cloud
+	- Azure Databricks
+		- Managed Spark deployment
+		- Spark MLLib
+			- RDD based API
+				- Older, will most likely be deprecated
+			- DataFrame based API
+				- Also called Spark ML
+	- Azure HDInsight
+		- Hadoop `-->` Mahout
+		- Spark
+		- ML Services
+			- Python & R based analytics
+- AWS SageMaker
+	- ![](assets/SageMaker.png)
+- Case Study: Cloud Machine Learning Artifacts
+	- SageMaker training algorithms are packaged as Docker images
+	- Training
+		- Any training algorithm can be utilized, as long as it is properly packages
+		- SageMaker Training Job
+			- Launched a ML compute instance
+			- Runs the `train` Docker image
+				- Creates the docker container in the ML compute instance
+			- Injects the training data from an S3 location into the container
+			- Uses the training code and training dataset to train the model
+			- Saves the resulting model artifacts and other output in the output S3 bucket
+	- Model Deployment
+		- Creates the model resource
+			- S3 path where the model artifacts are stored
+			- Docker registry path for the image that contains the interference code
+		- Creates an HTTPS endpoint
+		- ML compute instances to deploy the model resource
+	- Model Usage
+		- Client application sends request to the SageMaker HTTPS endpoint to obtain inferences from a deployed model
 
 ### Human in the Loop AI Cloud Offerings
 
-- X
+- Human in the Loop
+	- Instead of excising human involvement, use selective inclusion of human participation in ML
+	- Harness the efficiency of computers while utilizing human intelligence through interaction and curation
+	- Reframe a problem previously seen as pure automation as a **Human- Computer Interaction** (HCI) design problem
+	- Benefits
+		- Gain in transparency
+		- Human judgement (흠)
+		- No need to built the "perfect" AI system
+- Human in the Loop ML
+	- AWS SageMaker Ground Truth
+		- Build accurate datasets
+			- Your own data labelers
+			- Cloud- Provided
+				- Amazon Mechanical Turk
+	- AWS SageMaker Augmented AI
+		- Human review of ML predictions
+			- Your own reviewers
+			- Cloud- Provided
+				- Amazon Mechanical Turk
 
 ### Unstructured Machine Learning & AI in the Clouds
 
-- X
+- Cloud Machine Learning for Unstructured Data
+	- Vision
+	- Voice
+	- Language
+- Vision- Based ML Services
+	- AWS
+		- Rekognition
+		- Textractor
+	- Azure
+		- Form Recognizer
+		- Computer Vision
+		- Face
+		- Ink Recognizer
+		- Video Indexer
+		- Bing Visual Search
+		- Bing Image Search
+		- Bing Video Search
+		- Kinect SDK
+	- Google 
+		- Vision AI
+		- Video AI
+	- IBM
+		- Watson Visual Recognition
+- Voice- Based Services
+	- Amazon
+		- Polly
+		- Transcribe
+		- Translate
+		- Lex
+	- Google
+		- Cloud Speech to Text API
+		- Cloud Text to Speech API
+	- Microsoft Azure
+		- Speech to Text
+		- Text to Speech
+		- Speech Translation
+	- IBM
+		- Watson Speech to Text
+		- Watson Text to Speech
+- Natural Language Services
+	- Amazon Azure
+		- Comprehend
+		- Polly
+		- Lex
+	- Microsoft
+		- Language Understanding
+		- QnA Maker
+		- Translator Text
+		- Immersive Reader
+	- Google
+		- Natural Language
+		- Translation
+	- IBM
+		- Watson Natural Language Classifier
+		- Watson Language Translator
+		- Watson Knowledge Studio
 
 ## Big Data Machine Learning Algorithms (Apache Spark)
 
 ### Spark: ML/ MLLib
 
-- X
+- Spark MLLib
+	- Spark's machine learning library
+		- Ease of use
+		- Scalable
+- Collection of ML Libraries: Classification & Regression
+	- Linear Models
+		- SVMs
+		- Logistic Regression
+		- Linear Regression
+	- Naive Bayes
+	- Decision Trees
+	- Ensembles of Trees
+		- Random Forest
+		- Gradient Boosted Trees
+- Collection of ML Libraries: Clustering
+	- k- Means
+	- Gaussian Mixture
+	- Power Iteration Clustering (PIC)
+	- Latent Dirichlet Allocation (LDA)
+	- Streaming k- Means
+- Collection of ML Libraries: Dimensionality Reduction
+	- Singular Value Decomposition (SVD)
+	- Principal Component Analysis (PCA)
+- k- Means in MapReduce
+	- Input
+		- Dataset (set of points in 2D)-- `large`
+		- Initial Centroids (k- Points)-- `small`
+	- Map Side
+		- Each map reads the k- centroids & one block from dataset
+		- Assign each point to the closest centroid
+		- Output `<centroid, point>`
+	- Reduce Side
+		- Gets all points for a given centroid
+		- Recompute a new centroid for this cluster
+		- Output: `<new centroid>`
+	- Iteration Control
+		- Compare the old and new set of k- centroids
+			- `If` 
+				- Similar `-->` Stop
+			- `Else`
+				- If max iterations has been reached `-->` Stop
+				- `Else` `-->` Start another MapReduce Iteration
+- k- Means Clustering in Spark
+	- ![](assets/Sparkk-Means.png)
 
 ### Spark: Naive Bayes
 
-- X
+- Definition
+	- Naive Bayes is a simple multiclass *classification* algorithm with the assumption of **independence** between every pair of features
+- In Practice
+	- ![](assets/NaiveBayesExample.png)
+		- `NaiveBayes` implements multinomial Naive Bayes
+		- Input is an RDD of `LabeledPoint` and an optionally smoothing parameter lambda
+		- Output is a `NaiveBayesModel`
 
 ### Spark: fpm
 
-- X
+- Spark MLLib & fpm
+	- `spark.mllib` provides a parallel implementation of `FP- growth`, an algorithm that is frequently used to mine frequent item sets
+	- `FP- growth` 
+		- Given a dataset of transactions:
+			- Calculate item frequencies and identify frequent items
+			- Use a suffix tree (FP- tree) structure to encode transactions
+			- Extract frequent item sets from the FP- tree
+- Frequent Pattern Mining (`FP- growth`)
+	- ![](assets/FPGrowth.png)
+	- `FPGrowth` takes an RDD of transactions, where each transaction is an array of items of a generic type
+	- Calling `FPGrowth.run` with transactions returns an `FPGrowthModel` that stores the frequent item sets with their frequencies
 
