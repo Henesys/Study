@@ -565,7 +565,7 @@
 		- Computes local aggregation values
 - Anatomy of an Execution
 	- Overview
-		- `Setup --> Compute <--> Syncrhonize --> Teardown`
+		- `Setup --> Compute <--> Synchronize --> Teardown`
 	- Setup
 		- Load the graph from disk
 		- Assign vertices to workers 
