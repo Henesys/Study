@@ -309,4 +309,104 @@
 
 ## $R^2$: Details (Part 2)
 
-- 
+- Note
+	- Any **2** random points have $R^2 = 1$ because regardless of the residuals around the mean, the residuals around a fitted line will be **0**
+		- A **small** amount of random data can have a high $R^2$, so any time we see a trend in a small dataset, it's difficult to have *confidence* that a high $R^2$ is not due to *random chance*
+- Instead of using general guesswork, use **p- values** to quantify how much confidence you should have in $R^2$ values and other methods that summarize data
+
+## Calculating $R^2$ with the Mean Squared Error (MSE): Details
+
+- $R^ 2 = \frac{SSR(mean) - SSR(fitted)}{SSR(mean)}$
+- We can calculate $R^2$ using the Mean Squared Error (MSE)
+	- $\frac{MSE(mean) - MSE(fitted)}{MSE(mean)}$
+		- $= \frac{\frac{SSR(mean)}{n} - \frac{SSR(fitted)}{n}}{\frac{SSR(mean)}{n}}$
+		- $= R^2$
+- Therefore, we can calculate $R^2$ with the SSR or MSE
+
+## $R^2$: FAQ
+
+- "Can $R^2$ be negative?"
+	- Yes, when comparing the mean to a fitted line, $R^2$ is positive, but when comparing other types of models, we can get negative $R^2$
+- "Is $R^2$ related to Pearson's correlation coefficient?"
+	- Yes, if you use Pearson's correlation coefficient ($\rho$ or $r$) to determine a relationship between two things, the square of that coefficient is equal to $R^2$
+		- $\rho ^ 2 = r ^ 2 = R^ 2$
+			- Consequently, this is where $R^2$ got its name
+
+## p- values: Main Ideas (Part 1)
+
+- The Problem
+	- We need to quantify how *confident* we should be in the results of our analysis
+- A Solution
+	- p- values gives us a *measure of confidence* in the results from a statistical analysis
+- Example
+	- We have two antiviral drugs, **A** and **B** and we want to determine if they are *different*
+		- **A** was given to a person and it cured them
+		- **B** was given to a person and it failed to cure them
+		- "Can we conclude that **A** is different from **B**?"
+			- No, not enough evidence and data
+	- Repeated experimentation to obtain more evidence and data
+		- Results
+			- A
+				- Cured: 1043, Not Cured: 3
+			- B
+				- Cured: 2, Not Cured: 1432
+		- Conclusions (Preliminary)
+			- A appears to be different from B, quick look suggests that the difference is pretty obvious and didn't occur due to random chance
+
+## p- values: Main Ideas (Part 2)
+
+- Ambiguous Example:
+	- A (37% Cured)
+		- Cured: 73, Not Cured: 125
+	- B (31% Cured)
+		- Cured: 59, Not Cured: 131
+- Conclusions (Preliminary)
+	- Unable to immediately conclude a *statistically significant* difference between the two drugs 
+- "How small does a p- value have to be before we're sufficiently confident that A is different from B?"
+	- In practice, a commonly used threshold is **.05**
+		- "If there's no difference between A & B and we repeated this experiment many times, only **5%** of those experiments would result in the *wrong* decision"
+- Another Example
+	- Assume we gave A to two different groups resulting in the following:
+		- A1
+			- Cured: 73, Not Cured: 125
+		- A2
+			- Cured: 71, Not Cured: 127
+		- $p = .9$ 
+				- Assume we used a statistical test (e.g. Fisher's exact test
+	- Conclusions
+		- $p = .9 > .05$, thus we can say that we fail to see a statistically significant difference between these two (A1 & A2) groups, which logically makes sense since we're testing both groups with drug A and are not trying to batch test A for QA purposes
+
+## p- values: Main Ideas (Part 3)
+
+- p- value $< .05$
+	- We would say that the two groups are different
+	- In cases where we encounter a small p- value when there is **no** difference, we determine the situation as a **false positive**
+- .05 Threshold
+	- "If there's no difference between A and B, in 5% of the experiments we do comparing the two, we'll get a p- value that is **less than .05**, which is a **false positive**"
+
+## p- values: Main Ideas (Part 4)
+
+- Threshold
+	- In life or death situations (where we want to minimize false positives), we can opt to use a smaller threshold (e.g. .01, .001)
+		- A threshold of .001 would get a false positive once every 1,000 experiments
+		- Conversely, we can opt to increase it in non- critical use cases
+	- .05 is the most widely used threshold because reducing the number of false positives to a value below 5% is more trouble than it's worth
+- Terminology
+	- Determining the difference between two objects (in our case, drugs) is referred to as **hypothesis testing**
+	- **Null hypothesis** states that the drugs are the same
+		- The p- value helps us determine whether or not we should accept or *reject* the null hypothesis
+
+## p- values: Main Ideas (Part 5)
+
+- A small p- value helps us determine if A is different from B, but not *how different* they are
+	- Therefore, it is important to note that a small p- value does **not** imply that the effect size or difference between A and B is large
+
+## Fundamental Concepts of Statistics: Summary
+
+- We can view trends in data with **histograms** and can use them to make classifications with **Naive Bayes**
+- Histograms have limitations (size of data, gaps in data), so we utilize **probability distributions** to *represent* trends
+	- Can also use probability distributions to make classifications with Naive Bayes
+- Instead of collecting a huge amount of data, we use **models** as an approximation of reality
+	- The point of machine learning is to create models to make predictions
+- We can evaluate how well a model reflects the data using the **Sum of Squared Residuals (SSR**), the **Mean Squared Error (MSE)** and $R^2$
+- We use **p- values** to obtain confidence in our predictions that our models make
