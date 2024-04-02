@@ -203,30 +203,235 @@
 
 ### Inside Apache Storm
 
-- X
+- Inside Apache Storm
+	- Open Source, Git
+	- IntelliJ
+- Demo
 
 ### The Structure of a Storm Cluster
 
-- X
+- Structure
+	- Clojure
+		- Functional programming language
+		- Dialect of LISP
+		- Runs on JVM
+			- Complete Java interop
+		- Fast
+	- Java
+		- Lots of code is in Java, including the scheduler
 
 ### Using Thrift in Storm
 
-- X
+- Thrift
+	- `Storm.thrift`
+	- Thrift Compiler
+- Demo
 
 ### How Storm Schedulers Work
 
-- X
+- Scheduler
+	- [IScheduler](https://storm.apache.org/releases/current/javadocs/org/apache/storm/scheduler/IScheduler.html)
+	- Multitenant Scheduler
+- Demo
 
 ## Spark Streaming
 
 ### Spark Streaming
 
-- X
+- Stateful Stream Processing
+	- ![](assets/StatefulStreamProcessing.png)
+	- Traditional streaming systems have a record- at- a- time processing model
+	- Each node has a mutable state
+	- For each record, update state and send new srecords
+	- State is lost if the node dies
+		- Lambda Architecture
+	- Making stateful stream processing be fault- tolerant is challenging
+- Existing Stream Systems
+	- Storm
+		- Replays record if not processed by a node
+		- Processes each record at least once
+		- May update mutable state twice
+		- Mutable state can be lost due to failure
+	- Trident
+		- Use transactions to update state
+		- Processes each record *exactly once*
+		- Per state transaction to external database is slow
+- Spark
+	- Berkeley project in 2010
+	- Most contributed open source project in big- data domain in the world
+	- RDD
+		- Resilient Distributed Dataset
+- Spark Streaming
+	- Basics
+		- Window a bit of data
+		- Run a batch
+		- Repeat
+	- ![](assets/SparkStreaming.png)
+- Discretized Stream Processing
+	- Overview
+		- ![](assets/DiscretizedStreamProcessing.png)
+		- Divide live stream into batches of $X$ seconds
+		- Spark treats each batch of data as RDDs and processes them using RDD operations
+		- Finally, the processed results of the RDD operations are returned in batches
+	- Batch sizes can be as low as .5 second, latency of about 1 second
+	- Potential for combining batch processing and streaming processing in the same system
+- Example: Spark Streaming
+	- ![](assets/SparkStreamingExample.png)
+- DStream Input Sources
+	- Out of the Box
+		- Kafka
+		- HDFS
+		- Flume
+		- Akka Actors
+		- Raw TCP Sockets
+	- Very easy to write a *receiver* for your own data source
+- Arbitrary Stateful Computations
+	- ![](assets/ArbitraryStatefulComputations.png)
+	- `updateStateByKey`
+		- Maintain arbitrary state while continuously updating it with new information
+	- Use
+		- Define the state
+			- State can be an arbitrary data type
+		- Define the state update function
+			- Specify with a function that knows how to update the state using the previous state and the new values from an input stream
+	- State update function is applied in every batch for all existing keys
+- Spark ML & Graph
+	- Advantages of Spark Streaming
+		- Rich ecosystem of big data tools
+		- Spark SQL
+		- Spark ML
+		- Spark GraphX
+		- SparkR
+	- Disadvantages of Spark Streaming
+		- Can be argued that it's not *really* streaming
 
 ### Lambda & Kappa Architecture
 
-- X
+- Lambda Architecture
+	- ![](assets/LambdaArchitecture.png)
+		- Why Lambda?
+			- Things have a tendency of failing
+			- Batch handles failures well
+		- A *true* streaming system has to guarantee idempotency
+			- Idempotency: operation that outputs the same result no matter how many times it's applied
+- Kappa Architecture
+	- ![](assets/KappaArchitecture.png)
+		- Only the streaming path
+		- State?
+			- Microbatch may address issues with state
 
 ### Streaming Ecosystem & Druid
 
-- X
+- Components of a Streaming Ecosystem
+	- Gather the data
+		- Funnel
+	- Distributed Queue
+	- Real- Time Processing
+	- Semi- Real- Time Processing
+	- Real- Time OLAP
+- Step 1: Gather the Data
+	- NiFi Components
+		- Apache NiFi is a good distributed funnel
+		- Was made by NSA
+		- Open sourced in 2014 and picked up by HortonWorks
+		- Great visual UI to design data flow
+		- Has many processor types in the box
+		- Not very good for heavyweight distributed processing
+			- Same graph is executed on all the nodes
+	- NiFi Components
+		- FlowFile
+			- Unit of data moving through the system
+			- Content + Attributes (key/ value pairs)
+		- Processor
+			- Performs the work, can access FlowFiles
+		- Connection
+			- Links between processors
+			- Queues that can be dynamically prioritized
+		- Process Group
+			- Set of processors and their connections
+			- Receive data via input ports, send data via output ports
+	- NiFi GUI
+		- ![](assets/NiFiGUI.png)
+		- Drag and drop processors to build flow
+		- Start, stop and configure components in real time
+		- View errors and corresponding error messages
+		- View statistics and health of data flow
+		- Create templates of common processors & connections
+	- NiFi Site- to- Site
+		- Allows for easy pushing of data from one data center to another
+		- Makes it a great choice for distributed funnel
+- Step 2: Distributed Queue
+	- Publish Subscribe (Pub- Sub) Model
+		- Kafka
+		- ![](assets/PubSubModel.png)
+	- Kafka Architecture
+		- Distributed, high- throughput, pub- sub messaging system
+			- Fast, Scalable, Durablw
+		- Main Use Cases
+			- Log aggregation, real- time processing, monitoring, queueing
+		- Originally developed by LinkedIn
+		- Implemented in Scala/ Java
+		- ![](assets/Kafka.png)
+	- Kafka Manager
+		- Accessible through CLI
+		- Many new open source projects for monitoring Kafka are available
+- Step 3: Distributed Processing
+	- Once data is in the Kafka message broker, we need to process it
+	- Tasks
+		- Filter
+		- Join
+		- Windowing
+		- Business Logic
+		- Real- Time Requirements
+			- < 10ms
+- Step 4: Microbatch Processing/ SQL/ ML
+	- Alternative to real- time event- by- event processing
+	- Reduce overheads
+	- Fault tolerance `-->` Kappa Architecture
+	- Three- Way Comparison
+		- Flink and Storm have similar linear performance profiles
+			- Processes an incoming event as soon as it becomes available
+		- Spark Streaming has much higher latency, but is expected to handle higher throughputs
+			- System behaves in a stepwise function, a direct result from its microbatch nature
+	- Side Note: In- Memory Key- Value Store
+		- Redis
+		- Cassandra
+- Step 5: OLAP (Online Analytical Processing)
+	- Business Intelligence
+	- Multidimensional Data Analytics
+	- Analyze multidimensional data interactively
+	- Basic Operations
+		- Consolidation (roll- up, aggregation in dimensions)
+		- Drill- down (filter)
+		- Slicing & dicing (looking at the data from different viewpoints)
+	- Druid
+		- Developed by Metamarkets in 2011
+			- RDMS is too slow
+			- NoSQL Key Value Store is fast, but exponential memory space makes precomputing slow
+		- Open Source (Apache Template) in 2012
+		- OLAP Queries
+		- Column Oriented
+		- Sub- Second Query Times 
+		- Real- Time Streaming Ingestion
+		- Scalable
+	- Druid Architecture
+		- ![](assets/DruidArchitecture.png)
+	- Druid Bitmap Index
+		- One of the key reasons why Druid is so fast
+		- Dictionary encoding
+		- Bitmap index
+		- Compression Ratio: 1 bit/ record
+		- Logical `AND/ OR` of a few thousand numbers for a query `-->` Quick queries
+- Step 6: BI
+	- Pivot
+		- Web- based exploratory visualization UI for Druid
+		- Easily filter, split, visualize
+	- Druid & Spark
+		- Tableau and SQL are not natively supported by Pivot
+		- Druid's native API is JSON
+		- `SparklineData` allows you to connect Druid to Tableau through Spark
+	- Why Druid and Spark Together?
+		- Spark is an all- purpose general engine
+		- Queries can take a long time
+			- Faster than Hive on YARN
+		- Druid is optimized for column- based time- series queries
