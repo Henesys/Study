@@ -2,4 +2,5 @@
 
 #machine_learning 
 
-## ???
+## Gradient Descent: Main Ideas
+
