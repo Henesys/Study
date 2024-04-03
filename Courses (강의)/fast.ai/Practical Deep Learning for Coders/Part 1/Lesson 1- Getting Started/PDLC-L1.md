@@ -106,45 +106,173 @@
 ## Kaggle
 
 - Can run Jupyter Notebooks on Kaggle
+	- [Jupyter 101](https://www.kaggle.com/code/jhoward/jupyter-notebook-101)
 
 ## Bird or not bird?
 
-## How to import libraries
+- [Is it a bird?](https://www.kaggle.com/code/jhoward/is-it-a-bird-creating-a-model-from-your-own-data)
+	- Quick rundown of the "Bird or Not Bird" demo on Kaggle
+
+## How to import libraries 
+
+- `import` and `pip` are your friend
+	- In this course, a lot of libraries will be integrated with the `fastai` library
 
 ## Best Practice- Viewing Your Data Between Steps
 
+- Take advantage of the cells in Jupyter Notebook so that you can break down the entire workflow into digestible chunks
+- For computer vision, large images aren't really that necessary, you can do just fine with small images
+	- A lot of time will be spent opening the images themselves and the actual data processing tasks will take less time than opening the images
+
 ## DataBlock API Overview
+
+- `DataBlock` is **key** for deep learning
+	- "How do I get this data into my model?"
 
 ## DataBlock API Parameters
 
+- DataBlock Parameters
+	- `blocks`
+		- "What kind of data is our input? Output?"
+		- e.g. `ImageBlock, CategoryBlock`
+	- `get_items`
+		- "What are the items in this model? What is the model training from?"
+		- e.g. `get_image_files()`
+	- `splitter`
+		- Determining the specs of the validation set
+		- e.g. `RandomSplitter(valid_pct = .2, seed = 42)`
+	- `get_y`
+		- "How do we know the correct label of a photo?"
+		- e.g. `parent_label`
+			- We saved images in a "forest" or a "bird" folder, `parent_label` returns the file path
+	- `item_tfms`
+		- Most computer vision architectures need all of your inputs (images) that will be used to train the model to be of a uniform size
+		- e.g. `[Resize(192, method = "squish")]`
+- Data Loaders (`dataloaders`)
+	- Structure that PyTorch iterates through to grab data efficiently with a GPU
+	- Data loaders will feed the training algorithm with a large number of images (**batch**)
+
 ## fast.ai Documentation
+
+- [Documentation](https://docs.fast.ai/)
 
 ## fast.ai's Learner (Model & Data Combination)
 
+- Learner
+	- Combines a model (the actual neural network function being trained) with the data being used to train the model with
+	- `learn = vision_learner(dls, resnet19, metrics = error_rate)`
+		- `dls`
+			- Data loader (which has the data)
+		- `resnet18`
+			- The actual neural network function
+			- [Other PyTorch Image Models: timm](https://timm.fast.ai/)
+				- fast.ai is the first framework to integrate `timm`, which is a deep learning library that has a collection of SOTA computer vision models
+		
 ##  fast.ai's Available Pretrained Models
+
+- By default on fast.ai, the models that you download will have ideal weights so that you don't have a bare neural network with no pre- assigned weight
 
 ## What is a pretrained model?
 
+- `learn.fine_tune()`
+	- Takes the pre- trained weights provided by fast.ai and *fine tunes* them to teach the model differences between your dataset and what it was originally trained for
+
 ## Testing your model with the predict method
+
+- `learn.predict()`
+	- Allows you to pass in an image and deploy your model
 
 ## Segmentation
 
+- Segmentation
+	- Take an image and color in every pixel based on the subject (e.g. streetlamp, road, car)
+
 ##  Segmentation Code Explanation
+
+- `SegmentationDataLoaders`
+	- DataBlocks are flexible and can be used for a wide variety of applications, but you can choose to use special data loaders classes for specific kinds of data
+	- For segmentation tasks, you can choose to use `SegmentationDataLoaders`
 
 ## Tabular Analysis with fast.ai
 
-## `show_batch` Method Explanation
+- Tabular Analysis
+	- Taking data that is in an columnar format (e.g. spreadsheets, databases) and trying to predict a column with them
+- `TabularDataLoaders`
+	- Data loader that is particularly specialized towards tabular data
+	- Need to specify which of the columns are categorical with `cat_names`
+	- Need to specify which of the columns are continuous with `cont_names`
+- `tabular_learner`
+	- Learner that is particularly specialized towards tabular data
+	- Note that for tabular models, we will use `fit_one_cycle()` instead of `fine_tune()` because generally speaking, there won't be any pre- trained models since every table of data will be very different
+
+## `show_batch()` Method Explanation
+
+- `show_batch()` uses a form of "type dispatch" that is common in Julia to automatically format your data into something "useful" when you choose to display it
 
 ## Collaborative Filtering (Recommendation Systems) Example
 
+- Basis of most recommendation systems today
+	- "Which users liked/ used/ purchased which products?"
+		- Guess what other products these users will like based on the patterns exhibited by similar users
+- `CollabDataLoaders` + `show_batch()`
+	- User ID
+	- Product ID
+	- Rating for Product by User
+- `collab_learner`
+	- Instead of predicting a category, you'll be predicting a number so you'll need to provide a range
+		- e.g. `y_range = (.5, 5.5)`
+- Note
+	- Mean Squared Error (MSE) is listed as `valid_loss` ("How far are we from the validation set?")
+
 ## RISE
+
+- [Slideshow in Jupyter](https://rise.readthedocs.io/en/latest/)
+	- Note that RISE only works with vanilla Jupyter, not JupyterLab
+	- `pip install RISE`
 
 ## What else can you do with notebooks?
 
+- The book that the course sometimes references is written entirely with Jupyter Notebook
+	- [fastbook](https://github.com/Henesys/fastbook)
+- The entire fast.ai library is written with Jupyter Notebook
+- Blogs
+- Parallel Testing
+
 ##  What can deep learning do presently?
+
+- Examples
+	- Natural Language Processing (NLP)
+		- Answering questions
+		- Speech recognition
+		- Summarizing documents
+		- Classifying documents
+	- Computer Vision
+		- Satellite & drone imagery interpretation
+	- Medicine
+		- Finding anomalies in radiology images
+		- Measuring features in ultrasounds
+	- Biology
+		- Folding proteins
+		- Classifying proteins
+	- Image Generation
+		- Colorizing Images
+- `tl;dr`- We're just scratching the surface of what we can do with deep learning and its application to different domains cannot be underestimated
 
 ## The First Neural Network
 
+- Mark I Perceptron @ Cornell Aeronautical Laboratory (1957)
+
 ## High Level Machine Learning Models
 
+- General Idea
+	- Neural networks are models that are mathematical functions that takes inputs, multiplied by sets of weights, summed together, zeroes out negative numbers for inputs to the next layer
+	- The model is useless without carefully selected weights
+		- Initially, the weights are random so the initial results are not very good
+		- The *loss* is a representation of how good or bad the results are and *update* the weights for the following iteration
+	- Eventually when the model becomes good enough, the loss isn't needed and the weights get integrated into the model itself, resulting in a structure which requires an input, which will get processed into a model, outputting results (a *program*)
+
 ## Homework
+
+- Try out the Jupyter Notebooks/ Kaggle
+- Check out the forums
+- Read the 1st chapter of the book
