@@ -84,6 +84,106 @@
 	- In our case, the y- intercept that we're trying to optimize is a parameter
 	- If we were to optimize both the y- intercept and the slope simultaneously, both would be considered parameters as well
 
-## Gradient Descent for One Parameter: Step- by- Step
+## Gradient Descent for One Parameter: Step- by- Step (Part 1)
 
-- X
+- The SSR is the loss function and we will be plugging in the **observed** values into its derivative
+	- The observed **weight** and **height** measurements will be inputted into the derivative of the SSR
+	- $\frac{\delta SSR}{\delta intercept} = -2 \times (Height - (intercept + .64 * Weight))$
+- Initialize the parameter we want to optimize with a random value (e.g. **0**)
+	- We're trying to optimize the y- intercept in this example, so we set the intercept to **0**
+
+## Gradient Descent for One Parameter: Step- by- Step (Part 2)
+
+- Evaluate the derivative at the *current value* of the intercept, which is **0**
+	- $\frac{\delta SSR}{\delta intercept} = -5.7$
+	- When the intercept is **0**, the slope of the tangential line of the curve is **-5.7**
+- Step Size
+	- $\text{Step Size} = Derivative \times \text{Learning Rate}$
+		- $= -5.7 \times .1 = -.57$
+- Note
+	- The magnitude of the derivative for the step size is proportional to how large of a step we need to take towards the minimum (optimized) value
+	- The **learning rate** ensures that we don't *overstep* and miss the lowest point in the curve
+		- Generally for gradient descent, learning rate is determined automatically and gradually becomes smaller with every step
+		- A **cross validation** test can be done to determine a good value for the learning rate
+			- For the purpose of this example, the learning rate is **.1**
+- Take a step from the initial intercept to get closer to the minimum value
+	- $\text{New Intercept} = \text{Current Intercept} - \text{Step Size}$
+		- $= .57$
+	- The new intercept with be a better fit to the data and will result in a lower SSR
+
+## Gradient Descent for One Parameter: Step- by- Step (Part 3)
+
+- Iterations of the previous steps will eventually result in the step size approaching **0** or the iterations will stop once it reaches the maximum number of steps, which is typically **1,000** iterations
+	- The Iteration
+		- Evaluate derivative of SSR at current intercept
+		- Calculate step size
+		- Calculate new intercept
+	- Note
+		- The step size shrinks with every iteration because the tangential line to the curve's slope will not be as steep as its previous iteration and will approach a value of **0** at the minimum
+
+## Gradient Descent for One Parameter: Step- by- Step (Part 4)
+
+- Remember that the height vs. weight example that we used until now *does* have an analytical solution, which was **.95**
+- In our gradient descent example, the intercept we got was **.95** as well, which means that gradient descent did a decent job of optimizing the intercept
+
+## Optimizing Two or More Parameters: Details
+
+- We will finally optimize two variables, the *intercept* and the *slope*
+	- Optimizing two parameters will result in a 3- dimensional graph of the SSR
+	- However, the goal of finding parameter values that will achieve the lowest SSR remains the same
+	- Gradient descent will also function the same and initialize both parameters with random values
+
+## Taking Multiple (Partial) Derivatives of the SSR (Part 1)
+
+- $SSR = (Height - (intercept + slope * Weight))^2$
+	- Taking the **derivative with respect to the intercept** is the same as before since we can use the Chain Rule to determine how the SSR changes with respect to the intercept
+	- An extrapolation of the above equation will result in the following:
+		- $\frac{\delta SSR}{\delta intercept} = -2 \times (Height - (intercept + slope * Weight))$
+
+## Taking Multiple (Partial) Derivatives of the SSR (Part 2)
+
+- Taking the **derivative with respect to the slope** is similar to the aforementioned process and will result in the following:
+	- $\frac{\delta SSR}{\delta slope} = -2 \times Weight * (Height - (intercept + slope * Weight))$
+- Note
+	- A *collection* of derivatives of the **same** function but with respect to **different** parameters is called a **gradient**, which is where gradient descent gets its namesake from
+		- We're using the *gradient* to *descend* the SSR curve to obtain the lowest SSR
+
+## Gradient Descent for Two Parameters: Step- by- Step (Part 1)
+
+- Similar to the gradient descent for one parameter example, we will be plugging in the observed **weight** and **height** into the derivatives of the SSR
+	- The only difference is that we're now plugging in values to **two** different derivatives since we're dealing with two parameters:
+		- $\frac{\delta SSR}{\delta intercept} = -2 \times (Height - (intercept + slope * Weight))$
+		- $\frac{\delta SSR}{\delta slope} = -2 \times Weight * (Height - (intercept + slope * Weight))$
+
+## Gradient Descent for Two Parameters: Step- by- Step (Part 2)
+
+- We initialize the two parameters will random values
+	- Here, the intercept will be set to **0** and the slope will be set to **.5**
+
+## Gradient Descent for Two Parameters: Step- by- Step (Part 3)
+
+- Entering those values into the derivatives will result in the following:
+	- $\frac{\delta SSR}{\delta intercept} = -7.3$
+	- $\frac{\delta SSR}{\delta slope} = -14.8$
+- We need to calculate the step sizes of **both** parameters
+	- $\text{Step Size}_{intercept} = Derivative * \text{Learning Rate}$
+		- $=-.073$
+	- $\text{Step Size}_{slope} = Derivative * \text{Learning Rate}$
+		- $=-.148$
+- We take a step from the current intercept and slope to their new values:
+	- $\text{New Intercept} = \text{Current Intercept} - \text{Step Size}_{Intercept}$
+		- $=.073$
+	- $\text{New Slope} = \text{Current Slope} - \text{Step Size}_{Slope}$
+		- $=.648$
+	- Results
+		- The intercept increases from **0** to **.073**
+		- The slope increases from **.5** to **.648**
+- Note
+	- Learning rate is determined automatically, but note that learning rate will oftentimes be less than **.01** because the gradient descent can be very sensitive
+
+## Gradient Descent for Two Parameters: Step- by- Step (Part 4)
+
+- After multiple iterations of the gradient descent process, we stop when the step size is close to **0**, with $intercept = .95$ and $slope = .64$ at the lowest SSR
+- Note
+	- Instead of using gradient descent, if we set the derivatives to **0** and simply solved for the intercept and slope, we would've gotten these values as well
+	- This suggests that gradient descent did do a good job and we can be confident in its applications in logistic regression and neural networks, where analytical solutions do not exist
