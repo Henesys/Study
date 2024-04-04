@@ -132,19 +132,53 @@
 
 ### Cost Function Formula
 
-- X
+- Training Set
+	- Features
+		- Size in $ft^2$, **x**
+	- Targets
+		- Price in \$1000's, **y**
+- Model
+	- $f_{w,b}(x) = wx + b$
+	- $w, b$: parameters/ coefficients/ weights
+		- Variables that will adjusted throughout the training process to improve the model's performance
+- What does $w, b$ do?
+	- $b$ is the y- intercept
+	- $w$ is the slope
+	- With linear regression, you want to select a line that will best fit the training data
+		- In order to do so, you need to adjust the $b$ and $w$ such that the line is the best fit for the data
+		- $\hat{y}^i = f_{w, b}(x^i)$
+		- $f_{w, b} = wx^i + b$
+- "How do you find $w, b$ such that $\hat{y}^i$ is close to $y^i$ for all $(x^i, y^i)$?"
+	- Cost Function
+		- Breakdown
+			- $Error = (\hat{y} - y)^2$
+				- Similar to $Residual = Observed - Predicted$ and $SSR = \sum Residual^2$
+		- Overview (Squared Error Cost Function = MSE)
+			- $J(w, b) = \frac{1}{2m} \sum_{i=1}^{m} (\hat{y}^i - y^i)^2$
+			- MSE is commonly used for regression, especially linear regression
 
 ### Cost Function Intuition
 
-- X
+- Assume you want to tune only one parameter, so $b$, the y- intercept is set to **0**
+	- The parameter that will need to be optimized for this simple model is $w$, the slope
+	- The goal then becomes: $minimize_{w} \: J(w)$ 
+- Basically a similar example to the one listed in [SIGML- Chapter 5](../../../../../Books%20(책)/In%20Progress/The%20StatQuest%20Illustrated%20Guide%20to%20Machine%20Learning/Chapter%205-%20Gradient%20Descent/SIGML-%20Chapter%205.md)
+	- Talking about (a crude version of) parameter optimization, residuals, SSR and the MSE
+- The goal of linear regression is to find the value of $w$ (and later, $b$) that minimizes $J$
 
 ### Visualizing the Cost Function
 
-- X
+- Same example but with tuning both $w$ and $b$, instead of just $w$
+	- The cost function becomes a 3- dimensional surface plane (bowl- shaped) when plotted instead of a 2- dimensional graph since we're dealing with 3 different axes ($w, b \: and \: J_{w, b}$)
+- Note
+	- Instead of using a 3- dimensional surface plot, you can opt to use a contour plot, which will reduce the visualization back down to 2- dimensions, since $J_{w, b}$ will be represented by the contours instead of an axis
+		- The smallest ellipsis on the contour plot represents the minimum value of $J$
 
 ### Visualization Examples
 
-- X
+- Comparing the performances of models with various $w$ and $b$
+- Gradient Descent
+	- Introduction of an algorithm that will automatically find the optimized values of $w$ and $b$
 
 ## Train the Model w/ Gradient Descent
 
