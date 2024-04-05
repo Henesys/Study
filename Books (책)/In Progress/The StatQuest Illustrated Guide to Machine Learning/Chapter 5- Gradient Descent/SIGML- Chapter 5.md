@@ -187,3 +187,46 @@
 - Note
 	- Instead of using gradient descent, if we set the derivatives to **0** and simply solved for the intercept and slope, we would've gotten these values as well
 	- This suggests that gradient descent did do a good job and we can be confident in its applications in logistic regression and neural networks, where analytical solutions do not exist
+
+## Stochastic Gradient Descent: Main Ideas
+
+- All of our examples thus far had limited amounts of data points, parameters and derivatives
+	- "What if we had **1,000,000** data points?"
+		- **1,000,000** terms per derivative
+	- "What if we had **10,000** parameters?"
+		- **10,000** derivatives
+	- Simply put, the more complicated the model becomes, the slower gradient descent becomes as well
+		- This is especially true if you try to use gradient descent in big data domains
+- Stochastic Gradient Descent (SGD)
+	- **Stochastic gradient descent** can reduce the amount of computation required to optimize parameters
+		- **Stochastic** means "randomly determined" and stochastic gradient descent randomly selects **one** data point per step regardless of how large your dataset is
+			- Therefore, only **one** term is computed per derivative for *each* iteration
+
+## Stochastic Gradient Descent: Details (Part 1)
+
+- We'll revisit the height vs. weight example with **3** data points
+	- Just like "normal" gradient descent we start by initializing the intercept and slope with random values, **but** we'll also select one point and evaluate derivatives using that point
+		- $\frac{\delta SSR}{\delta intercept} = -2 * (Height - (intercept + slope * Weight))$
+		- $\frac{\delta SSR}{\delta slope} = -2 * Weight * (Height - (intercept + slope * Weight))$
+	- Proceed calculating step sizes and calculating the new values of the parameters with each iteration as usual
+
+## Stochastic Gradient Descent: Details (Part 2)
+
+- After the new values of the parameters have been calculated, the iteration starts again beginning with the selection of a random point
+- Note
+	- Technically, SGD states that we select a single point per iteration but in practice, a small subset of observations called **mini- batches** are randomly selected
+		- This particular practice is called mini- batch stochastic gradient descent
+		- Using this subset rather than a single point, usually converges on the optimal values in fewer steps and in less time than using the entire data
+	- It *is* possible for the selected data point to be selected more than once, especially in cases where the dataset is small compared to the number of iterations or when random sampling is done *without* replacement
+		- However, this particular probability becomes relatively negligible when working with larger datasets and many variations of SGD perform random sampling without replacement to ensure each data point gets selected only once per epoch 
+
+## Gradient Descent: FAQ
+
+- "Will gradient descent **always** find the best parameter values?"
+	- No, one of gradient descent's biggest flaws is that the algorithm might get stuck at a **local** minimum instead of finding the **global** minimum
+	- This is a common issue, especially when we have many parameters, making it impossible to graph the SSR in the first place
+	- The best thing we can do is try using different random numbers to initialize the parameters that we want to optimize so as to avoid a local minimum or try adjusting the step size so that we can step "over" the local minimum
+	- If the above does not work, we can attempt to use SGD since its randomness can help us with avoiding local minimum traps
+- "How do you choose the size of a mini- batch for SGD?"
+	- It depends on your hardware
+		- If you have a lot of high- speed memory dedicated to your model, you can afford to have a larger mini- batch
