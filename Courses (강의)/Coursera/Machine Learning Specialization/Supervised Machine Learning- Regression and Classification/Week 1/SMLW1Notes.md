@@ -184,11 +184,25 @@
 
 ### Gradient Descent
 
-- X
+- Goal of Gradient Descent:
+	- You have a function $J(w, b)$
+	- You *want* $min_{w, b}J(w, b)$ 
+- $J(w, b)$ is a loss function for linear regression, but the principles of gradient descent works for any function
+	- Gradient descent works for functions that have more than two parameters as well, but more discussions on its scalability will be conducted later
+- Gradient Descent Outline
+	- Start with some arbitrary $w, b$
+		- In linear regression, it won't matter too much what these initial values are
+		- It's common to start with **0**
+	- Keep changing $w, b$ to reduce $J(w, b)$, until we arrive near a minimum
+		- **Note** that the loss function isn't always a parabola with a single minimum, so beware of functions that have many local minima
+		- You want the **global** minimum
+	- Determine a step size and go through the iteration again until you arrive at the local minimum
 
 ### Implementing Gradient Descent
 
-- X
+- Gradient Descent Algorithm
+	- $w_{new} = w_{current} - \alpha \frac{d}{dw}J(w, b)$
+	- 
 
 ### Gradient Descent Intuition
 

@@ -64,9 +64,9 @@
 - Since the SSR is essentially a chain of residuals, you can use the Chain Rule to take the derivative of the SSR
 	- $SSR = (Residual)^2$
 		- Derivative of the SSR with respect to the intercept:
-			- $\frac{\delta SSR}{\delta intercept} = \frac{\delta SSR}{\delta Residual} * \frac{\delta Residual}{\delta intercept}$
+			- $\frac{d SSR}{d intercept} = \frac{d SSR}{d Residual} * \frac{d Residual}{d intercept}$
 		- From here, we can use the Power Rule to solve for the two derivatives
-			- $\frac{\delta SSR}{\delta Residual} = \frac{\delta}{\delta Residual} * (Residual)^2$
+			- $\frac{d SSR}{d Residual} = \frac{d}{d Residual} * (Residual)^2$
 			- $= 2 * Residual * -1$
 		- **Final** derivative of the SSR with respect to the intercept:
 			- $= -2 * (Height - (intercept + .64 * Weight))$
@@ -88,14 +88,14 @@
 
 - The SSR is the loss function and we will be plugging in the **observed** values into its derivative
 	- The observed **weight** and **height** measurements will be inputted into the derivative of the SSR
-	- $\frac{\delta SSR}{\delta intercept} = -2 \times (Height - (intercept + .64 * Weight))$
+	- $\frac{d SSR}{d intercept} = -2 \times (Height - (intercept + .64 * Weight))$
 - Initialize the parameter we want to optimize with a random value (e.g. **0**)
 	- We're trying to optimize the y- intercept in this example, so we set the intercept to **0**
 
 ## Gradient Descent for One Parameter: Step- by- Step (Part 2)
 
 - Evaluate the derivative at the *current value* of the intercept, which is **0**
-	- $\frac{\delta SSR}{\delta intercept} = -5.7$
+	- $\frac{d SSR}{d intercept} = -5.7$
 	- When the intercept is **0**, the slope of the tangential line of the curve is **-5.7**
 - Step Size
 	- $\text{Step Size} = Derivative \times \text{Learning Rate}$
@@ -138,12 +138,12 @@
 - $SSR = (Height - (intercept + slope * Weight))^2$
 	- Taking the **derivative with respect to the intercept** is the same as before since we can use the Chain Rule to determine how the SSR changes with respect to the intercept
 	- An extrapolation of the above equation will result in the following:
-		- $\frac{\delta SSR}{\delta intercept} = -2 \times (Height - (intercept + slope * Weight))$
+		- $\frac{d SSR}{d intercept} = -2 \times (Height - (intercept + slope * Weight))$
 
 ## Taking Multiple (Partial) Derivatives of the SSR (Part 2)
 
 - Taking the **derivative with respect to the slope** is similar to the aforementioned process and will result in the following:
-	- $\frac{\delta SSR}{\delta slope} = -2 \times Weight * (Height - (intercept + slope * Weight))$
+	- $\frac{d SSR}{d slope} = -2 \times Weight * (Height - (intercept + slope * Weight))$
 - Note
 	- A *collection* of derivatives of the **same** function but with respect to **different** parameters is called a **gradient**, which is where gradient descent gets its namesake from
 		- We're using the *gradient* to *descend* the SSR curve to obtain the lowest SSR
@@ -152,8 +152,8 @@
 
 - Similar to the gradient descent for one parameter example, we will be plugging in the observed **weight** and **height** into the derivatives of the SSR
 	- The only difference is that we're now plugging in values to **two** different derivatives since we're dealing with two parameters:
-		- $\frac{\delta SSR}{\delta intercept} = -2 \times (Height - (intercept + slope * Weight))$
-		- $\frac{\delta SSR}{\delta slope} = -2 \times Weight * (Height - (intercept + slope * Weight))$
+		- $\frac{d SSR}{d intercept} = -2 \times (Height - (intercept + slope * Weight))$
+		- $\frac{d SSR}{d slope} = -2 \times Weight * (Height - (intercept + slope * Weight))$
 
 ## Gradient Descent for Two Parameters: Step- by- Step (Part 2)
 
@@ -163,8 +163,8 @@
 ## Gradient Descent for Two Parameters: Step- by- Step (Part 3)
 
 - Entering those values into the derivatives will result in the following:
-	- $\frac{\delta SSR}{\delta intercept} = -7.3$
-	- $\frac{\delta SSR}{\delta slope} = -14.8$
+	- $\frac{d SSR}{d intercept} = -7.3$
+	- $\frac{d SSR}{d slope} = -14.8$
 - We need to calculate the step sizes of **both** parameters
 	- $\text{Step Size}_{intercept} = Derivative * \text{Learning Rate}$
 		- $=-.073$
@@ -206,8 +206,8 @@
 
 - We'll revisit the height vs. weight example with **3** data points
 	- Just like "normal" gradient descent we start by initializing the intercept and slope with random values, **but** we'll also select one point and evaluate derivatives using that point
-		- $\frac{\delta SSR}{\delta intercept} = -2 * (Height - (intercept + slope * Weight))$
-		- $\frac{\delta SSR}{\delta slope} = -2 * Weight * (Height - (intercept + slope * Weight))$
+		- $\frac{d SSR}{d intercept} = -2 * (Height - (intercept + slope * Weight))$
+		- $\frac{d SSR}{d slope} = -2 * Weight * (Height - (intercept + slope * Weight))$
 	- Proceed calculating step sizes and calculating the new values of the parameters with each iteration as usual
 
 ## Stochastic Gradient Descent: Details (Part 2)
