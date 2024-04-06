@@ -2,4 +2,4 @@
 
 #machine_learning 
 
-## ???
+## Naive Bayes: Main Ideas
