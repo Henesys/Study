@@ -202,20 +202,56 @@
 
 - Gradient Descent Algorithm
 	- $w_{new} = w_{current} - \alpha \frac{d}{dw}J(w, b)$
-	- 
+		- $\alpha$, the learning rate
+	- $b_{new} = b_{current} - \alpha\frac{d}{db}J(w, b)$
+- Repeat the two update steps **simultaneously** until the algorithm converges at the local minimum
+	- You should not update the individual parameters until both new values of the parameters have been determined because using the updated $w$ for the updated value of $b$ is incorrect
 
 ### Gradient Descent Intuition
 
-- X
+- Example
+	- Applying the gradient descent algorithm for one parameter
+		- $min_{w}J(w)$
+		- $w = w - \alpha \frac{d}{dw}J(w)$
+		- $b$ is held constant and $w$ will be optimized
+	- Discussion of how the value of the partial derivative dictates how the gradient descent algorithm will move on the curve to achieve the local minimum
 
 ### Learning Rate
 
-- X
+- "How do we choose an ideal $\alpha$?"
+	- $w = w- \alpha \frac{d}{dw}J(w)$
+	- "What does $\alpha$ do?"
+		- If $\alpha$ is too small:
+			- Gradient descent may be too slow and in some cases, may not even reach the local minimum if there's an iteration cap
+		- If $\alpha$ is too large:
+			- Gradient descent may overshoot and may never reach the local minimum
+			- Gradient descent may fail to converge and may even diverge
+	- "What if you're already at the local minimum?"
+		- $w_{new} = w_{old}$, essentially $w = w$
+		- $w$ is unchanged by gradient descent
+- The step size will grow smaller and smaller after each iteration, ensuring that we can reach the local minimum with a **fixed** learning rate
 
 ### Gradient Descent for Linear Regression
 
-- X
+- Linear Regression Model
+	- $f_{w, b}(x) = wx + b$
+- Squared Error Cost Function
+	- $J(w, b) = \frac{1}{2m}\sum_{i = 1}^{m}(f_{w, b}(x^i)-y^i)^2$
+- Gradient Descent Algorithm
+	- $w = w - \alpha \frac{d}{dw}J(w, b)$
+	- $b = b- \alpha \frac{d}{db}J(w, b)$
+- Derivative with respect to:
+	- $w$
+		- $\frac{d}{dw}J(w, b)$
+		- $\frac{1}{m}\sum_{i=1}^{m}(f_{w, b}(x^i)-y^i)x^i$
+	- $b$
+		- $\frac{d}{db}J(w, b)$
+		- $\frac{1}{m}\sum_{i=1}^{m}(f_{w, b}(x^i)-y^i)$
+- Gradient Descent on Squared Error Cost Function
+	- Loss functions dealing with multiple parameters may have local minima, making finding the global minimum challenging
+	- With the squared error cost function, the plot will **never** have multiple local minima as the plot is **convex** and will only have a *single* **global** minimum
 
 ### Running Gradient Descent
 
-- X
+- Batch Gradient Descent
+	- At each step of the gradient descent, we use all of the training examples ("batch") instead of a subset of the training data for linear regression
