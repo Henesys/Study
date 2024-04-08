@@ -1,5 +1,5 @@
 --- 
-tags: #book
+tags: #book #deep_learning #machine_learning 
 title: "Deep Learning for Coders with fastai and PyTorch" 
 author: [Jeremy Howard, Sylvain Gugger] 
 publish: 2020-06-29 
