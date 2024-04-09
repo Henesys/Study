@@ -78,4 +78,64 @@
 
 ## Gaussian Naive Bayes: Details (Part 1)
 
-- X
+- We create Gaussian curves for each feature in our upgraded popcorn, soda, candy and movie rating example
+	- Popcorn (grams)
+		- Calculate mean and standard deviation for people who *don't* love a movie and draw a Gaussian curve
+		- Draw a Gaussian curve for people who *do* love a movie
+	- Soda (ml)
+		- Same process
+	- Candy (grams)
+		- Same process
+
+## Gaussian Naive Bayes: Details (Part 2)
+
+- Calculate the **prior probability** that someone loves a movie
+	- $P(\text{loves movie}) = \frac{\text{\# of people who loves movie}}{\text{total \# of people}} = \frac{4}{4+3} = .6$
+	- Similar to Multinomial Naive Bayes, the prior probability is just a guess, but we usually estimate it from the *training* data
+		- Our training data came from **4** people who *loves* a movie and **3** people who *does not love* a movie
+- We calculate the prior probability that someone does not love a movie
+	- $P(\text{does not love movie}) = \frac{\text{\# of people who do not love movie}}{\text{total \# of people}} = \frac{3}{4+3} = .4$
+- Let's assume we want to make a prediction for someone who:
+	- Ate **20 grams** of popcorn
+	- Drank **500 ml** of soda
+	- Ate **100 grams** of candy
+
+## Gaussian Naive Bayes: Details (Part 3)
+
+- We calculate the score for "**loves movie**" by multiplying the prior probability that they love a movie by the **likelihoods**, the y- axis coordinates that correspond to the above prediction *given* that they love a movie
+	- $p(\text{loves movie}) \times L(Popcorn = 20 | Loves) \times L(Soda = 500 | Loves) \times L(Candy = 100 | Loves)$
+	- Note that when we do this sort of operation, we may run into the **underflow** issue where the computer is unable to save and process extremely small numbers being multiplied together
+		- To avoid such issues, we take the **log** (natural log/ log base $e$) to convert the multiplication problem into addition
+	- Assume that this gets us a score of **-124** for "**loves movie**" once it has been calculated
+
+## Gaussian Naive Bayes: Details (Part 4)
+
+- Doing the same process for the score for "**does not love movie**", we arrive at a score of **-48**
+- Since the score of "**does not love movie**" (**-48**) is greater than the score for "**loves movie**" (**-124**), we classify this person as someone **who does not love movie**
+
+## Naive Bayes: FAQ (Part 1)
+
+- "If my continuous data is not Gaussian, can I still use Gaussian Naive Bayes?"
+	- Even though Gaussian distribution is the most commonly used distribution, we can use *any* statistical distribution in combination with Naive Bayes
+		- Of course, if we use Naive Bayes on an **exponential** distribution, it would becomes Exponential Naive Bayes
+- Note
+	- Gaussian Naive Bayes' underlying assumptions about the continuous features in your data prove to be very important in its process
+		- It assumes that the probability distribution of each feature given the class label is Gaussian
+	- If your data deviates severely from this assumption, Gaussian Naive Bayes' performance may be subpar and you may want to consider other classification algorithms instead
+	- If the deviation is not that extreme however, Gaussian Naive Bayes can still be used as it is relatively robust to deviations from its assumption
+
+## Naive Bayes: FAQ (Part 2)
+
+- "What if some of my data is *discrete* and some of my data is *continuous?* Can I still use Naive Bayes?"
+	- Yes, we can do so by combining the histogram approach from Multinomial Naive Bayes with the distribution approach from Gaussian Naive Bayes
+		- For *continuous* features, you can use Gaussian Naive Bayes, which assumes that the continuous features follow a Gaussian distribution
+		- For *discrete* features, such as categorical variables or word frequencies in text classification, you can use Multinomial Naive Bayes
+			- When making predictions, you can combine the probabilities from the GNB and MNB models using the Naive Bayes **assumption of conditional independence**
+	- Example
+		- $log(p(N)) + log(p(Dear | N)) + log(p(Friend | N)) + log(L(time = 25 | N))$
+
+## Naive Bayes: FAQ (Part 3)
+
+- "How is Naive Bayes related to Bayes' Theorem?"
+	- We can divide each score (e.g. $p(N | \text{Dear Friend})$) by the sum of the scores, which would give us Bayes' Theorem
+	- Since the denominators are the same in both scores, the results are determined entirely by the numerators, which is why denominators are omitted 
