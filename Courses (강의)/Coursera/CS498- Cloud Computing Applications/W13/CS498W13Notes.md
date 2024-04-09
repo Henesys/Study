@@ -205,15 +205,140 @@
 
 ### Virtualization: 1st Generation Hardware
 
-- X
+- Hardware- Enabled Virtualization
+	- Intel VT (IVT)
+	- AMD VIrtualization (AMD-V)
+	- Allow "trapping" of sensitive instructions
+		- Popek & Goldberg `-->` Trap and Emulate
+	- Examples
+		- VMWare Fusion
+			- Virtual user session software built to run Windows applications on Mac to run Windows apps
+		- VMWare ESXi
+			- Bare- metal hypervisor that installs directly onto a physical server
+			- Partitions hardware to consolidate applications and optimize costs using its direct access to and control of underlying resources
+		- Parallels Desktop for Mac
+		- Parallels Workstation
+- 1st Generation Hardware Virtualization
+	- First introduced in mid 2000s in x86
+	- Intel VT-x, AMD-V
+		- Virtual Machine Control Block (VMCB)
+			- In- memory data structure
+		- VMCB combines control state with a subset of the guest VCPU state
+	- New, less privileged execution mode, guest mode, supports direct execution of guest code, including privileged kernel code
+	- New instruction, `vmrun`, transfers from host to guest mode
+		- Upon its execution, hardware loads guest state from VMCB and continues execution in guest mode
+		- Guest execution proceeds until some condition that has been set by VMM is reached
+			- Hardware performs an `exit` operation
+			- `exit` is the inverse of `vmrun`
+		- Guest state is saved to the VMCB, the VMM state is loaded and execution resumes in host mode, which is now in the VMM
+	- 1st generation hardware support lacks *explicit support* for memory virtualization
+		- VMM must implement a software MMU using shadow page tables
+			- Context switch on each `vmrun` and `exit`
+			- Examples
+				- `VMPTRLD, VMPTRST, VMCLEAR, VMREAD, VMWRITE, VMCALL, VMLAUNCH, VMRESUME, VMXOFF, VMXON, INVEPT, INVVPID & VMFUNC`
+	- With hardware- assist, the guest runs at full speed unless an exit is triggered
+		- Virtualization overheads are determined as the product of the exit frequency and the average cost of handling an exit
+- MMU in 1st Generation Hardware Virtualization
+	- 1st generation hardware virtualization **does not** virtualize MMU
+	- VMM has to get involved on MMU
+		- VMM write- protects primary page tables to trigger `exits` when the guest updates primary page tables so that the VMM can propagate the change into the shadow page tables (e.g. invalidate)
+		- VMM must request `exits` on page faults to distinguish between hidden faults, which the VMM consumes to populate shadow page tables and true faults, which the guest consumes to populate primary page tables
+		- VMM must request `exits` on guest context switches so that it can activate the shadow page tables corresponding to the new context
+	- 1st generation hardware support often did not outperform a BT- based VMM is often slower
 
 ### Virtualization: 2nd & 3rd Generation Hardware
 
-- X
+- 2nd Generation Hardware Virtualization
+	- AMD's RVI (Rapid Virtualization Indexing) and Intel's EPT (Extended Page Tables) are examples of 2nd generation hardware virtualization
+	- VMM maintains a hardware- walked "nest page table" that translates gPAs to hPAs, eliminating the need for VMM interposition
+		- ![](assets/2ndGeneration.png)
+	- Many flaws of the 1st generation were resolved:
+		- No trace- induced `exits`
+		- No context- switch `exits`
+		- No hidden/ true fault `exits`
+		- VMM does not have to allocate memory for shadow page tables, reducing memory usage
+	- Cost to service a TLB miss will be higher with nested paging than without
+		- TLB caching is immensely helpful in this context
+		- Large memory pages (1 GB vs 2 MB)
+- I/O Virtualization
+	- Most hypervisors "emulate" I/O devices
+		- Generic display
+		- Generic network
+		- Generic storage
+	- Trap and Emulate is emulated to a certain degree, as well as paravirtualization
+	- Cloud Data Center requirements necessitate optimal performance
+		- Hardware- based I/O virtualization
+- 3rd Generation Hardware Virtualization
+	- Intel started to include VMCS shadowing as a feature that accelerates **nested virtualization of VMMs** ever since the announcement of Haswell microarchitecture in 2013
+	- Interrupt Virtualization
+		- AMD AVIC & Intel APICv (2012)
+	- I/O MMU Virtualization
+		- AMD-VI & Intel VT-D
+		- I/O memory management unit (IOMMU) that allows guest VMs to directly use peripheral devices (e.g. Ethernet, accelerated graphics cards and hard- drive controllers) through DMA and interrupt remapping
+			- Sometimes referred to as a PCI passthrough
+	- PCI-SIG Single Root I/O Virtualization (SR-IOV)
 
 ### Virtualization: MicroVMs & Unikernels
 
-- X
+- MicroVMs
+	- A typical VM usually has many virtual I/O devices to make it useful
+		- Example
+			- EC2 Instance
+				- Virtual Storage
+				- Virtual Network
+				- Virtual Display
+				- USB 
+				- Audio
+		- Guest OS supports device drivers, kernel modules etc. for all I/O devices
+		- Typical load time in tens of seconds, if not a few minutes
+	- MicroVMs are designed for native cloud use
+		- Serverless computing use cases
+		- Serverless containers
+			- Fargate
+		- FaaS
+			- AWS Lambda
+- Firecracker
+	- ![](assets/FirecrackerOverview.png)
+	- Open source project by Amazon
+		- Based on Linux KVM
+		- Similar to QEMU (VMM Driver)
+		- The idea is to be as lightweight as possible
+			- VMM
+			- Guest OS
+		- No support for graphic drivers
+		- Only available virtual devices:
+			- Paravirtualized virtio net
+			- Paravirtualized virtio block
+			- 1- button keyboard
+				- Resets the VM
+			- Interrupt controller
+			- Timer
+			- Clock
+	- Function
+		- VMM starts in ~ 8 ms
+		- VM start time is < 125 ms
+			- Firecracker's InstanceStart API call to the start of the Linux guest `user-space /sbin/init process`
+			- Lightweight Linux guest (e.g. Alpine Linux)
+		- Memory overhead < 5 MiB
+	- OSv on Firecracker
+		- Specialized OS
+		- Boot time of  < 5ms
+- Unikernels
+	- Software is directly integrated with the kernel it is running on
+	- Compiling source code, along with only the required system calls and drivers into one executable program using a single address space
+	- Unikernels can only run a single process, which means forking is not available
+	- Build process results in a complete (virtual) machine image of minimal size that only contains and executes what it absolutely needs
+	- Example
+		- OSv can run on Firecracker in 5ms, compared to 125ms on Linux
+		- Has 18 MiB memory overhead which can run any Linux executable
+- Operating System- Level Virtualization
+	- Virtualizing a physical server at the *operating system* level, enabling multiple isolated and secure virtualized servers to run on a single physical server
+	- Examples
+		- Linux Vserver
+		- Solaris Containers
+		- FreeBSD Jails
+		- Chroot
+		- CGroups
 
 ## Containers
 
