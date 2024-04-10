@@ -344,19 +344,128 @@
 
 ### Containers: Introduction
 
-- X
+- Isolation
+	- Hypervisors act as a stopgap measure for certain deficiencies in operating systems and are often seen as band- aids trying to cover an operating system's incompetence
+		- Containers are an attempt to better address these deficiencies
+- Operating System- Level Virtualization
+	- Virtualizing a physical server at the OS level, enabling *multiple* isolated and secure virtualized servers to run on a *single* server
+	- Examples
+		- Solaris Containers
+		- FreeBSD Jails
+		- Linux Contaiiners
+			- Linux Vserver
+			- OpenVZ
+			- Process Container `-->` cgroups
+			- LXC
+			- Docker
+- OS- Virtualization/ Containers
+	- OS virtualization is how we generally refer to this type of lightweight virtualization
+	- Processes "think" that they see a virtual kernel, but are all sharing the same real kernel under the hood
+	- Kernel acts as a sort of hypervisor in ensuring that container/ virtualization boundaries are not crossed
+	- Goal of containers is to support all of the resource isolation use cases, without the overhead and complexity of running multiple kernel instances
+- OS- Level Virtualization
+	- Hypervisor (VM)
+		- One real HW, many virtual HWs, many OSs
+		- High versatility, can run different OSs
+		- Lower density, performance, scalability
+		- Performance overhead is mitigated by new hardware features (e.g. VT-D)
+	- Containers (CT)
+		- One real HW, no virtual HW, one kernel, many user space instances
+		- Higher density, natural page sharing
+		- Dynamic resource allocation
+		- Native performance with almost no overhead
 
 ### Containers: Pillars of Linux Containers
 
-- X
+- 3 Pillars of Linux Containers
+	- cgroups
+	- Namespaces
+	- Unionfs
+- `chroot`
+	- **Not** include in the pillars of Linux containers
+	- In a Unix- like OS, root directory (`/`) is the top directory
+		- All file system entries branch out of this root 
+		- Created in 1979, Unix v7
+	- Each process has its own idea of what the root directory is
+		- By default, it is *actual* system root
+			- This can be modified with the `chroot()` system call
+	- `chroot` changes **apparent** root directory for current running processes and its children
+		- `chroot()` simply modifies the pathname lookups for a process and its children
+		- Prepends the new root path to any name starting with `/`
+		- Current directory is **not** modified and relative paths can refer any locations out of the new root
+	- `chroot()` **does NOT** provide secure isolation
+		- Docker uses `mount namespace` instead
 
 ### Containers: Control Groups
 
-- X
+- cgroups
+	- Control Groups
+	- Linux kernel feature that limits, isolates and measures resource usage of a group of processes
+		- Since Linux Kernel v2.6.24
+	- Resource quotas for memory, CPU, network and I/O
+	- Example
+		- Create a control group and assign resource limits on it
+			- e.g. 3 GB of memory limit & 70% CPU
+		- Add a process id to the group
+	- Process resource usage will be throttled
+		- Application may exceed the limits in normal scenarios
+		- It will be throttled back to predetermined limits in case the system is facing a resource crunch
+- cgroup Controllers (v2)
+	- ![](assets/cgroupControllers.png)
+- cgroup Example
+	- Controllers mounted in the cgroups file system
+		- `/cgroup` directory
+			- `/sys/fs/cgroup/memory`
+			- `/sys/fs/cgroup/cpu`
+	- Making a control group
+		- `/cgroup/memory/mytestcgroup`
+	- Setting limits
+		- `echo 2097152 > /sys/fs/cgroup/memory/mytestcgroup/memory.limit_in_bytes`
+		- `echo 2097152 > /sys/fs/cgroup/memory/mytestcgroup/memory.memsw.limit_in_bytes`
+			- Setting both memory and swap space limit to 2 MB
+	- Running a process
+		- `cgexec -g memory:mytestcgroup ./`
+- cgroup Scheduling
+	- When we think of containers as lightweight VMs, it is natural to think of resource in terms of discrete resources such as the number of processors
+		- However, the Linux kernel schedules processes dynamically, just as the hypervisor schedules requests onto discrete hardware
+		- CPU subsystem schedules CPU access to each cgroup using either the **Completely Fair Scheduler (CFS)**, which is the default on Linux and Docker or the **Real- Time Scheduler (RT)**
+	- Scheduler groups in CFS requires us to think in terms of time slices instead of processor counts
+	- CPU shares provide tasks in a cgroup with a relative amount of CPU time, providing an opportunity for those tasks to run
+	- The file `cpu.shares` defines the number of shares allocated to the cgroup
 
 ### Containers: Namespaces
 
-- X
+- Namespaces
+	- Wraps a global system resource in an abstraction that makes it appear to the processes within the namespace that they have their own isolate instance of the global resource
+	- Linux processes form a single hierarchy, with all processes rooting at `init`
+		- Usually privileged processes in this tree can trace or kill other processes
+		- Linux namespace enables us to have many hierarchies of processes with their own "subtrees" such that processes in one subtree **cannot** access or even know of those in another
+	- ![](assets/Namespaces.png)
+- PID (Process ID) Namespace Example
+	- ![](assets/ParentPIDNamespace.png)
+	- Without namespace, all processes descend hierarchically from `PID 1(init)`
+	- If we create a PID namespace and run a process in it, that first process becomes `PID 1` in that namespace
+	- The process that creates the namespace still remains in the parent namespace, but makes its child the **root of new process tree**
+	- The processes within the new namespace cannot see the parent process, but the parent process namespace *can see* the child namespace
+	- The processes within new namespace have 2 PIDs: one for the new namespace and one for the global namespace
+	- PID namespaces also allow each container to have its own `init (PID 1)`, the "ancestor of all processes" that manages various system initialization tasks and reaps orphaned child processes when they terminate
+- Network Namespace
+	- Provide isolation of the system resources associated with networking
+	- Each network namespace has its own network devices, IP addresses, IP routing tables, `/proc/net` directory and port numbers
+	- Network namespaces make containers useful from a networking perspective
+		- Each container can have its own (virtual) network device and its own applications that bind to the per- namespace port number space
+		- Suitable routing rules in the host system can direct network packets to the network device associated with a specific container
+			- e.g. You can have multiple containerized web servers on the same host system, with each server bound to port 80 in its (per- container) network namespace
+- User Namespace
+	- Process's user and group IDs can be different inside and outside a user namespace
+	- A process can have a normal unprivileged user ID *outside* a user namespace while at the same time have a user ID of `0` *inside* the namespace
+		- This means that the process has **full** root privileges for operations **inside** the user namespace, but is **unprivileged** for operations **outside** the user namespace
+	- This is a great feature from a security perspective because it allows containers to continue running with root privileges, but without actually having any root privileges on the host itself
+- Mount Namespace
+	- Was the first type of namespace to be implemented on Linux (2002)
+		- Compared with the use of the `chroot()` system call, mount namespaces are more secure and are more flexible for this task
+	- Isolates the set of filesystem mount points seen by a group of processes
+	- Processes in different mount namespaces can have different views of the filesystem hierarchy
 
 ### Containers: Union File System
 
