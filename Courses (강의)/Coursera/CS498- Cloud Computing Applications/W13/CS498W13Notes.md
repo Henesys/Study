@@ -469,12 +469,167 @@
 
 ### Containers: Union File System
 
-- X
+- Union File System (Unionfs)
+	- Backbone of container images
+	- Stackable unification file system which can appear to merge the contents of several directories (branches), while keeping their physical content separate
+	- Overlays several directory into one single mount point
+		- Contents of directories that have the same path within the merged branches will be seen together in a single merged directory, within the new virtual filesystem
+	- ![](assets/Unionfs.png)
+	- With union mount, the directories in the file system from the underlying layer are getting merged with those from the upper layer file systems
+	- To access a file:
+		- Unionfs tries to access the file on the top branch and if the file does not exist there, it continues on the lower level branches
+	- Copy on Write (CoW)
+		- If the user tries to *modify* a file on a lower level read- only branch, the file is *copied* to a higher level read- write branch
+	- Program running inside the container doesn't care which layer the files and directories come from 
+- Docker Images
+	- A container image is made of a stack of immutable or read- only layers
+	- In runtime, the Docker engine adds a R/W layer on top of the stack of immutable layers
+		- ![](assets/DockerImages.png)
+			- ![](assets/Dockerfile.png)
+- Graph Driver
+	- Local instance of a Docker engine that has a cache of the Docker image layer
+	- This cache of layers is built up as explicit `docker pull` commands are executed alongside `docker build`
+	- The drivers that handles these layers are called `graphdrivers`
+- [Graph Driver Options](https://docs.docker.com/engine/extend/plugins_graphdriver/)
+	- Options
+		- `vfs, aufs, overlay, overlay2, btrfs, zfs, devicemapper and windows`
+	- `vfs`
+		- Naive implementation that does **not** use a union filesystem or copy on write (CoW) technique
+	- `overlay, overlay2, aufs`
+		- `unionfs` on top of a real filesystem
+			- `ext4, xfs`
+	- `btrfs, zfs, devicemapper, windows`
+		- Underlying real filesystem that performs the tasks of union
 
 ### Containers: Docker Architecture
 
-- X
+- Docker Architecture
+	- ![](assets/DockerArchitecture.png)
+- Container Runtime
+	- Docker was originally monolithic and the runtime was later separated
+		- Responsible for the whole lifecycle of a container
+		- Pulls a container image (template for a container) from a registry
+		- Creates a container from that image
+		- Initializes and runs the container
+		- Eventually stops and removes the container from the system
+	- Container runtime on a Docker host consists of `containerd` and `runc`
+		- Both are open source and have been donated by Docker to the CNCF (Cloud Native Computing Foundation), a Linux Foundation project
+- Container Runtime: `containerd`
+	- `containerd` is based on `runc` and provides higher- level functionality
+		- Image push & pull
+		- Storage management
+		- Execution of containers by calling `runc` with the right parameters to run containers
+		- Managing of network primitives for interfaces
+		- Management of network namespaces for containers to join existing namespaces
+	- References implementation of the OCI specifications
+		- OCI: Open Container Initiative, a Linux Foundation project
+	- Was donated in 2017 to the CNCF
+- Container Runtime: `runc`
+	- `runc` is the low- level functionality of the container runtime
+		- Full support for Linux namespaces
+		- Native support for all security features available on Linux
+			- `SELinux, AppArmor, Seccomp, cgroups`
+	- Spawns and runs containers according to the OCI specification
+		- Containers are configured using bundles
+		- A bundle for a container is a directory that includes a specification file named `config.json` and a root filesystem
+		- The root filesystem contains the contents of the container
+- Docker Engine
+	- Provides additional functionality on top of the container runtime
+		- e.g. network libraries or support for plugins
+	- Provides a REST interface over which all container operations can be automated
+		- Docker CLI is one of the consumers of this REST interface
+- Docker Overview
+	- ![](assets/DockerOverview.png)
 
 ### Containers: Networking
 
-- X
+- Container Network Model
+	- LibNetwork implements the Container Network Model (CNM)
+		- ![](assets/ContainerNetworkModel.png)
+	- Formalizes the steps required to provide networking for containers while providing an abstraction that can be used to support multiple network drivers
+- Container Network Model: Sandbox
+	- Contains the configuration of a container's network stack, which includes the management of the container's interfaces, routing table and DNS settings
+		- May contain *many* endpoints from *multiple* networks
+	- An implementation of a sandbox could be a Linux Network Namespace, a FreeBSD Jail or any other equivalent concepts
+	- LibNetwork implements sandbox in Linux through network namespaces
+		- Creates a network namespace for each sandbox, which is uniquely identified by a path on the host filesystem
+- Container Network Model: Endpoint
+	- Joins a sandbox to a network
+	- Implementation of an endpoint could be a `veth pair`, an Open vSwitch internal port of similar
+		- `Veth` devices are virtual Ethernet devices
+		- Can act as tunnels between network namespaces to create a bridge to a physical network device in another namespace
+		- Can also be used as standalone network devices
+		- `veth` devices are always created in interconnected pairs
+			- One end is placed in one network namespace and the other end in another namespace
+	- An endpoint can belong to only one network and it can belong to only sandbox, if connected
+	- LibNetwork delegates the *actual* implementation to the drivers, which realize the functionality
+- Container Network Model: Network
+	- Group of endpoints that are able to communicate with each other directly
+	- Implementation of a network could be a Linux bridge, a VLAN etc.
+	- Networks consist of *many* endpoints
+	- LibNetwork delegates the *actual* implementation to the drivers, which realize the functionality
+- Driver Packages
+	- Extension of LibNetwork and provides the actual implementation of the API
+		- `driver.Config`
+		- `driver.CreateNetwork`
+		- `driver.DeleteNetwork`
+		- `driver.CreateEndpoint`
+		- `driver.DeleteEndpoint`
+		- `driver.Join`
+		- `driver.Leave`
+- Default Drivers in Docker LibNetwork
+	- Bridge
+		- Uses Linux bridging and `iptables` to provide connectivity for containers
+		- Creates a single bridge called `docker0` by default and attaches a `veth pair` between the bridge and every endpoint
+	- Host
+		- For standalone containers, remove network isolation between the container and the Docker host and use the host's networking directly
+	- Overlay
+		- Networking that can span multiple hosts using overlay network encapsulations such as VXLAN
+			- Enable swarm services to communicate with each other
+	- `macvlan`
+		- Macvlan networks allow you to assign a MAC address to a container, making it appear as a physical device on your network
+			- Docker daemon routs traffic to containers by their MAC addresses
+	- Note
+		- The type of network a container uses is transparent from within the container itself
+- Bridge Networks
+	- ![](assets/BridgeNetworks.png)
+	- Bridge networks are usually link layer devices that forward traffic between networks
+	- In Docker, bridge networks uses a software bridge allowing containers connected to the same bridge network on the same host
+		- Isolating containers from other containers not connected to the bridge
+		- For communicating with containers in other hosts, use an overlay network
+	- The Docker bridge driver automatically installs rules in the host machine so that the containers on different bridge networks cannot communicate directly with each other
+		- `iptables` rules on Linux
+- Default Bridge Network
+	- When you start Docker, a default bridge network (`bridge`) is created automatically and newly started containers connect to it unless otherwise specified
+	- Containers on the default bridge network can only access each other by IP addresses
+		- User- defined bridges provide automatic DNS resolution between containers
+	- Default bridge network is connected a legacy detail of Docker and **IS NOT RECOMMENDED** for production use
+- User- Defined Networks
+	- Use `--network` to attach a container to a specific network
+		- Better isolation
+		- DNS resolution
+			- On a user- defined bridge network, containers can resolve each other by the *container name* or alias
+			- Much better than messing around with `/etc/hosts`
+	- Containers can be attached and detached from user- defined networks on the fly
+	- Containers connected to the same user- defined bridge network effectively expose all ports to each other
+- Publishing Ports
+	- From the container's point of view, it has a network interface with an IP address, a gateway, a routing table, DNS service and other networking details
+	- For a port to be accessible containers or non- Docker hosts on different networks, that port must be *published* using the `-p` or `--publish` flag
+		- ![](assets/PublishPorts.png)
+- IPAM: IP Address Management
+	- ![](assets/DockerIPAM.png)
+	- IPAM tracks and manages IP addresses for each network
+		- Subnet
+			- e.g. `172.17.0.0/16`
+			- All containers attaches to this network will get an IP address taken from this CIDR range
+		- Gateway
+			- e.g. `172.17.0.1`
+			- Router for this network
+	- By default, only egress traffic is allowed
+		- Containerized applications can reach the internet but they cannot be reached by any outside traffic
+- Containers in the Same Namespace
+	- We can have multiple containers in the same namespace
+	- Processes in two containers in the same namespace can communicate through the localhost
+		- Similar to bridge networking, with two containers connected to the same network, where each host gets its own IP address
+	- Note that a sandbox (Linux namespace) is connected to a network
+		- We typically run each container in its own sandbox, but multiple containers *can* run in the same sandbox
