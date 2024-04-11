@@ -81,4 +81,85 @@
 
 ## ROC: Main Ideas (Part 1)
 
-- 148
+- Earlier, we used logistic regression to predict whether or not someone loves a movie and the classification threshold that was used was **50%**
+	- $P > 50\%$ indicated the person would be classified as someone who loves a movie
+		- $P <= 50\%$ indicated the person would be classified as someone who does not love a movie
+- Using the classification threshold of **50%**, we can classify the training data to create a confusion matrix
+
+## ROC: Main Ideas (Part 2)
+
+- Consider a situation where the classification threshold isn't 50%
+	- This situation is fairly common, especially when dealing with life or death situations
+		- Assume you're trying to classify people with a deadly virus
+		- In this case, it's **essential** that we correctly identify everyone with the virus to minimize the risk of an outbreak, **even if** this results in more **false positives**
+	- Classification thresholds should be modified to reflect the importance and weights of false positives and false negatives
+
+## ROC: Main Ideas (Part 3)
+
+- Depending on whether or not we value false positives or false negatives more, we can increase or decrease the classification threshold as necessary
+	- High classification threshold
+		- Low false positives
+		- High false negatives
+	- Low classification threshold
+		- High false positive
+		- Low false negatives
+
+## ROC: Main Ideas (Part 4)
+
+- Classification threshold of **0**
+	- **0** false negative
+	- **0** true negative
+	- Classifying everyone as someone who loves a movie
+- Classification threshold of **1**
+	- **0** true positive
+	- **0** false positive
+	- Classifying everyone as someone who does not love a movie
+
+## ROC: Main Ideas (Part 5)
+
+- The point of ROC is to avoid having to try and interpret confusion matrices for every single threshold
+	- ROC consolidates every threshold into a single graph, allowing us to choose an ideal threshold for our data
+
+## ROC: Main Ideas (Part 6)
+
+- ROC stands for **Receiver Operating Characteristic** a name that comes from the graphs drawn during WWII that summarized how well radar operators correctly identified airplanes in radar signals
+	- ROC summarizes how well each threshold performs in terms of the **true positive rate** (TPR) and the **false positive rate** (FPR)
+	- Each dot on the ROC graph tells us the TPR and FPR for a specific classification threshold
+		- The higher the dot is along the y- axis, the higher the percentage of actual **positives** were *correctly* classified (TPR/ Sensitivity/ Recall)
+		- The further to the left the dot is along the x- axis, the lower the percentage of actual **negatives** that were incorrectly classified (FPR/ $1-\text{Specificity}$)
+		- The diagonal line shows where $TPR = FPR$
+
+## ROC: Details (Part 1)
+
+- To draw a ROC graph, we start by using a classification threshold of **1** to classify everyone as someone who doesn't like a movie
+	- We derive a confusion matrix from this, which nets us **0** true positives and **0** false negatives
+	- From here, we calculate the TPR and the FPR
+	- We plot the point $(TPR, FPR)$ on the ROC graph
+
+## ROC: Details (Part 2)
+
+- Next, we lower the classification threshold to **.975**
+	- We run through the same steps again
+	- This new point on the ROC graph is above the initial point, showing us that the new threshold *increases* the proportion of **actual positives** that were *correctly* classified (which is good)
+
+## ROC: Details (Part 3)
+
+- Next, we lower the classification threshold to **.965**
+	- We run through the same steps again
+	- This new point on the ROC is above the first two points, showing that the new threshold *increases* the proportion of **actual positives** that were *correctly* classified (which is good)
+
+##  ROC: Details (Part 4)
+
+- We continue doing this until the change in threshold increases the number of **positive** classifications to the point where everyone is classified as **positive**
+
+##  ROC: Details (Part 5)
+
+- After finishing plotting the points from each possible confusion matrix, we connect the dots and add a diagonal line to denote the area where $TPR = FPR$
+- Finally, we are able to use the ROC graph to pick a classification threshold
+	- Depending on whether or not we want to tolerate **false positives** and desire a certain amount of *actual positives*, we can choose specific points on the ROC that tells us which thresholds yield that amount
+- ROC graphs are great at optimizing a classification threshold for a model
+	- Next, we'll discuss the AUC (Area Under the Curve) to compare how one model performs against another
+
+## AUC: Main Ideas
+
+- 159
