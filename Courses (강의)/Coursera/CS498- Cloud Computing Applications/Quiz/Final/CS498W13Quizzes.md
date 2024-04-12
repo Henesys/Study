@@ -11,9 +11,9 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 
 ### Answer
 
-- Paravirtualization
-- Container
 - Full Virtualization
+	- Unmodified OS on a basic processor instead of a host OS makes paravirtualization and containers unsuitable for this task
+	- Full virtualization allows for running multiple guest OS on a single host, including unmodified ones
 
 ## Question 2
 
@@ -23,7 +23,7 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 ### Answer
 
 - Hardware Assisted
-- Paravirtualization
+	- Hardware assisted virtualization provides support from the processor itself, assisting in running guest OS environment efficiently
 
 ## Question 3
 
@@ -32,8 +32,9 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 
 ### Answer
 
-- Hardware Assisted Full Virtualization
 - Containers
+	- Containers are suitable for running multiple independent applications that are sharing the same kernel
+	- They provide lightweight isolation, allowing each application to have its own CPU, memory, filesystem and process space while sharing the same kernel
 
 ## Question 4
 
@@ -42,8 +43,8 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 
 ### Answer
 
-- Containers
 - Full Virtualization
+	- Running two different applications can be achieved through full virtualization, where each application operates within its own VM environment
 
 ## Question 5
 
@@ -51,10 +52,9 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 
 ### Answer
 
-- Supervisor
-- Virtual Machine Manager
 - Host OS (Base OS) Kernel
-- Hypervisor
+	- In container- based systems, the same host kernel is shared among containers and this kernel is responsible for scheduling & memory management
+	- The host OS kernel is responsible for scheduling and memory management among the containers
 
 ## Question 6
 
@@ -63,9 +63,8 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 ### Answer
 
 - Guarantee that the software will always run the same irrespective of environment
-- Send messages from one machine to another
-- Monitor progress of jobs running on OpenStack
-- Run a Java program
+	- Using the `Dockerfile` format and relying on Union filesystem, Docker images downloaded from a hub guarantee specific software environments for deployment
+	- Docker provides a consistent environment for applications to run by encapsulating them along with their dependencies
 
 ## Question 7
 
@@ -74,7 +73,7 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 ### Answer
 
 - True
-- False
+	- Kubernetes provides a platform for automating deployment, scaling and operations of application containers across clusters of hosts
 
 ## Question 8
 
@@ -82,8 +81,8 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 
 ### Answer
 
-- True
 - False
+	- In some situations, user applications running in kernel mode may need to load control registers
 
 ## Question 9
 
@@ -92,7 +91,8 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 ### Answer
 
 - True
-- False
+	- In x86, kernel mode code runs in ring 0, providing privileged access to system resources
+	- User processes in ring 3 run with restricted access
 
 ## Question 10
 
@@ -101,7 +101,7 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 ### Answer
 
 - True
-- False
+	- User applications often need to enter kernel mode to allow the kernel to handle the interrupt on their behalf
 
 ## Question 11
 
@@ -110,7 +110,8 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 ### Answer
 
 - True
-- False
+	- Paravirtualization is a software- only virtualization approach
+	- Xen is a type 1 hypervisor that does not require specific hardware support for virtualization
 
 ## Question 12
 
@@ -118,8 +119,8 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 
 ### Answer
 
-- True
 - False
+	- Binary translation only modifies sensitive instructions
 
 ## Question 13
 
@@ -127,8 +128,9 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 
 ### Answer
 
-- True
 - False
+	- There is only one address space in unikernel and the application can be seen as running in kernel mode the entire time
+	- Unikernels are designed to minimize kernel surface area and typically does not allow user applications to transition to kernel mode directly
 
 ## Question 14
 
@@ -136,8 +138,9 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 
 ### Answer
 
-- True
 - False
+	- Making changes to unikernel requires recompilation
+	- Unikernel normally runs only one application
 
 ## Question 15
 
@@ -145,9 +148,9 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 
 ### Answer
 
-- Having a minimal device model
 - Having a minimal security protection
-- Having a minimal guest kernel configuration
+	- Using minimal device model and kernel configuration can reduce attacker surface of microVM and does not reduce security protection
+	- MicroVMs typically offer strong security protections, stronger than the ones provided by a traditional VM
 
 ## Question 16
 
@@ -155,8 +158,8 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 
 ### Answer
 
-- Container
 - microVM
+	- AWS Lambda and AWS Fargate use microVM for efficient and scalable execution of workloads
 
 ## Question 17
 
@@ -164,6 +167,5 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 
 ### Answer
 
-- First
-- Second 
 - Third
+	- IOMMU (Input Output Memory Management Unit) virtualization was introduced in the 3rd generation, which helps manage memory mappings for I/O devices in virtualizes environments
