@@ -162,4 +162,28 @@
 
 ## AUC: Main Ideas
 
-- 159
+- Comparing multiple models by testing them with the same data and seeing which performed using ROC graphs will quickly become tedious, which will make us run into the same issues as we did with comparing multiple confusion matrices
+	- Thankfully, instead of comparing multiple ROC graphs, we can simply summarize them all by calculating the **area under the curve** (AUC) and comparing them
+- Example
+	- AUC for a logistic regression model is **.9**
+	- AUC for a Naive Bayes model is **.85**
+	- Conclusion
+		- $AUC(LR) > AUC(NB)$, overall, the logistic regression model performs better than the Naive Bayes model with the data
+
+## AUC: FAQ
+
+- Most programming packages have a way to calculate the AUC from the ROC graph, but you can also divide the area into rectangles and triangles if you choose to calculate the AUC manually
+
+## Precision Recall Graphs: Main Ideas (Part 1)
+
+- ROC graphs use the **false positive rate** on the x- axis, which is fine when the data is *balanced*, meaning there are similar numbers of people who love a movie and do not love a movie
+- However, in cases where the data is *imbalanced* (e.g. more people do not love a movie vs. people love a movie), the ROC may be difficult to interpret because the FPR doesn't hover over **0** until the 100% TPR is reached
+	- The ROC graph is essentially creating any model that simply predicts "doesn't like movie" every single time look viable
+	- We can address this using the **precision recall** graphs that attempt to deal with this issue
+		- Another approach to preventing this error would be something like **SMOTE** (Synthetic Minority Oversampling Technique), which addresses class imbalances in classification tasks 
+
+## Precision Recall Graphs: Main Ideas (Part 2)
+
+- A **precision recall** graph replaces the FPR on the x- axis with **precision** and renames the y- axis as **recall**, since TPR is the same thing as recall
+	- With precision as the x- axis, "good" classification thresholds are closer to the right, making it easier to observe a bend where the classification thresholds start outputting false positives
+	- Precision **does not** include the number of **true negatives**, which is why it works better than the FPR for imbalanced data
