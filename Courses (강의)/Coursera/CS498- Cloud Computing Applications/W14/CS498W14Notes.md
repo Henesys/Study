@@ -121,23 +121,178 @@
 
 ### Internal Load Balancing
 
-- X
+- Service Discovery
+	- User defined networks provide DNS service
+		- User defined bridge networks
+		- User defined overlay networks
+	- For most situations, you should connect to the service name directly, which is load- balanced and handled by all containers ("tasks") backing the service itself
+	- To get a list of all tasks backing the service, do a DNS lookup for `tasks.<service-name>`
+- DNS
+	- ![](assets/DNS.png)
+- Internal Load Balancing in Swarm Services
+	- From one service to another
+		- Feature is automatically enabled once a service is created
+	- When a service is created, it gets a virtual IP address immediately on the service's network
+		- When a service is requested, the resulting DNS query is forwarded to the Docker engine, which in turn returns the IP of the service (**virtual IP**)
+		- Traffic sent to that virtual IP is load balanced to all of the healthy containers of that service on the network
+		- All the load balancing is done by Docker since only 1 entry- point is given to the client (1 IP)
 
 ### Routing Mesh & External Load Balancing
 
-- X
+- Swarm Overlay Networks
+	- Recall bridge networks on one host:
+		- Containers connected to the same user defined bridge network effectively expose *all* ports to each other
+		- For a port to be accessible to containers or non- Docker hosts on different networks, that port must be *published* using the `-p` or `--publish` flag
+	- On a multi- host Docker Swarm:
+		- Swarm services connected to the same overlay network effectively expose all ports to each other
+		- For a port to be accessible outside of the service, that port must be *published* using the `-p` or `--publish` flag
+	- By default, swarm services which publish ports do so using the **routing mesh**
+- Docker Swarm Routing Mesh
+	- By default, swarm service which publish ports do so using the routing mesh
+	- When you connect to a published port on any swarm node (**whether it is running a given service or not**), you are redirected to a worker which is running that service, transparently
+		- Effectively, Docker acts as a *load balancer* for your swarm services
+	- Services using the routing mesh are running in *virtual IP (VIP)* mode
+- Published Ports
+	- When you create a swarm service, you can publish that service's ports to hosts *outside* the swarm
+	- Routing Mesh
+		- ![](assets/RoutingMesh.png)
+- Ingress Overlay Network
+	- The **ingress** network plays an important role in enabling published ports over the swarm
+		- When you create a swarm service and do not connect it to a user defined overlay network, it connects to the ingress network by default
+	- For a port to be accessible **outside** of the swarm service, it must be *published* using the `-p` or `--publish` flag on `docker service create` or `docker service update`
+	- Map TCP `port 80` on the service to TCP `port 8080` on the routing mesh and map UDP `port 80` on the service to UDP `port 8080` on the routing mesh
+		- `-p 8080:80/tcp -p 8080:80/udp`
+		- `-p published=8080, target=80, protocol=tcp`
+		- `-p published=8080, target=80, protocol=udp`
+- External Load Balancing in Swarm Services
+	- ![](assets/ExternalLoadBalancing.png)
+- External Load Balancer
+	- ![](assets/ExternalLoadBalancer.png)
+- Example: HAProxy Configuration
+	- ![](assets/HAProxy.png)
+- External Load Balancing w/o Routing Mesh
+	- Set `--endpoint-mode` to `dnsrr`
+		- Default Value: `vip`
+	- No longer a single virtual IP (VIP)
+	- Docker sets up DNS entries for the service such that a DNS query for the service name returns a list of IP addresses
+		- Client connects directly to one of these
+	- You are responsible for providing the list of IP addresses and ports to your load balancer
+- Routing Mesh
+	- When you publish a service port, the swarm makes the service accessible at the target port on every node
+		- Regardless of whether there is a task for the service running on that node or not
+	- This is less complex and is the right choice for many types of services
+- Host Mode
+	- You can publish a service task's port directly on the swarm node where that service is running
+		- Bypasses the routing mesh
+		- Provides the maximum flexibility, including the ability to develop custom routing framework
+	- However, you are responsible for keeping track of where each task is running and routing requests to the tasks & load balancing across the nodes
+		- Use the `mode=host` option to the `--publish` flag
 
 ### Volumes
 
-- X
+- Data Volumes
+	- Docker containers are based on Unionfs
+		- Multiple immutable (read- only) base layers
+		- One read- write container- specific layer
+	- When a container is removed, the top layer is also removed
+	- To persist changes and to access data outside the container, we need to mount an external storage location
+	- Types of host to container mapping:
+		- Bind Mount
+		- Volume
+		- `tmpfs`
+- `tmpfs`
+	- `tempfs` mounts are best used for cases when you do not want the data to persist either on the host machine or within the container for security reasons or to protect the performance of the container when your application needs to write a large volume of non- persistent state data
+- Persistent Data Storage: Bind Mount
+	- When you use a bind mount, a file or directly on the *host machine* is mounted into a container
+		- ![](assets/BindMount.png)
+	- The file or directly is referenced by its absolute path on the host machine
+- Docker Volume
+	- Persistent storage **abstraction**
+	- Managed by Docker
+	- Will last after the container is removed
+	- Different drivers
+		- Volume drivers let you store volumes on remote hosts or cloud providers, to encrypt the contents of volumes or to add other functionality
+		- For local deployments, use `local` driver
+	- For distributed applications (Swarm)
+		- Use an NFS and `local` driver
+		- Some drivers support writing files to an external storage system like NFS or S3
+			- REX-Ray, CloudStor
+			- `vieux/sshfs` volume drive
+- Example: Mount Volumes
+	- ![](assets/MountVolumes.png)
 
 ### Secrets & Configs
 
-- X
+- Docker Secrets (Part 1)
+	- A secret is a "blob" of data
+		- e.g. passwords, SSH private keys, SSL certificate
+	- Should not be transmitted over a network or stored unencrypted in a Dockerfile or in your application's source code
+	- Use Docker *secrets* to centrally manage
+	- Docker secrets are only available to Swarm services, not to standalone containers
+- Docker Secrets CLI
+	- `docker secret create`
+	- `docker secret inspect`
+	- `docker secret ls`
+	- `docker secret rm`
+	- `--secret` is a flag for `docker service create`
+	- `--secret-add` and `--secret-rmn` are flags for `docker service update`
+- Docker Secrets (Part 2)
+	- When you grant a newly- created or running service access to a secret, the ***decrypted*** secret is mounted into the container in an in- memory filesystem
+	- Location of the mount point *within* the container defaults to:
+		- Linux Containers
+			- `/run/secrets/<secret_name>`
+		- Windows Containers
+			- `C:\ProgramData\Docker\secrets`
+- Docker Configs
+	- Docker secrets are only available to Swarm services, not to standalone containers
+	- Docker configs are only available to Swarm services, not to standalone containers
+	- Configs operate in a similar way to secrets, except that they are not encrypted at rest and are mounted directly into the container's filesystem without the use of RAM disks
+- Docker Config CLI
+	- `docker config create`
+	- `docker config inspect`
+	- `docker config ls`
+	- `docker config rm`
 
 ### Compose & Stacks
 
-- X
+- Infrastructure as Code
+	- Imperative
+		- Tells the system exactly how to do things
+			- `$ docker network create -d overlay my-network`
+			- `$ docker container create --name web-service --publish 80:80 -network my-network nginx:latex`
+	- Declarative
+		- Describes to the system what you want accomplished
+- Docker Compose
+	- Main tool by Docker for container orchestration
+	- Uses YAML by default
+	- Default file name is `docker-compose.yml`
+	- Declarative
+		- You tell `docker-compose` what your implementation looks like and it figures out the operations needed to make it happen
+- Imperative vs. Declarative
+	- ![](assets/ImperativeDeclarative.png)
+- Compose Specification
+	- Compose Application Model
+		- Formalizes many of the concepts we've covered in this course
+			- Service
+			- Network
+			- Volume
+			- Config
+	- [Compose](https://github.com/compose-spec/compose-spec/blob/master/spec.md)
+- Compose
+	- The most basic deployment model is `docker-compose`, running in one machine and deploying multiple containers
+	- Docker Swarm is the distributed multi- host extension
+		- Same compose specifications
+- Compose Versions
+	- Version 1
+		- Only for single host deployment
+		- No volumes, networks and build arguments
+	- Version 2
+		- Support for volumes, networks and build arguments added
+		- `depends-on` to indicate startup order
+	- Version 3
+		- Targets both single host (`docker-compose`) and Swarm mode stacks
+		- Added `docker secrets`
+	- [Compose Documentation](https://docs.docker.com/compose/compose-file/compose-versioning)
 
 ### Example: 3- Tier Architecture in Swarm
 
