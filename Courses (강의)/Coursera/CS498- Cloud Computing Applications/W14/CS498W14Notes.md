@@ -296,8 +296,83 @@
 
 ### Example: 3- Tier Architecture in Swarm
 
-- X
+- Example: HAProxy Config
+	- ![](assets/LoadBalancer.png)
+	- ![](assets/HAProxy.png)
+- Front- End Web App Service
+	- ![](assets/FrontEndArchitecture.png)
+	- ![](assets/FrontEndWebApp.png)
+- Application Service
+	- ![](assets/ApplicationServiceArchitecture.png)
+	- ![](assets/ApplicationService.png)
+- Cache Service
+	- ![](assets/CacheArchitecture.png)
+	- ![](assets/CacheService.png)
+- Back- End Database Service
+	- ![](assets/DatabaseArchitecture.png)
+	- ![](assets/BackEndDatabase.png)
+- Volumes
+	- ![](assets/VolumeArchitecture.png)
+	- ![](assets/Volume.png)
+- Configs & Secrets
+	- ![](assets/ConfigArchitecture.png)
+	- ![](assets/ConfigsSecrets.png)
+- Networks
+	- ![](assets/NetworkArchitecture.png)
+	- ![](assets/Networks.png)
 
 ### Compose Stacks on AWS ECS & Azure ACI
 
-- X
+- AWS Elastic Container Service (ECS)
+	- Fully managed container orchestration service
+	- Containers either run on customer- managed EC2 instances or on AWS Fargate
+	- Fargate
+		- Serverless backend for container deployment
+		- AWS manages resource provisioning for container instances
+	- Services such as Amazon SageMaker and Lex internally run ECS
+- ECS Task Definition
+	- The Docker image to use with each container in your task
+	- How much CPU and memory to use with each task or each container within a task
+	- Launch type to use, which determines the infrastructure on which your tasks are hosted
+	- Docker networking mode to use for the containers in your task
+	- Logging configuration to use for your tasks
+	- Whether the task should continue to run if the container finishes or fails
+	- Command the container should run when it is started
+	- Any data volumes that should be used with the containers in the task
+	- The IAM role that your tasks should use
+- Example: AWS ECS Task Definition
+	- ![](assets/ECSTaskDefinition.png)
+- Service Discover: AWS Cloud Map
+	- ![](assets/CloudMap.png)
+- User Docker Compose File Syntax in ECS
+	- `ecs-cli compose` and `ecs-cli compose service` allows you to create task definitions & manage your AWS ECS tasks using Docker Compose files
+	- Additional ECS parameters specified for the container size parameters in a separate YAML file
+- Example: File Syntax
+	- ![](assets/DockerComposeFileSyntax.png)
+- Docker AWS ECS Context
+	- Directly use Docker
+		- Set up an AWS context in one Docker command
+			- `$ docker context create ecs myecscontext`
+		- Use Compose files
+			- `--context myecscontext`
+			- `docker compose up --context myecscontext`
+	- Docker translates the Compose application to the CloudFormation template
+- Native AWS Services
+	- ECS cluster for the `compose` application
+		- ![](assets/NativeAWS.png)
+	- Uses the default VPC
+		- A security group per network in the Compose file on the AWS account's default VPC
+		- Load balancer routes traffic to the services
+	- Service Discovery
+		- Service- to- service load balancing is handled by AWS Cloud Map
+	- Volumes are handled by instantiating EFS filesystems
+	- Secrets are handled by AWS Secrets Manager
+- Docker Integration with Azure
+	- Docker is also integrated with Azure Container Instances
+		- `$ docker login azure`
+		- `$ docker context create aci myacicontext`
+		- `$ docker --context myacicontext run -p 80:80 nginx`
+	- Volumes `-->` Azure File Share
+	- Port Mapping `-->` Only symmetrical mapping of `80:80`
+	- Networks are not supported (as of 2021)
+		- Communication between services is implemented by defining mapping for each service in the shared `/etc/hosts` file of the container group
