@@ -77,7 +77,39 @@
 
 ### Gradient Descent for Multiple Linear Regression
 
-- X
+- Vector Notation
+	- $\overrightarrow{w} = [w_1 ... w_n]$
+	- $b$, still a number
+	- Model
+		- $f_{\overrightarrow{w}, b}(\overrightarrow{x}) = \overrightarrow{w} \cdot \overrightarrow{x} + b$
+	- Cost Function
+		- $J(\overrightarrow{w}, b)$
+	- Gradient Descent
+		- `repeat{`
+			- $w_j = w_j - \alpha \frac{d}{dw_j}J(\overrightarrow{w}, b)$
+			- $b = b - \alpha \frac{d}{db}J(\overrightarrow{w}, b)$
+		- `}`
+- Updated Gradient Descent for Multivariate Regression
+	- $n$ features ($n >= 2$)
+	- Simultaneously update $w_j \: (for \: j = 1 ... n) \: \text{and b}$ 
+		- `repeat{`
+			- $w_1 = w_1 - \alpha \frac{1}{m} \sum_{i = 1}^{m} f_{\overrightarrow{w},b}(\overrightarrow{x}^i - y^i)x_1^i$
+				- Until $j = n$
+			- $b = b - \alpha \frac{1}{m} \sum_{i = 1}^{m} f_{\overrightarrow{w},b}(\overrightarrow{x}^i - y^i)$
+		- `}`
+		- Note
+			- $\frac{1}{m} \sum_{i = 1}^{m} f_{\overrightarrow{w},b}(\overrightarrow{x}^i - y^i)x_1^i$
+			- $\frac{d}{dw_1}J(\overrightarrow{w}, b)$
+- Alternatives to Gradient Descent
+	- Normal Equation
+		- **Only** for linear regression
+		- Solve for $w, b$ without iterations
+	- Disadvantages
+		- Doesn't generalize to other learning algorithms (only linear regression)
+		- Slow when number of features is large (> 10,000)
+	- Notes
+		- No one should be trying to implement this by hand, chances are the machine learning library you're using may be using the normal equation for linear regression implementations to solve for $w$ and $b$
+		- Gradient descent is generally preferred in the real world since it has fewer restrictions compared to the normal equation
 
 ## Gradient Descent in Practice
 
