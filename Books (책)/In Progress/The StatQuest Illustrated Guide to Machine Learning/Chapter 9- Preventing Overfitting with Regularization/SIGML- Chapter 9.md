@@ -76,4 +76,83 @@
 
 ## Ridge/ Squared/ L2 Regularization: FAQ
 
-- 173
+- "Can ridge regularization ever make things worse?"
+	- In theory, as long as you try setting $\lambda = 0$, when you're searching for the best value for $\lambda$, ridge regularization can never perform worse than finding the line that minimizes the SSR
+- "How do we find the optimal parameters using ridge regularization?"
+	- When we only have one slope to optimize, one way to find the line that minimizes both the SSR and the ridge penalty is to use **gradient descent**
+	- However, as we progress to more and more complicated models or for **lasso regularization (least absolute shrinkage and selection operator)** tasks, we have to use **regularization paths** to determine the optimal parameters
+
+## Lasso/ Absolute Value/ L1 Regularization: Details (Part 1)
+
+- Lasso Regularization (Least Absolute Shrinkage and Selection Operator)
+	- Alternate Names
+		- L1 Regularization
+		- Absolute Value Regularization
+		- Manhattan Distance
+	- Replaces the square used in the **ridge penalty** with the **absolute value**
+		- $\text{Lasso Penalty} = SSR + \lambda * |slope|$
+- Example
+	- Line 1 is a line that fits the training data perfectly
+		- $\text{Lasso Penalty} = 0 + 1 * |1.3| = 1.3$
+		- Lasso score for line 1 is **1.3**
+	- Line 2 is a line that does *not* fit the training data perfectly
+		- $\text{Lasso Penalty} = .4 + 1 * |.6| = 1.0$
+		- Lasso score for line 2 is **1.0**
+	- Conclusion
+		- Since $1.0 < 1.3$, we pick line 2
+
+## Lasso/ Absolute Value/ L1 Regularization: Details (Part 2)
+
+- The difference between ridge and lasso regularization is that ridge regularization can *only* shrink the parameters to be *asymptotically close* to **0**
+	- Lasso regularization **can** shrink parameters to **0**
+- Example
+	- In our previous example using ridge regularization, we were able to mitigate the role of color in predicting someone's height, but was **unable to completely get rid of its influence**
+	- Lasso regularization can make the slope of the color variable equal **0**, resulting in a model that simply doesn't include color in its prediction of height
+- Notes
+	- Lasso regularization tends to work better when there are extraneous variables that have little impact on predicting an outcome
+	- Ridge regularization works better when most of the variables being used in the model are useful
+	- Ridge and lasso regularization are frequently combined together to address each other's shortcomings
+
+## Ridge vs. Lasso Regularization: Details (Part 1)
+
+- Breakdown of why lasso regularization can set parameter values to **0** and why ridge regularization cannot
+	- Plot ridge score and corresponding slope of the horizontal line (**0**) on a graph that has $SSR + \lambda * slope^2$ on the y- axis and the slope on the x- axis
+
+## Ridge vs. Lasso Regularization: Details (Part 2)
+
+- Increase the slope, set $\lambda = 0$ and plot
+- Repeat until we get a curve on the graph where $SSR + \lambda * slope^2$ is on the y- axis and the slope on the x- axis
+
+## Ridge vs. Lasso Regularization: Details (Part 3)
+
+- Assume that the value for the slope that minimizes the ridge penalty is **.4**
+- Now calculate the $SSR + \lambda * slope^2$ again but with $\lambda = 10$
+- Overlaying this graph over the previous curve and assume that we can see that the slope that minimizes this particular ridge penalty is slight **less than .4**
+
+## Ridge vs. Lasso Regularization: Details (Part 4)
+
+- The comparison between the first and second plots will reveal that an increase in $\lambda$ will result in an increase in the ridge penalty, resulting in a smaller slope
+	- The plot with a larger $\lambda$ has a minimum whose slope value is closer to **0**
+- We can start experimenting with larger and larger $\lambda$ values and overlay the plots on the same graph that was used earlier
+
+## Ridge vs. Lasso Regularization: Details (Part 5)
+
+- Notes
+	- When we calculate $SSR + \lambda + slope^2$, we get curves for different values for the slope
+	- As we increase the $\lambda$, the lowest point in the curve corresponds to a slope value *closer* to **0**, but not quite **0** (asymptotic relationship)
+- Next, we'll try the same process, but with **lasso penalty** instead of **ridge penalty**
+
+## Ridge vs. Lasso Regularization: Details (Part 6)
+
+- We plot points on a graph with $SSR + \lambda * |slope|$ on the y- axis and the slope values on the x- axis
+- Repeated overlays on the graph reveals that at $slope = 0$, there's a "dent" that appears the curve that becomes more and more prominent as $\lambda$ increases
+- Eventually, $\lambda$ reaches a certain point where the dent itself becomes the minimum of the curve, which is also the point where the slope value is **0**
+	- This confirms the fact that lasso regularization can indeed reach a value of **0** in a parameter that's being optimized
+
+## Ridge vs. Lasso Regularization: Details (Part 7)
+
+- Notes
+	- When we increase the $\lambda$ for ridge regularization, the optimal value of the slope shifts *towards* **0** without every reaching it while maintaining a **parabolic shape**
+		- The optimal slope is *never* **0** itself
+	- In contrast, when we increase the lasso penalty (absolute value, L1 penalty), the optimal value for the slope shifts *towards* **0** and eventually reaches it by creating a **dent**
+		- **0** ends up being the optimal slope
