@@ -96,28 +96,124 @@
 
 ## Building a Classification Tree: Step- by- Step (Part 7)
 
-- 195 XXXXXXXXXXXXXXXXXXXXXXXXX
+- Calculate the Gini Impurity values for each average age
+	- Example
+		- If the first average age is **9.5**, **9.5** is the threshold for splitting the rows into **2** leaves
+			- $Age < 9.5$ `--> (Y/N)`
+			- The total Gini Impurity at this point would be the following:
+				- $GI = (\frac{1}{1+6})* 0.0 + (\frac{6}{1+6}) * .5 = .429$
+				- The total Gini Impurity is **.429**
+	- Repeat this process until we end up with a Gini Impurity for each potential threshold for age
+		- Identify the thresholds that yield the **lowest** impurities 
+		- If there's a tie you can pick either one for the root
 
 ## Building a Classification Tree: Step- by- Step (Part 8)
 
-- 196
+- To recap, our initial goal for all of this was to determine whether we should about "Loves Popcorn", "Loves Soda" or "Age" at the root of our tree
+	- We calculated the Gini Impurity for each feature and arrive to the conclusion that "Loves Soda" yields the lowest Gini Impurity, so we'll ask about it at our root
 
 ## Building a Classification Tree: Step- by- Step (Part 9)
 
-- 197
+- After setting "Loves Soda" at the root of the tree, we start by filtering the branches of the tree based on whether or not someone does love soda or does not love soda
+- From there, we distinguish the nodes further by determining whether or not someone loves or doesn't love a movie
+- If a node is impure, we calculate the Gini Impurity for that specific leaf
+	- Note that we calculate the Gini Impurities of the node of people who "Loves Soda" based on **all** the other independent variables, "Loves Popcorn" and "Age"
 
 ## Building a Classification Tree: Step- by- Step (Part 10)
 
-- 198
+- If you split the training data based on whether or not someone loves soda and end up with **3** people who respond "No" **and** find that all **3** of them do *not love a movie*, you end up with a **leaf** since the node is pure and there's no point in splitting up the node even further into smaller groups
+- In the case of where you end up with an impure node, you calculate the Gini Impurity based on all of the other independent variables and select the variable which yields the lowest Gini Impurity
+	- Once the variable has been selected, we add that variable to our original tree
+	- If the variable that we selected yields a Gini Impurity of **0**, which indicates the the nodes are *pure*, the addition of these nodes to the original tree will automatically result in them being considered **leaves**
 
 ## Building a Classification Tree: Step- by- Step (Part 11)
 
-- 199
+- We've successfully created a tree from our training data
+	- Now, we need to assign output values for each leaf
+		- (e.g. "Does Not Love Movie", "Loves Movie")
+- After assigning output values to each leaf, we've finished building a **classification tree**
 
 ## Building a Classification Tree: Step- by- Step (Part 12)
 
-- 200
+- The tree that we built is not without its own problems
+	- With so few data points residing in some of the leaves, it's difficult to have confidence that the tree will do a great job making predictions with future data
+- There are two main ways to address this issue:
+	- Pruning
+		- Which won't be covered in this book
+		- Technique used specifically in the context of decision trees and neural networks to reduce the size of the model by removing parts of it
+	- Putting limits on how the tree will grow
+		- e.g. Requiring 3 or more people per leaf, which may result in impurity but also potentially increase the accuracy of our predictions
+		- Note that we don't know in advance if it's better to require 3 people per leaf, so we use cross validation to achieve that number
+		- Also note that despite the leaf being impure, you can still generate an output value through using the majority
 
 ## Building a Classification Tree: Summary
 
-- 201
+- We use the Gini Impurity to select an independent variable for the root of our tree from the entire training data
+- In cases of impure nodes, we use the non- selected independent variables and calculate their respective Gini Impurities, selecting the variable that yields the lowest impurity as our next node
+- Finally, we select output values for each leaf by picking the categories with the highest counts (majority)
+
+## Regression Trees: Main Ideas (Part 1)
+
+- The Problem
+	- We have a training dataset consisting of drug effectiveness for different doses and fitting a straight line to the data would result in terrible predictions because there are *clusters* of ineffective doses that surround the effective doses
+- A Solution
+	- We can use a **regression tree** that can handle all types of relationships and data to make decisions
+		- However, in contrast to our classification tree, our regression tree has an output that is a *continuous* value (Drug Effectiveness)
+	- Thankfully, the overall ease in interpreting the tree itself doesn't change too much
+
+## Regression Trees: Main Ideas (Part 2)
+
+- In our example, the regression tree makes good predictions since each leaf corresponds to a different cluster in our graph
+	- This results in a relatively easy way to ensure that points in our graph are being interpreted correctly in our regression tree
+
+## Building a Regression Tree: Step- by- Step (Part 1)
+
+- 205
+
+## Building a Regression Tree: Step- by- Step (Part 2)
+
+- 206
+
+## Building a Regression Tree: Step- by- Step (Part 3)
+
+- 207
+
+## Building a Regression Tree: Step- by- Step (Part 4)
+
+- 208
+
+## Building a Regression Tree: Step- by- Step (Part 5)
+
+- 209
+
+## Building a Regression Tree: Step- by- Step (Part 6)
+
+- 210
+
+## Building a Regression Tree: Step- by- Step (Part 7)
+
+- 211
+
+## Building a Regression Tree: Step- by- Step (Part 8)
+
+- 212
+
+## Building a Regression Tree: Step- by- Step (Part 9)
+
+- 213
+
+## Building a Regression Tree with Multiple Features (Part 1)
+
+- 215
+
+## Building a Regression Tree with Multiple Features (Part 2)
+
+- 216
+
+## Building a Regression Tree with Multiple Features (Part 3)
+
+- 217
+
+## Building a Regression Tree with Multiple Features (Part 4)
+
+- 218
