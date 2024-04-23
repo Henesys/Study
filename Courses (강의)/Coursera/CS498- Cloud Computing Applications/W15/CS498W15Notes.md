@@ -199,12 +199,75 @@
 
 ### Kubernetes- Networking Model
 
-- X
+- Virtual IPs & Service Proxies
+	- Every node in a Kubernetes cluster runs a `kube-proxy`
+	- `kube-proxy` watches the Kubernetes control plane for the addition and removal of service & endpoint objects
+	- `kube-proxy` is responsible for implementing a form of virtual IP for services
+		- User Space Proxy Mode
+		- `iptables` Proxy Mode
+		- IPVS Proxy Mode
+- User Space Proxy Mode
+	- ![](assets/UserSpace.png)
+- `iptables` Proxy Mode
+	- ![](assets/iptables.png)
+- IPVS Proxy Mode
+	- ![](assets/IPVS.png)
+- Networking
+	- Every pod has its own IP address
+		- You do not need to explicitly create links between pods
+		- You almost never need to deal with mapping container ports to host ports
+	- Kubernetes assumes that pods can communicate with other pods, regardless of which host they land on
+	- "Why not round robin DNS?"
+		- Some DNS do not respect TTL (time to live)
+		- Apps *have* to respect TTL
+		- Low or zero TTLs on DNS records could impose a high load on DNS
 
 ### Kubernetes- Service Discovery & Ingress
 
-- X
+- Two Primary Modes of Discovering Services
+	- Environment Variables
+		- When a pod is run on a node, the kubelet adds a set of environment variables for each active service
+			- For example, the service `redis-master` which exposes TCP `port 6379` and has been allocated cluster IP address `10.0.0.11`, produces the following environment variables:
+				- ![](assets/redis-master.png)
+	- DNS
+		- A cluster- aware DNS server such as CoreDNS watches the Kubernetes API for new services and creates a set of DNS records for each one
+- Publishing Services
+	- For some cases (e.g. frontends), you can expose a service onto an external IP address outside of the cluster
+	- `ClusterIP` (Default)
+		- Exposes the service on a cluster- internal IP
+		- Service is only reachable from within the cluster
+	- `NodePort`
+		- Exposes the service on each node's IP at a static port
+		- Contact the `NodePort` service from outside the cluster by requesting `<NodeIP>:<NodePort>`
+			- Each node proxies that port (the same port number on every node) into your service
+		- A `ClusterIP` service is automatically created
+	- `LoadBalancer`
+		- Exposes the service externally using a cloud provider's load balancer
+			- `NodePort` and `ClusterIP` services are automatically created
+	- `ExternalName`
+		- Maps the service to the contents of the `externalName` field (e.g. `foo.bar.example.com`) by returning a CNAME record with its value
+			- No proxying of any kind is set up
+- Ingress
+	- ![](assets/IngressOverview.png)
+	- An API object that manages external access to the services in a cluster, typically HTTP
+		- Ingress exposes HTTP and HTTPS routes from outside the cluster to services within the cluster
+		- Exposing services other than HTTP and HTTPS to the internet typically uses a service of type:
+			- `Service.Type=NodePort` or
+			- `Service.Type=LoadBalancer`
+	- Ingress may provide externally reachable URLs, load balancing, SSL termination and name- based virtual hosting
+- Example: Ingress
+	- ![](assets/Ingress.png)
+- Context- Based Routing
+	- ![](assets/ContextBasedRouting.png)
 
 ### Kubernetes- Final Thoughts
 
-- X
+- Comparing Docker Swarm & Kubernetes
+	- ![](assets/DockerSwarmKubernetes.png)
+- Helm
+	- Package manager for Kubernetes
+	- Writing and maintaining Kubernetes YAML manifests for all the required Kubernetes objects can be time consuming
+	- Helm charts are Kubernetes YAML manifests combined into a single package that can be advertised to your Kubernetes clusters
+		- Helm deploys charts, which can be thought of as a packaged application
+		- Helm is the K8s equivalent of `yum` or `apt`
+	- It is a collection of all your versioned, pre- configured application resources which can be deployed as one unit
