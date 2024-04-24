@@ -168,27 +168,45 @@
 
 ## Building a Regression Tree: Step- by- Step (Part 1)
 
-- 205
+- We want to build a regression tree that uses drug dose to predict drug effectiveness
+- Similar to classification trees, we need to decide what goes into the root of our tree
+	- To make that decision, we calculate the average of the first **2** doses (which is **3**) and build a simple tree that splits the measurements into **2** groups based on whether or not the $dose < 3$
+		- Only one point has $dose \leq 3$ and its average effectiveness is **0**
+			- We put **0** in the leaf on the left
+		- All the other points have a $dose \geq 3$ and their average effectiveness is **38.8** so we put **38.8** in the leaf on the right
 
 ## Building a Regression Tree: Step- by- Step (Part 2)
 
-- 206
+- The simple regression tree is able to make a good prediction for the point with $dose \leq 3$, which has an effectiveness of **0**
+	- In contrast, for a point whose $dose \leq 3$ and has an effectiveness of **100**, the tree predicts that the effectiveness will be **38.8**, which is not ideal
+- We need to *visualize* how good or bad the regression tree is at making predictions by drawing the residuals directly
+	- The residuals will quantify how good or bad the predictions are by calculating the SSR
+- After calculating for the SSR, we can compare the SSR for different thresholds by plotting them on the graph, which has drug dose on the x- axis and the SSR on the y- axis
 
 ## Building a Regression Tree: Step- by- Step (Part 3)
 
-- 207
+- Shift the dose threshold to be the average of the *second* and *third* measurements in the graph, which is **5** in our example
+	- Once again, we build a simple tree with $dose < 5$ as the root
+	- After calculating for the SSR in our example, we see that the SSR for $dose < 5$ is less than the SSR for $dose < 3$
+		- Since our goal is to minimize the SSR, $dose < 5$ is the better threshold
 
 ## Building a Regression Tree: Step- by- Step (Part 4)
 
-- 208
+- We continue this process for other points/ thresholds in our data
+	- We stop until we've reached the threshold all the way to the last pair of doses
 
 ## Building a Regression Tree: Step- by- Step (Part 5)
 
-- 209
+- In our example, $dose < 14.5$ yielded the smallest SSR, making it the root of our tree
+	- This corresponds to splitting the measurements into two groups based on whether or not the $dose < 14.5$
+	- *In theory*, after dividing the data based on the criteria set by the root, we could further subdivide the measurements into smaller groups by repeating what we did earlier
 
 ## Building a Regression Tree: Step- by- Step (Part 6)
 
-- 210
+- Even though *in theory* we could subdivide initially separated measurements into smaller groups, when we do so, we end up with a single measurement in the leaf on the right (for our example) because there is only one measurement with a $11.5 < dose < 14.5$
+	- Making a prediction based on a single measurement suggests that the tree is **overfitting** to the training data and may not perform well with future data
+	- A way to avoid this issue is to **only** split measurements when there are more than some arbitrary minimum number (e.g. **20**)
+		- In our example, we'll set the minimum value as **7** given the small nature of the data
 
 ## Building a Regression Tree: Step- by- Step (Part 7)
 
