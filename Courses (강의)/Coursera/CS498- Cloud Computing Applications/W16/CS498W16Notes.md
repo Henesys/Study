@@ -7,11 +7,152 @@
 
 ### Future Developments in the Cloud
 
-- X
+- "What does the future look like?"
+- 1: Adoption of Cloud Computing
+	- By the end of 2019, more than 30% of technology providers' new software investments will shift from cloud- first to cloud- only
+		- Gartner Forecast for Public Cloud Revenue (November 2019)
+	- By 2022, up to 60% of organizations will use an external service provider's cloud managed service offering
+		- Doubles the percentage of organizations from 2018
+	- Annual Growth Rate
+		- Comparison of Compound Annual Growth Rates (CAGRs) of cloud service offerings reveal a positive trend that shows no signs of slowing down
+	- Revenue Forecast
+		- The same is true for the revenue forecast of worldwide public cloud service offerings (2018 to 2022)
+- 2: Global Clouds
+	- More systems will be able to operate seamlessly across multiple locations
+	- More data centers will be deployed across the world
+	- World- scale distributed systems will be more commonplace
+		- e.g. Google Spanner
+	- Organic cloud providers in other countries will emerge
+		- e.g. Tencent Cloud, Alibaba Cloud
+- 3: Cloud in Regulated Industries
+	- Sectors like energy, financial/ banking and telecommunications industry will start to enter the cloud ecosystem
+		- IDC Forecast
+			- Professional service, discrete manufacturing and banking will account for more than one third of all public cloud services spending
+	- Regulations such as the European Union General Data Protection Regulation (GDPR) will place restrictions on where customer data can be stored
+		- Unique contracts with cloud storage providers
+		- Privacy regulations, data retention, breaching response and data ownership will be widely debated
+- 4: Increased Storage Capacity
+	- SSDs will continue to increase market share and dominate ($150 / TB)
+	- HDD will continue to be the backend for cloud storage ($30 / TB)
+		- Enterprise- Class Nearline
+			- Low cost, high capacity, 24 x 7 reference/ backup role
+	- Magnetic tape cold storage technologies will continue to improve ($10 / TB)
+- 5: AI Support with Cloud
+	- AI is an industry that will grow more rapidly than cloud
+		- Big Data Analytics
+			- CAGR: 10% ~ 12%
+		- Cloud
+			- CAGR: 20% ~ 25%
+		- AI
+			- CAGR: 35% ~ 55%
+	- Cloud computing is essential for the growth of AI
+		- Most types of hardware do not have the capabilities to run AI applications efficiently
+		- AI relies on big data processing to improve its services through machine learning
+	- AI can be used to operate and manage cloud computing
+		- Symbiotic relationship
+	- Digital transformation
+- 6: GPUs in the Cloud & Data Center Accelerator
+	- The data center accelerator market was valued at 1.6 billion USD in 2017 and is expected to reach 21.19 billion USD by 2023 at a CAGR of 49.47%
+	- The growing demand for AI in HPC data centers is driving the market growth
+	- CPU, GPU, FPGA & ASIC
+		- Market for FPGA is expected to grow at the highest CAGR during the forecast period
+		- Growth can be attributed to the increasing adoption of FPGAs for the acceleration of enterprise workloads
+	- Cloud gaming market will likely exceed 8 billion USD by 2025
+		- Video streaming segment in cloud gaming market is anticipated to attain a growth rate of over 25% from 2019 to 2025
+- 7: Future of Cloud Computing Access is Mobile
+	- Flexibility is demanded by the mobile workforce
+		- Cloud- Based Applications `-->` Anywhere, Anytime Access
+	- Mobile networks are becoming faster
+		- 5G `-->` 1 ~ 3 Gbps `-->` 10 Gbps?
+	- Global Device & Connection Growth (CISCO)
+- 8: Rise of FaaS
+	- FaaS will be adopted more and more
+		- API- Based Enterprises
+		- Microservices
+	- FaaS Market Size
+		- 3.33 billion USD in 2018
+		- To reach 31.53 billion USD by 2026 at CAGR of 32.3%
+- 9: Low- Code/ No- Code Applications in the Cloud (Citizen Development)
+	- Microsoft predicts the creation of 500 million new apps in 2020 ~ 2025
+		- 450 with low- code/ no- code tools
+		- 1 million developer shortfall in the US alone
+	- New Cloud Battleground
+		- AppSheet `-->` Google Cloud, Integration with G- Suite
+		- Microsoft PowerApps (Power Platform)
+			- Integration with Microsfot
+		- Betty Blocks
+		- FileMaker `-->` Apple
+		- Quick Base
+		- Unqork `-->` Financial Sector
+	- Better agility, reduced costs, higher productivity
+	- Visual interface is the key to the power of no- code platforms
+	- Model- driven, declarative, template- based applications
+		- Back Office (Database)
+			- Functionality to administer your business data for internal use
+		- Portals & Web Applications
+			- Bridges the gap between your back and front office, when your applications need to be used publicly
+		- Mobile Applications
+- 10: Increased Adoption, Increased Risk
+	- Security Breaches
+		- 2018 Gartner survey of 110 senior executives at large global organizations found that cloud computing was the top security concern
+	- Shared Security Model
+		- Through 2022, at least 95% of cloud security failures will be caused by organizations/ end users
+	- Threats
+		- Reduced visibility & control
+		- Vulnerabilities in management APIs
+		- Multi- tenant data leakage due to failure of separation control
+		- Incomplete data deletion
+		- Stolen credentials
+		- Insider abuse
+- 11: IoT & Cloud
+	- IoT was valued at 164 billion USD in 2018 and is expected to grow at a CAGR of 38.62% by 2025
+	- Rapid adoption of cloud- based IT solutions is a key driver of IoT's growth during the forecast period
+	- With the emergence of big data analytics & the need to manage large quantities of data generated by internet- enabled devices, the data management IoT solution is expected to hold the largest market share in terms of revenue
+- 12: Hybrid/ Multi/ Omni Cloud
+	- Containers will become mainstream
+	- More standardization across many cloud providers
+	- IaaS
+	- Containers/ Kubernetes
+		- Container orchestrator is the fabric enabling applications to extend across disparate cloud architecture
+	- Google Anthos
+		- Kubernetes
+		- GKE On- Prem
+			- Kubernetes based software platform that's consistent with GKE
+			- Customers can deploy this on any compatible hardware and Google will manage the platform
+		- Istio
+			- Federated network management across the platform
+- 13: Demand for Cloud Professionals
+	- According to the Bureau of Labor Statistics, employment of computer & IT occupations is projected to growth 13% from 2016 to 2026, which is faster than average for all occupations
 
 ### Course Summary
 
-- X
-### Course Wrap- Up
-
-- X
+- Topics Covered
+	- Foundations, Cloudonomics
+	- IaaS, PaaS, SaaS, MaaS, MBaaS
+	- Glue, Networking Protocols, RPC
+	- Virtualization, Containerization
+	- Serverless
+		- FaaS
+	- Batch Big Data
+		- MapREduce
+		- Hadoop
+		- Spark
+	- Big Data Streaming
+		- Storm
+		- Spark Streaming
+	- Storage in the Cloud
+		- Distributed Big Data Storage
+			- Redis, HBase, Spark SQL, Kafka
+		- Cloud- Based Storage
+			- Object, Block, File System, Hybrid Cloud/ On- Prem, Backup, Internet Level Personal Filesystem
+		- Cloud- Based Database
+			- RDBMs, Aurora, Spanner, Azure CosmosDB
+	- Graph Processing
+		- Pregel, Spark GraphX, GraphFrames
+	- Machine Learning in the Cloud
+		- ML Workflow, Lifecycle
+		- Big Data Machine Learning Algorithms
+	- Analytics
+		- Data Warehouses, Data Cube, Columnar Storage, OLAP
+		- Data Lake
+	- Future
