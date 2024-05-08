@@ -107,61 +107,68 @@ Corresponds to [CS498W15Notes](../../W15/CS498W15Notes.md)
 
 ## Question 1
 
-- X
+- Kubernetes can be classified as a:
 
 ### Answer 
 
-- X
+- None of the Above
+	- Kubernetes isn't considered a PaaS, IaaS or SaaS
 
 ## Question 2
 
-- X
+- A node in Kubernetes can run several pods and each pod can run several containers
 
 ### Answer 
 
-- X
+- True
 
 ## Question 3
 
-- X
+- `etcd` is a key-value store that provides a consistent distributed state for a Kubernetes cluster
 
 ### Answer 
 
-- X
+- True
 
 ## Question 4
 
-- X
+- Which design pattern will you use for adding HTTPS to a legacy service?
 
 ### Answer 
 
-- X
+- Sidecar Pattern
 
 ## Question 5
 
-- X
+- In Kubernetes users need to take care of mapping container ports to host ports
 
 ### Answer 
 
-- X
+- False
 
 ## Question 6
 
-- X
+- Environment variables and DNS are two primary modes for service discovery in Kubernetes:
 
 ### Answer 
 
-- X
+- True
 
 ## Question 7
 
-- X
+- In Docker Swarm, a service is used to handle:
 
 ### Answer 
 
-- X
+- Launching and monitoring tasks
+- Rolling updates
+- Network routing
 
 ## Question 8
 
-- X
+- In Kubernetes, a ReplicaSet takes care of:
+
+### Answer
+
+- Launching and monitoring pods
 
