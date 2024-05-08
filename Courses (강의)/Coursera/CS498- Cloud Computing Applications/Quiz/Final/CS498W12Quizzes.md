@@ -125,5 +125,135 @@ Corresponds to [CS498W12Notes](../../W12/CS498W12Notes.md)
 ### Answer
 
 - NiFi
-	- Apache NiFi is known for its user- friendly GUI for desigining workflows
+	- Apache NiFi is known for its user- friendly GUI for designing workflows
+
+# CS498- Week 12 Practice Quiz
+
+## Question 1
+
+- X
+
+### Answer 
+
+- X
+
+## Question 2
+
+- X
+
+### Answer 
+
+- X
+
+## Question 3
+
+- X
+
+### Answer 
+
+- X
+
+## Question 4
+
+- X
+
+### Answer 
+
+- X
+
+## Question 5
+
+- X
+
+### Answer 
+
+- X
+
+## Question 6
+
+- X
+
+### Answer 
+
+- X
+
+## Question 7
+
+- X
+
+### Answer 
+
+- X
+
+## Question 8
+
+- X
+
+### Answer 
+
+- X
+
+## Question 9
+
+- X
+
+### Answer 
+
+- X
+
+## Question 10
+
+- X
+
+### Answer 
+
+- X
+
+## Question 11
+
+- X
+
+### Answer 
+
+- X
+
+## Question 12
+
+- X
+
+### Answer 
+
+- X
+
+## Question 13
+
+- X
+
+### Answer 
+
+- X
+
+## Question 14
+
+- X
+
+### Answer 
+
+- X
+
+## Question 15
+
+- X
+
+### Answer 
+
+- X
+
+## Question 16 
+
+- X
+
+### Answer 
+
+- X
 

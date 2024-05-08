@@ -102,3 +102,66 @@ Corresponds to [CS498W15Notes](../../W15/CS498W15Notes.md)
 - `etcd`
 	- `etcd` is a highly available consistent key- value store and is used to store the *state* of the cluster
 	- It is the single source of truth for the cluster
+
+# CS498- Week 15 Practice Quiz
+
+## Question 1
+
+- X
+
+### Answer 
+
+- X
+
+## Question 2
+
+- X
+
+### Answer 
+
+- X
+
+## Question 3
+
+- X
+
+### Answer 
+
+- X
+
+## Question 4
+
+- X
+
+### Answer 
+
+- X
+
+## Question 5
+
+- X
+
+### Answer 
+
+- X
+
+## Question 6
+
+- X
+
+### Answer 
+
+- X
+
+## Question 7
+
+- X
+
+### Answer 
+
+- X
+
+## Question 8
+
+- X
+

@@ -169,3 +169,86 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 
 - Third
 	- IOMMU (Input Output Memory Management Unit) virtualization was introduced in the 3rd generation, which helps manage memory mappings for I/O devices in virtualizes environments
+
+# CS498- Week 13 Practice Quiz
+
+## Question 1
+
+- X
+
+### Answer 
+
+- X
+
+## Question 2
+
+- X
+
+### Answer 
+
+- X
+
+## Question 3
+
+- X
+
+### Answer 
+
+- X
+
+## Question 4
+
+- X
+
+### Answer 
+
+- X
+
+## Question 5
+
+- X
+
+### Answer 
+
+- X
+
+## Question 6
+
+- X
+
+### Answer 
+
+- X
+
+## Question 7
+
+- X
+
+### Answer 
+
+- X
+
+## Question 8
+
+- X
+
+### Answer 
+
+- X
+
+## Question 9
+
+- X
+
+### Answer 
+
+- X
+
+## Question 10
+
+- X
+
+### Answer 
+
+- X
+

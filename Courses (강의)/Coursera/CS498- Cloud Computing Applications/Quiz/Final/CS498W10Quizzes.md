@@ -101,3 +101,85 @@ Corresponds to [CS498W10Notes](../../W10/CS498W10Notes.md)
 	- Redshift is a columnar data store designed for read- heavy analytical workloads
 	- Optimized for querying large volumes of data, **not** frequent updates
 	- Columnar stores generally prioritize read performance over write performance (not suitable for frequent updates)
+
+# CS498- Week 10 Practice Quiz
+
+## Question 1
+
+- X
+
+### Answer 
+
+- X
+
+## Question 2
+
+- X
+
+### Answer 
+
+- X
+
+## Question 3
+
+- X
+
+### Answer 
+
+- X
+
+## Question 4
+
+- X
+
+### Answer 
+
+- X
+
+## Question 5
+
+- X
+
+### Answer 
+
+- X
+
+## Question 6
+
+- X
+
+### Answer 
+
+- X
+
+## Question 7
+
+- X
+
+### Answer 
+
+- X
+
+## Question 8
+
+- X
+
+### Answer 
+
+- X
+
+## Question 9
+
+- X
+
+### Answer 
+
+- X
+
+## Question 10
+
+- X
+
+### Answer 
+
+- X

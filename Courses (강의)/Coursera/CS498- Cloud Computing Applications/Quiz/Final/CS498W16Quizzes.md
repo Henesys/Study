@@ -94,3 +94,109 @@ Corresponds to [CS498W16Notes](../../W16/CS498W16Notes.md)
 - False
 	- In Ted Malaska's opinion, SQL will be around forever
 
+# CS498- Week 16 Practice Quiz
+
+## Question 1
+
+- X
+
+### Answer 
+
+- X
+
+## Question 2
+
+- X
+
+### Answer 
+
+- X
+
+## Question 3
+
+- X
+
+### Answer 
+
+- X
+
+## Question 4
+
+- X
+
+### Answer 
+
+- X
+
+## Question 5
+
+- X
+
+### Answer 
+
+- X
+
+## Question 6
+
+- X
+
+### Answer 
+
+- X
+
+## Question 7
+
+- X
+
+### Answer 
+
+- X
+
+## Question 8
+
+- X
+
+### Answer 
+
+- X
+
+## Question 9
+
+- X
+
+### Answer 
+
+- X
+
+## Question 10
+
+- X
+
+### Answer 
+
+- X
+
+## Question 11
+
+- X
+
+### Answer 
+
+- X
+
+## Question 12
+
+- X
+
+### Answer 
+
+- X
+
+## Question 13
+
+- X
+
+### Answer 
+
+- X
+
