@@ -205,137 +205,161 @@ Corresponds to [CS498W11Notes](../../W11/CS498W11Notes.md)
 
 ## Question 1
 
-- X
+- The adjacency list of the brain (modeled as a collection of vertices and edges) is:
 
 ### Answer 
 
-- X
+- an order of magnitude or more larger than the adjacency list of the web (modeled as a collection of vertices and edges)
+	- A model of the web would have approximately 50 billion vertices, 1 trillion edges, and a 30 TB adjacency list, while a model of the brain would have approximately 100 billion vertices, 100 trillion edges, and a 2.84 PB adjacency list
 
 ## Question 2
 
-- X
+- Pregel's message passing API guarantees message delivery order
 
 ### Answer 
 
-- X
+- False
 
 ## Question 3
 
-- X
+- Messages in Pregel are delivered exactly once
 
 ### Answer 
 
-- X
+- True
 
 ## Question 4
 
-- X
+- Pregel works on an egalitarian model - all of the nodes perform the same functions and have the same responsibilities
 
 ### Answer 
 
-- X
+- False
+	- Pregel uses a master/ worker model
 
 ## Question 5
 
-- X
+- Select all that apply: 
+	- Which are elements of the Giraph framework?
 
 ### Answer 
 
-- X
+- ZooKeeper
+- JobTracker
+- TaskTracker
+- Worker
 
 ## Question 6
 
-- X
+- Why does Pregel use MapReduce?
 
 ### Answer 
 
-- X
+- In fact, Pregel does not use MapReduce, because MapReduce produces too much communication between stages
+	- MapReduce tends to be inefficient because the graph state must be stored at each stage of the graph algorithm, and each computational stage will produce much communication between the stages
 
 ## Question 7
 
-- X
+- What is a graph database?
 
 ### Answer 
 
-- X
+- A graph database is a storage system that provides index-free adjacency
 
 ## Question 8
 
-- X
+- What is an example of a collaborative filtering application?
 
 ### Answer 
 
-- X
+- A recommendation engine working based on the user preferences and others with similar preferences
+	- Collaborative filtering is to have multiple filters working together to extract just the information you want
 
 ## Question 9
 
-- X
+- Which group does K-means fall into?
 
 ### Answer 
 
-- X
+- Clustering
+	- k-means clustering aims to partition n observations into k clusters
 
 ## Question 10
 
-- X
+- What is an example of an FPM application?
 
 ### Answer 
 
-- X
+- Finding the frequent item sets frequently bought together
+	- An example of frequent pattern mining
 
 ## Question 11
 
-- X
+- In K-means, what is the order of the following steps?
+	- A. For each data point, assign to the closest centroid
+	- B. If new centroids are different from the old, re-iterate through the loop
+	- C. For each cluster, re-compute the centroids
+	- D. Randomly select k centroids
 
 ### Answer 
 
-- X
+- D -> A -> C -> B
 
 ## Question 12
 
-- X
+- Which of the following best describes how Naïve Bayes works?
 
 ### Answer 
 
-- X
+- A set of labeled data points are given. A model based on those data points is built such that for any new unlabeled data point the label is determined
+	- Naive Bayes is a supervised classification method
 
 ## Question 13
 
-- X
+- If we want to find which set of items in a grocery shop are frequently bought together, which of the following approaches should we use?
 
 ### Answer 
 
-- X
+- FPM
 
 ## Question 14
 
-- X
+- In K-means done on Map Reduce, which of the following steps is done in the Map phase, and which in the Reduce phase?
+	- A. For each data point, assign to the closest centroid
+	- B. For each cluster, re-compute the centroids
+	- C. Read the k centroids
 
 ### Answer 
 
-- X
+- Map: A,C + Reduce: B
 
 ## Question 15
 
-- X
+- What does the "E" in OSEMN stand for?
 
 ### Answer 
 
-- X
+- Explore Data
 
 ## Question 16 
 
-- X
+- Choose all that apply:
+	- What are examples of unstructured data in a cloud machine learning context?
 
 ### Answer 
 
-- X
+- Language
+- Voice
+- Vision
 
 ## Question 17
 
-- X
+- What does AWS SageMaker provide?
 
 ### Answer 
 
-- X
+- A system to build ML models
+- Managed Notebooks
+- Hyperparameter Optimization Tools
+- Capability to detect concept drift
 
