@@ -131,129 +131,148 @@ Corresponds to [CS498W12Notes](../../W12/CS498W12Notes.md)
 
 ## Question 1
 
-- X
+- Which of the following is correct?
 
 ### Answer 
 
-- X
+- A bolt processes input streams and produces new streams
+	- A bolt is a processing unit that receives streams from spout/ bolt and emits its processing result as new stream
 
 ## Question 2
 
-- X
+- In a Storm program that produces a sorted list of the top K most frequent words encountered across all the documents streamed into it, four kinds of processing elements (bolts in Storm) might be created: QuoteSplitterBolt, WordCountBolt, MergeBolt, and SortBolt
+	- What is the order in which words flow through the program?
 
 ### Answer 
 
-- X
+- QuoteSplitterBolt, WordCountBolt, SortBolt, MergeBolt
+	- The QuoteSplitterBolt splits sentence into list of words so that WordCountBolt can count the frequency of each word. The SortBolt then sorts the words by frequency, while the MergeBolt merges and returns the final retult
 
 ## Question 3
 
-- X
+- What are streams in Apache Storm?
 
 ### Answer 
 
-- X
+- Unbounded sequences of tuples
+	- Stream represents the data flow (in format of tuples) in Storm
 
 ## Question 4
 
-- X
+- What are spouts in Apache Storm?
 
 ### Answer 
 
-- X
+- Sources of streams
+	- Spouts are used to generate the initial data streams
 
 ## Question 5
 
-- X
+- What are bolts in Apache Storm?
 
 ### Answer 
 
-- X
+- Processors of input
+	- Bolts are the computation/processing units in Storm
 
 ## Question 6
 
-- X
+- What are topologies in Apache Storm?
 
 ### Answer 
 
-- X
+- Networks of spouts and bolts
+	- Topologies include definitions of both spouts and bolts, as well as their wired connections
 
 ## Question 7
 
-- X
+- In the “At Least One” message process, what happens if there is a failure?
 
 ### Answer 
 
-- X
+- Events may be double processed
+	- Using occasional double-process to provide "At Least One" guarantee
 
 ## Question 8
 
-- X
+- How does Trident treat state?
 
 ### Answer 
 
-- X
+- Trident has first class support for state, but the exact implementation is up to the application developer
 
 ## Question 9
 
-- X
+- How does Thrift contribute to Storm?
 
 ### Answer 
 
-- X
+- Allows Storm to be used from many language
+	- Thrift allows users to define and create services which are both consumable by and serviceable by numerous languages
 
 ## Question 10
 
-- X
+- Which of the following statements holds true?
 
 ### Answer 
 
-- X
+- Spark Streaming chops a stream into small batches and processes each batch independently
+	- Microbatch
 
 ## Question 11
 
-- X
+- Which of the following best describes Lambda architecture?
 
 ### Answer 
 
-- X
+- A parallel processing pipeline of two branches: a stream processing pipeline and a batch processing pipeline
+	- The first processing path would use a stream event processing system like Storm
+	- On the parallel path, you have the batch processing system
 
 ## Question 12
 
-- X
+- Which of the following best describes Kappa architecture?
 
 ### Answer 
 
-- X
+- Only a stream processing pipeline but with the ability to handle failures
+	- In Kappa Architecture, they try to get away from the two pile paths and streaming
+	- They just do the streaming such that if there are failures, the state doesn't get messed up
 
 ## Question 13
 
-- X
+- Which of the following is not a component of the Storm Architecture?
 
 ### Answer 
 
-- X
+- HDFS
+	- HDFS is the storage part of Hadoop
 
 ## Question 14
 
-- X
+- What is the main disadvantage of Spark Streaming?
 
 ### Answer 
 
-- X
+- It is microbatch, which increase the minimum end-to-end latency of the system
+	- The disadvantage is that it's not really streaming in the strictest sense
+	- It batches data and runs that batch of data very quickly
 
 ## Question 15
 
-- X
+- Which system is best for Online Analytical Processing (OLAP)?
 
 ### Answer 
 
-- X
+- Druid
+	- Druid provides tricks that processes OLAP queries quickly
 
 ## Question 16 
 
-- X
+- Which system has a great graphical UI to design dataflows?
 
 ### Answer 
 
-- X
+- NiFi
+	- In NiFi, you can design a graph to process your data
 
