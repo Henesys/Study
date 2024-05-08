@@ -98,105 +98,127 @@ Corresponds to [CS498W16Notes](../../W16/CS498W16Notes.md)
 
 ## Question 1
 
-- X
+- Would Ted Malaska agree that Spark replaces Hadoop?
 
 ### Answer 
 
-- X
+- No
+	- In Ted Malaska's opinion, Hadoop is made up of two fundamental projects: MapReduce and HDFS
+	- Spark replaces MapReduce, but HDFS is replaced by Object Stores, not Spark
 
 ## Question 2
 
-- X
+- Ted Malaska would agree with this opinion: 
+	- Storm is not a competitor with Spark and Flink in the real- time database world
 
 ### Answer 
 
-- X
+- True
+	- "So the way I see Storm is, I don't see Storm is a competitor against Spark and Flink in the market of that real- time database world"
 
 ## Question 3
 
-- X
+- According to Gartner, the vast majority of cloud security failures in the next few years will be caused by:
 
 ### Answer 
 
-- X
+- Organizations/ End Users
+	- According to Gartner, through 2022, at least 95% of cloud security failures will be caused by organizations/ end users
 
 ## Question 4
 
-- X
+- Microsoft believes that approximately 90% of new apps in the next five years will be created by C# developers
 
 ### Answer 
 
-- X
+- False
+	- Microsoft predicts that 90% of new apps will be created with low- code/ no- code tools
 
 ## Question 5
 
-- X
+- The low- code/ no- code paradigm is a major threat to the employment prospects of developers and programmers around the world
 
 ### Answer 
 
-- X
+- False
+	- There is expected to be a shortfall of one million developers
 
 ## Question 6
 
-- X
+- It is likely that the GDPR will completely prevent most regulated industries in Europe from moving to the cloud
 
 ### Answer 
 
-- X
+- False
+	- Regulations such as the European Union General Data Protection Regulation (GDPR) place restrictions on where customer data can be stored
+		- Unique contracts with cloud storage providers
+		- Privacy regulations, data retention, breaching response and data ownership
 
 ## Question 7
 
-- X
+- Choose all that apply: 
+	- Which of these are security threats in the cloud computing field?
 
 ### Answer 
 
-- X
+- Security threats in the cloud computing fields includes:
+	- Reduced visibility and control
+	- Vulnerabilities in management APIs
+	- Multi-tenant data leakage due to failure of separation control
+	- Incomplete data deletion
+	- Stolen credentials
+	- Insider abuse
 
 ## Question 8
 
-- X
+- What technologies/ concepts are part of the "Digital Transformation"?
 
 ### Answer 
 
-- X
+- Cloud
+- Big Data
+- AI/ ML
+- IoT
 
 ## Question 9
 
-- X
+- GPUs are too expensive to use at the massive cloud scale
+	
 
 ### Answer 
 
-- X
+- The growing demand for AI in HPC data centers is driving the market growth
 
 ## Question 10
 
-- X
+- Google Anthos is a framework for Hybrid Cloud deployments
 
 ### Answer 
 
-- X
+- True
+	- Google Anthos is a framework for Hybrid Cloud deployments
 
 ## Question 11
 
-- X
+- Which one is preferred by enterprise as of 2020?
 
 ### Answer 
 
-- X
+- IaaS
 
 ## Question 12
 
-- X
+- Anthos is mostly based on:
 
 ### Answer 
 
-- X
+- Kubernetes
 
 ## Question 13
 
-- X
+- Which one is preferred for security reason?
 
 ### Answer 
 
-- X
+- IaaS
 
