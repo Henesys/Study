@@ -106,80 +106,81 @@ Corresponds to [CS498W10Notes](../../W10/CS498W10Notes.md)
 
 ## Question 1
 
-- X
+- Over the past decade (2010-2020), the momentum seems to be shifting from:
 
 ### Answer 
 
-- X
+- building data cubes to running OLAP workloads directly on columnar databases
 
 ## Question 2
 
-- X
+- Traditionally, OLAP cubes were known for extreme performance advantages over row-oriented RDBMS
 
 ### Answer 
 
-- X
+- True
 
 ## Question 3
 
-- X
+- With an OLTP system, the typical query involves one column
 
 ### Answer 
 
-- X
+- False
 
 ## Question 4
 
-- X
+- Choose the true statement:
 
 ### Answer 
 
-- X
+- OLTP and OLAP are both for structured data
 
 ## Question 5
 
-- X
+- If the vast majority of your queries involve a very large number of rows but only a few columns, which system is a more natural fit?
 
 ### Answer 
 
-- X
+- OLAP
 
 ## Question 6
 
-- X
+- If the vast majority of your queries only involve a few rows, but involve most or all of the columns for those rows, which system is a more natural fit?
 
 ### Answer 
 
-- X
+- OLTP
 
 ## Question 7
 
-- X
+- Choose all the true statements:
 
 ### Answer 
 
-- X
+- A data cube is a data structure
+- OLAP cubes require complicated pipelines to transform data from a SQL database into OLAP cubes
 
 ## Question 8
 
-- X
+- A data lake:
 
 ### Answer 
 
-- X
+- combines the power of analytics with the flexibility of big data models and the agility and limitless resources of the cloud
 
 ## Question 9
 
-- X
+- Which best fits the category of graphical BI tool?
 
 ### Answer 
 
-- X
+- AWS QuickSight
 
 ## Question 10
 
-- X
+- A data cube is an example of a columnar RDBMS
 
 ### Answer 
 
-- X
+- False
