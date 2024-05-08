@@ -174,81 +174,92 @@ Corresponds to [CS498W13Notes](../../W13/CS498W13Notes.md)
 
 ## Question 1
 
-- X
+- Which type of virtualization is feasible for the following scenario?
+	- “A service needs to run an unmodified OS on a basic processor"
 
 ### Answer 
 
-- X
+- Full Virtualization
 
 ## Question 2
 
-- X
+- Which type of virtualization is feasible for the following scenario?
+	- “A service needs to run an unmodified OS on an advanced processor"
 
 ### Answer 
 
-- X
+- Hardware Assisted
 
 ## Question 3
 
-- X
+- Which type of virtualization provides better performance for the following scenario?
+	- “Running multiple independent applications sharing the same kernel”
 
 ### Answer 
 
-- X
+- Containers
 
 ## Question 4
 
-- X
+- Which type of virtualization provides better performance for the following scenario?
+	- “Running two independent applications, each needing a different version of the Linux kernel”
 
 ### Answer 
 
-- X
+- Full Virtualization
 
 ## Question 5
 
-- X
+- Which type of virtualization provides better performance for the following scenario?
+	- “Multiple applications with high memory usage”
 
 ### Answer 
 
-- X
+- Containers
 
 ## Question 6
 
-- X
+- Which is the recommended practice in the following scenario?
+	- "Multiple applications with communication requirements"
 
 ### Answer 
 
-- X
+- Running each application in a separate container
+	- It's recommended to have one function per container
 
 ## Question 7
 
-- X
+- Which type of virtualization provides better performance for the following scenario?
+	- “One application running on a single piece of hardware”
 
 ### Answer 
 
-- X
+- No Virtualization
+	- Every sort of virtualization technology has some kind of performance impact
+	- For the absolute best performance, no virtualization is the best option
 
 ## Question 8
 
-- X
+- Virtual machine using full virtualization can only run a guest OS designed for one type of CPU (the same as host)
 
 ### Answer 
 
-- X
+- True
 
 ## Question 9
 
-- X
+- Kubernetes provides a platform for automating deployment, scaling, and operations of application containers across clusters of hosts
 
 ### Answer 
 
-- X
+- True
+	- The VM simulates enough hardware to allow an unmodified guest OS (one designed for the same CPU) to be run in isolation
 
 ## Question 10
 
-- X
+- Docker is used to:
 
 ### Answer 
 
-- X
+- Guarantee that the software will always run the same irrespective of environment
 
