@@ -102,81 +102,101 @@ Corresponds to [CS498W14Notes](../../W14/CS498W14Notes.md)
 
 ## Question 1
 
-- X
+- You built a latest CentOS container on an Ubuntu host with kernel version 4.18
+	- After you upgraded the Ubuntu kernel to 5.4, what will be the kernel version used by the built CentOS container?
 
 ### Answer 
 
-- X
+- 5.4
+	- Container always uses the host kernel
 
 ## Question 2
 
-- X
+- Besides using Dockerfile to create container image, one can also start a container using existing image and install necessary packages on top of it to create a new image
 
 ### Answer 
 
-- X
+- True
+	- New container image can be created by installing necessary packages on top of the existing image
 
 ## Question 3
 
-- X
+- All containers without a `--network` specified, are attached to the default bridge network
+	- This is risky operation as it allows unrelated services to communicate
 
 ### Answer 
 
-- X
+- True
+	- Bridge is the default network of containers
+	- The default bridge network is considered a legacy detail of Docker and is NOT recommended for production use since it allows unrelated services to communicate
 
 ## Question 4
 
-- X
+- Which type of network connects multiple Docker daemons together and enables swarm services to communicate with each other?
 
 ### Answer 
 
-- X
+- Overlay Network
+	- Overlay network drive creates a distributed network among multiple Docker daemon hosts and enables swarm services to communicate with each other
 
 ## Question 5
 
-- X
+- In Docker Swarm, `ingress` is a overlay network that handles control and data traffic related to swarm services
 
 ### Answer 
 
-- X
+- True
+	- In Swarm, two overlay networks play a role
+		- `ingress` handles control and data traffic related to swarm services
+		- User- defined overlay networks
 
 ## Question 6
 
-- X
+- Docker internal load balancing is done using:
 
 ### Answer 
 
-- X
+- Virtual IP
+	- When a service is requested, the resulting DNS query is forwarded to the Docker Engine, which in turn returns the IP of the service, a virtual IP
 
 ## Question 7
 
-- X
+- Which of the following statements is NOT true about Docker routing mesh?
 
 ### Answer 
 
-- X
+- The routing mesh uses IP based service discovery and load balancing
+	- The routing mesh uses **port based service discovery** and load balancing
 
 ## Question 8
 
-- X
+- How can you mount a storage location on the host to a container?
 
 ### Answer 
 
-- X
+- Bind Mount
+- Volume
+- `tmpfs`
+	- To persist changes and to access data outside the container, we need to mount an external storage location
+	- Three types of host to container mapping 1) Bind Mount, 2) Volume, 3) `tmpfs`
 
 ## Question 9
 
-- X
+- How does a service get access to secret information in Docker Swarm?
 
 ### Answer 
 
-- X
+- When you grant a newly-created or running service access to a secret, the decrypted secret is mounted into the container in an in-memory filesystem
+	- A secret is a blob of data
+	- Docker secrets are only available to swarm services, not to standalone containers
+	- When you grant a newly-created or running service access to a secret, the decrypted secret is mounted into the container in an in- memory filesystem.
 
 ## Question 10
 
-- X
+- Which of the following statements about Docker Compose is incorrect?
 
 ### Answer 
 
-- X
+- Replaces the functionality of Dockerfile
+	- It still needs Dockerfile to create images
 
