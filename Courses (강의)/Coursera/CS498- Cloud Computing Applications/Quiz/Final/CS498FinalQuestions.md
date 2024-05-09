@@ -684,32 +684,193 @@
 ## Virtualization
 
 - What is virtualization?
+	- Creating a virtual resource (e.g. VM, virtual storage, virtual environments) that mimics the behavior of physical hardware and distributing it
 - What is its main idea?
+	- Creation of distributed computing models without creating dependencies on physical resources
+	- Abstraction of physical hardware resources combined with instances that are isolated from one another, allows for better resource utilization, increased flexibility, easier management and better scalability 
 - User & Kernel Modes
+	- Modes designed to isolate processes from each other in the OS
+	- User
+		- User processed operation in user mode
+		- When user application requests a service from the OS, or an interrupt occurs, or a system call is made, there will be a transition from user to kernel mode to fulfill requests
+	- Kernel
+		- When the system boots, the hardware starts in kernel mode
+		- Privileged instructions which execute **only** in kernel mode
+			- If user attempts to run privileged instructions in user mode, it will treat the instruction as an illegal operation and traps it to the OS
 - CPU Privilege Levels
+	- Also known as protection rings or modes, to control access to system resources
+		- Ring 0
+			- Highest privilege
+			- Kernel Mode + OS
+		- Ring 3
+			- Lowest privilege
+			- User Mode
 - What are differences between different types of virtualizations?
+	- Emulation
+	- Full
+		- Software
+			- Binary Translation
+			- Paravirtualization
+		- Hardware Assisted
+	- MicroVMs
+	- OS
+		- Containers
 - What is the definition of each type?
+	- Full
+		- Guest operating system runs unmodified
+		- Virtualization layer intercepts and translated privileged instructions
+	- Paravirtualization
+		- Requires modification of the guest OS to communicate directly with virtualization layer
+		- Improves performance but needs OS support
+	- Hardware Assisted
+		- Relies on CPU extensions such as Intel VT-X or AMD-V to improve performance and reduce overhead by offloading virtualization tasks to the hardware
+	- Containerization
+		- Virtualizes the operating system entirely, allowing multiple isolated user space instances (containers) to run on a single host OS
+	- Emulation
+		- Simulates hardware components and translates instructions from one architecture to another, allowing software written for one platform to run on another
 - What are some examples of each type?
+	- Full
+		- VirtualBox
+		- Virtual PC
+		- VMWare
+	- Paravirtualization
+		- Xen
+	- Hardware Assisted
+		- KVM
+		- Hyper-V
+	- Containerization
+		- Docker
+		- Kubernetes
+	- Emulation
+		- QEMU
 - Xen
+	- Hypervisor that provides full virtualization and paravirtualization capabilities
+	- Allows multiple guest OS to run concurrently on a single physical machine
+	- Invasive changes to kernel to run Linux as a paravirtualized guest
+	- Domains
+		- Control
+		- Guest
+		- Driver/ Stub/ Service
 - Binary Translations
+	- Modifies sensitive instructions on the fly to virtualizable instructions
+	- Only needs to translate kernel code that is running in ring 0
+	- Most code is executed directly onto the CPU and only the code that needs to be translated is actually translated
+	- Does not require changes to guest OS kernel
 - What is hardware virtualization?
+	- Using hardware support to create and manage virtualized environments
+	- Offloads virtualization tasks to the CPU, MMU (Memory Management Unit) and other hardware components
 - What is its history?
+	- 1st Generation
+		- 2006
+		- Intel VT-X, AMD-V
+		- Lacks explicit support for memory virtualization
+		- Does not virtualize MMU
+	- 2nd Generation
+		- AMD RVI (Rapid Virtualization Indexing)
+		- Intel EPT (Extended Page Tables)
+		- Fixes flaws of 1st Generation
+			- No trace- induced exits
+			- No context- switch exits
+			- No hidden/ true fault exits
+			- VMM does not have to allocate memory for shadow page tables, reducing memory usage
+	- 3rd Generation
+		- 2012 ~ 2013
+		- AMD AVIC
+		- Intel APICV
+		- I/O MMU Virtualization (IOMMU)
+			- AMD-VI
+			- Intel VT-D
 
 ## Containers
 
 - What is operating system- level virtualization?
+	- Virtualizing a physical server at the OS level, enabling multiple isolated and secure virtualized servers to run on a single server
 - What are examples of OS virtualization?
+	- Solaris Containers
+	- FreeBSD Jails
+	- Linux Containers
+		- Linux Vserver
+		- OpenVZ
+		- Process Container (cgroups)
+		- LXC
+		- Docker
 - What is OS Virtualization?
+	- Type of lightweight virtualization
+	- Processes "think" that they see a virtual kernel, but are all sharing the same real kernel in reality
+	- Kernel acts as a pseudo- hypervisor to ensure that container and virtualization boundaries are not crossed
 - What are OS Containers?
+	- Supports all of the resource isolation use cases without the overhead and complexity of running multiple kernel instances
 - Differences between VM and containers?
+	- Hypervisor (VM)
+		- Hardware level virtualization
+		- One real HW, many virtual HW, many OS
+		- High versatility, can run different OS
+		- Lower density, performance, scalability
+		- Performance overhead mitigated by new hardware features
+	- Containers (CT)
+		- OS level virtualization
+		- One real HW, no virtual HW, one kernel, many user space instances
+		- Higher density, natural page sharing
+		- Dynamic resource allocation
+		- Native performance with little to no overhead
 - What are the three building blocks of containers?
+	- cgroups
+		- Limits and controls the resource usage of containers
+	- Namespaces
+		- Isolates and virtualizes system resources 
+		- Examples
+			- Processes
+			- Network Interfaces
+			- Filesystems
+			- User IDs
+		- Provides each container with its own personal view of the system
+	- Unionfs
+		- Layered file system that allows multiple filesystems to be stacked on top of each other, enabling efficient storage and sharing of container images, as well as file system changes
 
 ## Docker
 
 - What is the Union File System?
+	- Backbone of container images
+	- Stackable unification file system which merges several directories (branches) while keeping physical content separate
+	- Overlays several directory into a single mount point
 - What are Docker images?
+	- Container image that is made of a stack of immutable or read- only layers
+	- Used to create Docker containers, contains everything needed to run an application
+	- Built using a Dockerfile, which specifies the instructions for assembling the image layer by layer
 - Describe Docker architecture and its components
+	- Docker Engine
+		- Core component responsible for running and managing Docker containers
+		- Includes `dockerd` (daemon), which listens for Docker API requests
+		- Includes Docker CLI (docker), which is used to interact with the daemon
+	- Docker Registry
+		- Centralized repository for storing and distributing Docker images
+		- Default is Docker Hub but private registries can be used
+	- Docker Container
+		- Instance of Docker image that runs in isolation with its own filesystem, network and process space
+	- Docker Client
+		- CLI interface used to interact with Docker Engine and manage containers, images, networks, volumes and other Docker objects
 - What are container network models?
+	- Formalizes steps required to provide networking for containers while providing an abstraction that can be used to support multiple network drivers
+	- Defines how containers communicate with each other and with external networks
+	- Examples
+		- Bridge
+			- Uses Linux bridging and `iptables` to provide connectivity for containers
+			- Creates single bridge called `docker0` and attaches a `veth pair` between the bridge and every endpoint
+		- Overlay
+			- Networking that can span multiple hosts using overlay network encapsulations such as VXLAN
+				- Enables Swarm services to communicate with each other
+		- Host
+			- For standalone containers, remove network isolation between the container and the Docker host and use the host's networking directly
+		- `macvlan`
+			- Allows you to assign a MAC address to a container, making it appear as a physical device on your network
+				- Docker daemon routes traffic to containers by their MAC addresses
+	- Overview
+		- Sandbox
+			- Contains configuration of a container's network stack, includes management of the container's interfaces, routing table and DNS settings
+		- Endpoint
+			- Joins a sandbox to a network
+		- Network
+			- Group of endpoints that are able to communicate with each other directly
 
 # W14: Container Orchestration & Docker Swarm
 

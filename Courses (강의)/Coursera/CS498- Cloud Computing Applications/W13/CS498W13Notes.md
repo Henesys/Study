@@ -207,7 +207,7 @@
 
 - Hardware- Enabled Virtualization
 	- Intel VT (IVT)
-	- AMD VIrtualization (AMD-V)
+	- AMD Virtualization (AMD-V)
 	- Allow "trapping" of sensitive instructions
 		- Popek & Goldberg `-->` Trap and Emulate
 	- Examples
@@ -352,7 +352,7 @@
 	- Examples
 		- Solaris Containers
 		- FreeBSD Jails
-		- Linux Contaiiners
+		- Linux Containers
 			- Linux Vserver
 			- OpenVZ
 			- Process Container `-->` cgroups
@@ -588,7 +588,7 @@
 			- Enable swarm services to communicate with each other
 	- `macvlan`
 		- Macvlan networks allow you to assign a MAC address to a container, making it appear as a physical device on your network
-			- Docker daemon routs traffic to containers by their MAC addresses
+			- Docker daemon routes traffic to containers by their MAC addresses
 	- Note
 		- The type of network a container uses is transparent from within the container itself
 - Bridge Networks
