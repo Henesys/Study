@@ -877,16 +877,52 @@
 ## Docker 
 
 - What is Dockerfile?
+	- Imperative method to create a Docker image
 - How do you use it?
+	- Create a Dockerfile in your project directory and define the required instructions 
+	- Build a Docker image using `docker build`, which executes the instructions in the Dockerfile 
 - What is Docker Swarm?
+	- Clustering and orchestration tool for managing a cluster of Docker hosts and running containerized applications at scale
+	- High availability, load balancing and automatic scaling of containers across multiple nodes
+	- `ingress` handles the control and data traffic related tasks in Swarm Services
 - What are some examples of Swarm Services?
+	- Containerized application that needs to be deployed and managed in a clustered environment
+		- Web Servers
+		- Databases
+		- Microservices
+		- API Gateways
 - What are states of Swarm Services?
+	- `NEW`
+	- `PENDING`
+	- `COMPLETE`
 - What are the different types of Docker networks?
-- What are the its usages?
+	- Bridge
+	- Host 
+	- Overlay
+	- `macvlan`
+- What are its usages?
+	- Enable communication between containers running on the same host or across multiple hosts in a Docker Swarm cluster
+	- Provides networking isolation, security and flexibility for containerized applications
 - What is service discovery in Docker Swarm?
+	- Method in which containers within a Swarm cluster can discover and communicate with each other dynamically
+	- Docker Swarm has built- in service discovery and DNS- based service discovery mechanisms to facilitate communication between services
 - What are the three ways to map hosts to containers?
+	- Bind Mount
+		- Specific directory or file on the host is mounted onto a container
+		- Changes made to the directory or file on either the host or the container are immediately reflected in the other
+	- Volume
+		- Managed by Docker and persists data outside the lifecycle of a container
+		- Can be shared and reused among multiple containers
+		- Provides better performance and reliability compared to bind mounts
+	- `tmpfs`
+		- Temporary file storage system that is located in the memory, not on the disk
+		- Allows you to mount a portion of the host's memory as a filesystem within a container, providing fast access to temporary files and data
+		- Useful for storing temporary data that does not need to persist across container restarts
 - What is Docker Compose?
+	- Allows you to define and run multi- container Docker applications 
+	- Can define application environments using YAML and manage the lifecycle with simple commands
 - What is its usage?
+	- Simplifies the process of managing multi- container applications by providing declarative syntax for defining services, their dependencies, volumes, networks and environment variables
 
 # W15: Container Orchestration & Kubernetes
 
