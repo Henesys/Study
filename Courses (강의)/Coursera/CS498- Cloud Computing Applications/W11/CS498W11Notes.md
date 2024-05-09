@@ -429,7 +429,7 @@
 - Graph
 	- ![](assets/Graph.png)
 - Relational Database
-	- Table is relation
+	- Table is relational
 	- Rows (Tuple)
 	- Column (Attribute)
 - Graph Computing
@@ -475,7 +475,7 @@
 - Primitives
 	- Vertices- first class
 	- Edges- not first class
-	- Both vertices can be created **and** destroyed
+	- Both vertices and edges can be created **and** destroyed
 - Pregel Organized via C++ API
 	- Superstep `S`
 	- Application code subclasses `Vertex`, writes a `Compute` method
@@ -487,7 +487,7 @@
 		- Modifies *state* of `V` and its outgoing edges
 - C++ API
 	- Message passing
-	- No guaranteed message delivery order
+	- Guaranteed message delivery order
 	- Messages delivered exactly once
 	- Can send a message to *any* node
 	- If destination doesn't exist, the user's function is called
@@ -514,7 +514,7 @@
 			- Recovers faults of workers
 			- Provides web-UI monitoring tool of job progress
 		- Worker
-			- Process its task
+			- Processes its task
 			- Communicates with the other workers
 	- Persistent data is stored as files on a distributed storage system (e.g. GFS, HDFS, BigTable)
 	- Temporary data is stored on local disk
@@ -908,7 +908,7 @@
 		- Watson Speech to Text
 		- Watson Text to Speech
 - Natural Language Services
-	- Amazon Azure
+	- Amazon/ Azure
 		- Comprehend
 		- Polly
 		- Lex

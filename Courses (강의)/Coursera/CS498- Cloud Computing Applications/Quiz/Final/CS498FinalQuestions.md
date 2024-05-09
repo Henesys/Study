@@ -196,89 +196,387 @@
 
 # W11: Graph Processing & Machine Learning
 
+## Graph Databases
+
+- What is a graph model?
+	- Nodes (e.g. `Alice`, `A42`) with labels (e.g. `Person`, `Department`) in an entity have relationships (e.g. `:BELONGS_TO`) other entities
+- What are relational databases?
+	- Databases that are *joined* together by foreign keys
+	- The *joins* are needed before any meaningful analysis can be done, which is why we need graph databases
+	- Perform same operation on large numbers of data
+	- Uses a relational model of data
+	- Entity type has its own table
+		- Rows are instances of the entity
+		- Columns are representations of values associated with the instance
+	- Rows in one table can be related to rows in another table via *unique key* per row
+- What are graph databases?
+	- Associate datasets that do not require *joins*
+	- Structure of object- oriented applications
+	- Database has an **explicit** graph structure
+		- Each node knows its adjacent node
+		- As number of nodes increases, cost of a local step remains constant
+		- Small index lookup cost
+	- Performance- wise, can be faster than relational databases for graph type queries 
+		- e.g. "Who is a friend of a friend?"
+	- Scales well
+		- Less rigid schema permits easier evolution
+- OLTP vs. OLAP Graph Databases
+	- Transaction Processing (OLTP)
+		- Query the graph in real- time
+				- e.g. "What type of cereal does Alice buy?"
+		- Real- time performance is only possible when a local traversal is enacted
+		- Queries interact with a limited set of data
+		- Examples
+			- Neo4J
+			- TinkerPop & Gremlin
+			- Amazon Neptune
+			- Azure CosmosDB
+	- Analytical Processing (OLAP)
+		- Process the entire graph
+			- e.g. "What is the average price for cereal paid by people like Alice?"
+		- Every vertex and edge is analyzed, possibly more than once
+		- Results are not typically real- time
+		- Bulk Synchronous Parallel (BSP) Model
+			- Pregel
+			- Giraph
+			- Spark GraphX
+			- GraphFrames
+- Other types of graph databases?
+	- Semantic Web
+		- Resource Description Framework (RDF)
+		- SPARQL Query Language
+	- Labeled Property Graph
+		- Data organized as nodes with relationships and properties
+
 ## Graph Processing 
 
 - What is graph processing?
+	- Way of retrieving information and analyzing information from a graph database
 - What is a graph database?
+	- Any storage system that provides index- free adjacency
+		- Nodes represent entities
+		- Properties are information that relate to nodes
+		- Edges interconnect nodes to nodes or nodes to properties and represent relationships
 - What is Pregel?
+	- Cloud solution to distribute graph processing
+	- Vertex- oriented computation model that allows you to define your own algorithm via a compute function
 - How does it work?
+	- Takes a graph and a corresponding set of vertex states as inputs
 - What are its properties?
+	- Message Passing
+	- Guaranteed message delivery order
+	- Messages delivered exactly once
+	- Messages can be sent to any node
 - How does it detect and respond to failures?
+	- If the destination doesn't exist, the user's function is called
 - What is Giraph?
+	- Distributed graph processing framework designed to handle large- scale graph data and perform iterative computations across a cluster
+	- Based on BSP
 - How does it differ from Pregel?
+	- Giraph is an open source implementation based on Pregel
+	- Giraph is built on top of Hadoop
 - Why was it created?
-- What is Spark GraphX?
-- What are some of the graph operators that are used in GraphX?
-- What are graphs?
-- Describe nodes, vertices and edges
+	- Addresses the need for scalable and efficient graph processing at Facebook (Pregel = Google)
 - Differences between undirected and directed graphs?
+	- Edges have direction in directed graph
+	- Undirected graph have edges that are bidirectional in nature
 - What is index- free adjacency?
+	- Allows nodes to traverse between related entities
+	- Relationships on a graph databases are stored as references/ pointers between nodes, allowing the database to navigate quickly
 - Difference between graph databases and relational databases?
+	- Joins are needed on relational databases
+	- Joins are not needed on graph databases
 - Limitations of MapReduce with respect to graph processing?
+	- MapReduce is inefficient because the graph state must be stored at each stage of the graph algorithm
+	- Each computational stage will produce a lot of communication between stages
 - Limitations of current shared- memory systems for graph processing?
+	- No fault tolerance
 - Describe vertex oriented graph processing?
+	- Based on BSP
+	- Provides direct graph to Pregel
+	- Runs computation at each  vertex, repeating until every computation at each vertex vortex to halt
+	- Pregel returns directed graph
 - Primitives in Pregel?
+	- Vertices
+		- First Class
+	- Edges
+		- Not First Class (Incidental)
 - Are edges or are vertices first- class citizens in Pregel?
-- What are super steps?
+	- Vertices
+- What are supersteps?
+	- Iterations of Pregel
 - What does each super step involve doing?
+	- At each superstep (iteration), each vertex sends a message to its neighboring vertices, processes messages received in a previous superstep and **updates its state**
+		- Get/ set vertex value
+		- Get/ set outgoing edges values
+		- Send/ receive messages
 - Layout of a standard Pregel program?
+	- Reads message from previous superstep
+	- Sends message to nearby vertices
+	- Updates state/ modifies vertex
 - Describe the Pregel system architecture
+	- Master/ Worker Model
+		- Master
+			- Maintains worker
+			- Recovers faults of workers
+			- Provides web- UI monitoring tool of job progress
+		- Worker
+			- Processes its task
+			- Communicates with other workers
 - Storage of temporary and persistent data in Pregel?
+	- Persistent
+		- Stored as files on a distributed storage system
+			- e.g. HDFS, BigTable, GFS
+	- Temporary
+		- Stored on local disk
 - Execution of a Pregel program?
+	- Copies of a Pregel program execute on a cluster of machines
+	- Master assigns partition of input to each worker
+	- Each work loads vertices and marks them active
+	- Superstep
+		- Worker loops through active vertices and computes for each vertex
+		- Message are sent asynchronous but before each superstep
+		- Repeat until vertices become inactive
+	- When computation halts, master instructs workers to save its portion of the graph
 - How does Pregel guarantee fault tolerance?
+	- Checkpointing
+	- Failure Detection 
+	- Recovery
 - Describe checkpointing
+	- Master periodically instructs workers to save the state of their partitions to persistent storage
 - Describe failure detection
+	- Using pings to check the status
 - Describe recovery
+	- Master reassigns graph partitions to the currently available workers
+	- Workers all reload their partition state from the most recent checkpoint (rollback)
 - What is Apache Giraph?
+	- Open source implementation based on Pregel
 - Describe the responsibilities of the following components in Giraph
 	- ZooKeeper
+		- Responsible for **computational state**
+		- Partition/ worker mapping
+		- Checkpoints paths, aggregator values, statistics
 	- Master
+		- Responsible for **coordination**
+		- Assigns partitions to workers
+		- Coordinates synchronization
+		- Requests checkpoints
+		- Aggregates aggregator values
+		- Collects health statuses
 	- Worker
+		- Responsible for **vertices**
+		- Invokes `compute()`
+		- Sends, receives and assigns messages
+		- Computes *local* aggregation values
 - Describe the standard execution flow in Giraph
+	- Overview
+		- `Setup --> Compute <--> Synchronize --> Teardown`
+	- Setup
+		- Load graph from disk
+		- Assigns vertices to workers
+		- Check workers' health
+	- Compute
+		- Assign messages to workers
+		- Iterate on active vertices
+		- Invoke `compute()` on vertices
+	- Synchronize
+		- Send message to workers
+		- Compute aggregators
+		- Checkpoint
+	- Teardown
+		- Write back result
+		- Write back aggregators
 - Describe an algorithm to find connected components in Giraph
+	- Propagate smallest vertex label to nearby vertices until convergence, which results in all vertices of a component having the same label
 - What is GraphX?
+	- Directed graph that contains both edges and vertices
+	- Has properties attached to each vertex and edge
 - What technologies does GraphX use?
+	- Apache Spark & RDD (Resilient Distributed Dataset) to efficiently perform graph computations in parallel across a cluster
 - Building a graph in GraphX?
-- How doers GraphX compare to Giraph/ Pregel?
+	- Provides APIs to create graphs from RDDs of vertex and edge tuples
+	- Define RDDs for vertices and edges
+		- Use GraphX APIs to combine  into Graph object
+- How does GraphX compare to Giraph/ Pregel?
+	- All of them are frameworks for distributed graph processing
+	- Built on top of Apache Spark, which is a more general purpose distributed computing platform
+		- Giraph/ Pregel are specialized for graph processing
+	- Giraph/ Pregel are more focused on iterative graph processing algorithms are used when low- latency processing is required
 - Graph operators supported by GraphX?
+	- `vertices, edges`
+		- Retrieves vertices, edges of graph
+	- `mapVertices, mapEdges`
+		- Applies a function to each vertices, edges in the graph
+	- `aggregateMessages`
+		- Aggregates messages from neighboring vertices
+	- `joinVertices`
+		- Joins vertex attributes with another RDD
+	- `subgraph`
+		- Create subgraph
+	- `connectedComponents, triangleCount, pagerank, shortestPaths`
+		- Pre- implemented graph algorithms 
 
 ## Machine Learning in the Cloud
 
 - How does data mining and machine learning relate to artificial intelligence?
+	- Subset of AI
+		- Analyze, mine and summarize large datasets
+		- Extract knowledge from past data
+		- Predict trends in future data
 - What are some applications?
+	- Information Retrieval
+	- Statistics
+	- Linear Algebra
+	- Business
+- What is the AI/ ML Life Cycle Workflow?
+	- Gathering Data
+	- Data Preparation
+	- Data Wrangling
+	- Analyze Data
+	- Train Model
+	- Test Model
+	- Deployment
 - What is the OSEMN Data Science Model?
-- What happens in each of its stages?
-- What cloud tools can you use in each stage?
+	- Obtain
+		- Obtain data from source in the cloud
+		- Examples
+			- AES Open Data Registry (AWS)
+			- Azure Open Datasets
+			- Google Cloud Public Datasets
+			- Cloud Storage
+			- Cloud Databases
+	- Scrub
+		- Clean the collected data, wrangle it and preprocess it for analysis
+	- Explore
+		- Explore and analyze data to gain insights (EDA)
+		- Examples
+			- Spark
+			- AWS EMR
+	- Model
+		- Use statistical and machine learning models built on the preprocessed data to make predictions, classify data or discover patterns
+		- Feature Engineering
+		- Examples
+			- Spark MLLib
+			- Google Cloud Dataproc
+			- Mahout
+	- Interpret
+		- Results from models are interpreted and communicated
+		- Examples
+			- Tableau
+			- D3.js
+			- `Seaborn`
 - What is a hyperparameter?
+	- Parameters that train the model and are not learned from the data
 - What is AutoML?
+	- Automating tasks such as preprocessing, model selection, feature engineering and hyperparameter tuning
 - How do they relate to one another?
+	- Hyperparameters influence the behavior and performance of models
+	- AutoML automates and includes hyperparameter optimization as one of its features
 - What is the Google Cloud AI Platform?
+	- Cloud platform by Google for building, training and deploying machine learning models at scale, designed to streamline the machine learning workflow
 - What tools does it provide?
+	- AI Platform Notebooks
+		- Managed notebooks
+	- AI Platform Training
+		- Training with hyperparameter optimizations
+	- Continuous Evaluation
+		- Model optimization
+	- AI Platform Predictions
+		- Server model hosting deployment
+	- Kubeflow
+		- Deployment of machine learning workflows on Kubernetes
+	- AutoML Tables
 - What does Microsoft Azure offer for cloud- based machine learning?
+	- Microsoft Azure Machine Learning
 - Describe how AWS SageMaker supports ML on the cloud
+	- SageMaker simplifies the machine learning workflow and enables scalable/ cost effective model deployment
 - What is human in the loop AI?
+	- Selective inclusion of human participation in ML
 - Why use it?
+	- Harness the efficiency of computers while utilizing human intelligence through interaction and curation
+	- Allows you to reframe an automation problem into a HCI problem
 - Strengths and weaknesses?
+	- Strengths
+		- Transparency
+		- Human Judgement
+		- No need to build a "perfect" AI system
+	- Weaknesses
+		- Cost
+		- Slower Processing
+		- Human Judgement (Bias)
 - What are tools that support it?
-- What are examples of unstructured data?
+	- AWS SageMaker Ground Truth
+	- AWS SageMaker Augmented AI
+	- AWS Mechanical Turk
+- What are examples of unstructured data in the context of cloud machine learning?
+	- Vision
+	- Voice
+	- Language
 - What are ML cloud tools specifically designed to handle unstructured data?
+	- Vision
+		- Google Cloud Vision API
+	- Voice
+		- Amazon Rekognition
+	- Language
+		- AWS Lex
 - What is Mahout?
+	- Open source library for scalable machine learning algorithms
+	- Built on VM
 - What are its goals?
+	- Provide scalable machine learning algorithms that can efficiently handle large datasets distributed across a cluster
+	- Enables recommendation, clustering, classification and collaborative filtering using distributed computing frameworks
 - What is Spark?
+	- Open source distributed computing framework that provides an interface for programming entire clusters with implicit data parallelism and fault tolerance
 - What are its goals?
+	- Providing unified/ combined framework for big data processing that is efficient and fault- tolerant
+	- Highlights include batch processing, real- time streaming, machine learning and graph processing
 - What is collaborative filtering?
+	- Making predictions about the interests of a user by collecting preferences from other users (collaboration)
+	- Analyzes interactions between users and items (e.g. reviews, purchase history) to identify similarities
 - What is clustering?
+	- Unsupervised machine learning technique that groups similar data points together based on their features
+	- Partitions dataset into clusters where the points within the same cluster are similar to each other than those in other clusters
 - What is it used for?
+	- Discover underlying patterns or structures within data
+	- Identifying outliers
+	- Segmenting users based on their behavior
+	- Grouping points based on their features
 - What is the K- Means algorithm used for?
+	- Clusters data points into predefined number of clusters
+	- Minimizes distance between data points and the centroid of their assigned cluster while maximizing the distance between centroids of different clusters
 - How does it work?
+	- Iteratively assigns data points to the nearest centroid
+	- Updates centroids based on mean of the data points assigned to each cluster
+	- Continues until convergence, where centroids no longer change significantly **or** max iterations have been reached
 - Optimizations for K- Means?
+	- Random Initialization
+	- Parallelization 
+	- K- Means++ Initialization
 - What is classification with respect to machine learning?
+	- Supervised machine learning task that categorizes input data into predefined classes or categories
+	- Maps input features to output labels, allowing the model to predict the class of unseen data instances
 - Describe a few use cases of classification
+	- Spam Filtering
+	- Sentiment Analysis
 - Describe a few models which can be used for classification
+	- Logistic Regression
+	- Decision Trees
+	- Random Forest
+	- K- Nearest Neighbors (KNN)
+	- Naive Bayes
 - Describe the Naive Bayes algorithm
+	- Multiclass classification algorithm with "naive" assumption of independence between every pair of features
+	- Calculates probability of each class given input features and selects the class with the highest probability as the predicted class
 - What is Frequent Pattern Mining (FPM)?
+	- Data mining technique used to discover frequently occurring patterns in a dataset
+	- Identifies items that often co- occur together in events
 - What are its use cases?
+	- Recommendation Systems
 - Describe the Apriori algorithm
+	- Classic algorithm for FPM
+	- Iteratively discovers frequent item sets by generating candidate item sets and pruning those that do not meet a minimum support threshold
+		- Frequent item sets are extended larger and larger item sets as long as they appear sufficiently often in the database
+	- Reduces search space using the Apriori property that any subset of a frequent item set must be frequent
 
 # W12: Streaming Systems
 
