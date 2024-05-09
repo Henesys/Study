@@ -929,21 +929,77 @@
 ## Kubernetes
 
 - What is Kubernetes?
+	- Container orchestration platform that automates the deployment, scaling and management of containerized applications
+	- Eliminates the need for worrying about underlying infrastructure
 - What is the function of Kubernetes?
+	- Automates the deployment, scaling and management of containerized applications
 - What are the primary advantages of using Kubernetes?
+	- Scalability
+		- Automatic scaling based on demand
+	- High Availability
+		- Automatically restarts failed containers or rescheduling them on healthy nodes
+	- Portability
+		- Provides consistent environment for deploying and running applications across different infrastructure providers & environments
+	- Automation
+		- Automates aspects of application deployment and management, reducing manual intervention & error
+	- Extensibility
+		- Can be integrated with other tools and platforms through its API
 - What is the architecture of Kubernetes?
+	- Master
+		- API Server
+		- Controller
+		- Scheduler
+		- `etcd`
+	- Worker
+		- Kubelet
+		- `kube-proxy`
+		- `container-runtime`
 - What are the components of master nodes and worker nodes?
+	- Master
+		- Manages cluster and coordinates communication between components
+	- Worker
+		- Hosts the running application
 - What are three pod container design patterns?
+	- Sidecar
+		- Made up of two containers
+			- Application
+			- Sidecar
+				- Augments and improves application container without its knowledge
+		- Example Use cases
+			- Adding HTTPS to legacy service
+			- Dynamic configuration with sidecars
+	- Ambassador
+		- Brokers interactions between the application container and the rest of the world
+		- Example Use Cases
+			- Sharding a service
+			- Service discovery
+			- Experiments or request splitting
+	- Adapter
 - Describe the building blocks of Kubernetes
 	- Nodes
+		- Physical or virtual machines that run containerized applications managed by Kubernetes
 	- Pods
+		- Smallest deployable units in Kubernetes, consists of one or more containers that share network and storage resources
 	- Labels
+		- Key- value pairs attached to objects (e.g. pods) for identifying and grouping related resources
 	- Selectors
+		- Queries used to select objects based on their labels for various operations
 	- Controllers
+		- Control loops that manage the lifecycle of Kubernetes objects
 - What is the Kubernetes Service?
+	- Abstraction which defines a logical set of pods running somewhere in your cluster, that all provide the _same_ functionality
+	- Sometimes referred to as a microservice
 - What does it do?
+	- Exposes a set of pods as a network service, allowing other applications to communicate with them reliably
+	- Provides load balancing, service discovery and automatic failover for pods
 - What is the Kubernetes Service Proxy?
+	- `kube-proxy` is a network proxy that runs on each node in a Kubernetes cluster
+	- Maintains network rules and performs connection forwarding for Kubernetes services, allowing external clients to access services running on that cluster
 - Differences between Kubernetes and Docker Swarm?
+	- Both are container orchestration platforms
+	- Kubernetes offers features for managing large scale containerized applications
+	- Docker Swarm is simpler to use and is suitable for smaller scale deployments
+	- Kubernetes can run on many different platforms, Docker Swarm needs to be used with Docker Engine and Docker containers
 
 # W16: Future Developments in the Cloud
 
