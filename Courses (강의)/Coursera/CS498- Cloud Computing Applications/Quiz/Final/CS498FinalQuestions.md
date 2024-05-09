@@ -583,24 +583,101 @@
 ## Streaming Systems
 
 - Why do we need real- time stream processing systems?
+	- MapReduce, Hadoop etc. store and process data at scale, but not for real- time systems
+	- Hadoop fundamentally has a different set of requirements than batch processing
 - What are representative cloud streaming engines?
+	- Apache Storm
+	- Apache Flink
 - What are spouts, bolts, streams and topologies in Apache Storm?
+	- Spouts
+		- Input source of streams in topology
+	- Bolts 
+		- Processing container which can perform transformations (e.g. filter, aggregation, join)
+	- Streams
+		- Unbounded sequence of tuples that is processed and created in parallel
+		- Flow of data between spouts and bolts
+	- Topologies
+		- Network of sprouts and bolts that are connected with stream groupings
 - What are the different grouping ways in Storm?
+	- Shuffle
+		- Picks a random task
+	- Fields
+		- Consistent hashing on a subset of tuple fields
+	- All
+		- Sends to all tasks
+	- Global
+		- Picks task with lowest ID
 - What are the three flavors guaranteeing message processing?
+	- None
+		- Similar to old S4
+	- At Least Once
+		- Tuple trees, anchoring and spout replay
+	- Exactly Once
+		- Similar to Hadoop
 - Where are they used?
+	- Used when needed to ensure different levels of reliability in message processing
+	- Exactly once is commonly used when strict message processing semantics are needed
 - How does Trident interact with exactly once processing?
+	- For Apache Storm, the state storage is left up to the user
+	- Trident provides exactly once semantics
+		- State is a first- class citizen, but the **exact implementation of state is left up to you**
+		- Pre- built connectors to various NoSQL stores like HBase exist for state storage
+		- Provides a high level API 
 - What is the structure of a Storm cluster?
+	- Clojure
+	- Java
 - How does Storm guarantee fault tolerance?
+	- Storm achieves fault tolerance through worker and supervisor failover, tuple tracking and event replay
+	- ZooKeeper is used for distributed coordination, maintaining `acks` and tracks the processing state of tuples
 - How is Thrift used in Storm?
+	- Communication between Nimbus and supervisor nodes
+	- Defines binary protocol for serialization and RPC communication
+	- Allows Storm to be used by many languages
 - What is the `IScheduler` and multi- tenant scheduler in Storm?
+	- `IScheduler` is responsible for scheduling topologies on the cluster
+	- Multi- tenant schedulers are responsible for allowing multiple topologies to share cluster resources efficiently
 - What is stateful stream processing?
+	- Maintaining state across multiple data stream events
+	- Allows for processing logic where the output depends on the entire history of the input stream
 - What is the difference between Storm streaming and Spark streaming?
+	- Storm streaming is a real- time stream processing system with low latency and support for complex event processing
+	- Spark streaming is a microbatch processing engine that processes data in batches, providing both batch and stream processing features
 - What are the advantages and disadvantages of microbatch in Spark streaming?
+	- Advantages
+		- Rich ecosystem of big data tools
+		- Fault tolerance
+		- East of programming
+		- Integration with existing batch processing workflows
+		- Spark SQL
+		- Spark ML
+		- Spark GraphX
+		- SparkR
+	- Disadvantages
+		- Technically not really streaming
+		- Increased latency due to batching
+		- Potentially higher resource overhead
 - What applications are more suitable for Spark streaming?
+	- Applications that require high throughput and fault tolerance
 - What is Lambda architecture in stream processing?
+	- Hybrid approach to stream processing that combines both batch and stream processing layers to handle both real- time and historical data
+	- Batch processing handles failures well
 - What is Kappa architecture in stream processing?
+	- Approach to stream processing that focuses solely on stream processing
+	- Uses a single stream processing layer to handle both real- time and historical data, leveraging immutable event logs for data storage
 - Why do we need Lambda and Kappa architecture?
+	- Lambda and Kappa addresses tradeoffs between latency, accuracy and complexity in stream processing
+	- Lambda
+		- Real- time and batch processing
+		- Difficult to manage
+	- Kappa
+		- Simple architecture by focusing only on stream processing
+		- Lack key features of batch processing
 - What are the general steps in a streaming ecosystem?
+	- Gather the data (Funnel)
+	- Distributed Queue
+	- Real- Time Processing
+	- Semi- Real- Time Processing
+	- Real- Time OLAP
 
 # W13: Virtualization & Containers
 

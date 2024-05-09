@@ -242,7 +242,7 @@
 	- ![](assets/StatefulStreamProcessing.png)
 	- Traditional streaming systems have a record- at- a- time processing model
 	- Each node has a mutable state
-	- For each record, update state and send new srecords
+	- For each record, update state and send new records
 	- State is lost if the node dies
 		- Lambda Architecture
 	- Making stateful stream processing be fault- tolerant is challenging
