@@ -19,17 +19,17 @@
 - Notes were created using [Obsidian](https://obsidian.md/), which may cause links to break when viewed on GitHub directly.
 - All notes were tagged with the #cloud_computing tag functionality on Obsidian.
 
-| Week | Dates         | Topics                                                            | MP                                                  | MP Due (Sunday) | **Notes**                             | Additional                                                                          |
-| ---- | ------------- | ----------------------------------------------------------------- | --------------------------------------------------- | --------------- | ------------------------------------- | ----------------------------------------------------------------------------------- |
-| 1    | 05/13          | Cloud Computing Foundations, Cloudonomics & Cloud Models          | MP1: Java/ Python Warmup (~ 3 hours)                | **MP1**         | [CS498W1Notes](W1/CS498W1Notes.md)    |                                                                                     |
-| 2    | 05/20 | Networking, IP, HTTP, REST & VPC                                  | MP2: AWS Load Balancer (~ 6 hours)                  | **MP2**         | [CS498W2Notes](W2/CS498W2Notes.md)    | [MP2 Notes](../../O'Reilly/Amazon%20Web%20Services%20(AWS),%203rd%20Edition/MP2.md) |
-| 3    | 5/27 | Serverless Computing                                              | MP3: AWS Lex & Lambda (~ 6 hours)                   | **-**           | [CS498W3Notes](W3/CS498W3Notes.md)    |                                                                                     |
-| 4    | 06/03 | Big Data Programming: MapReduce, Hadoop, YARN, Spark & HDFS       | MP4: Hadoop MapReduce (~ 8 hours)                   | **-**           | [CS498W4Notes](W4/CS498W4Notes.md)    | [MP3 Notes](../../O'Reilly/Amazon%20Web%20Services%20(AWS),%203rd%20Edition/MP3.md) |
-| 5    | 06/10 | Data Storage (Part 1): Cloud Based Storage                        | MP5: Spark MapReduce (~ 6 hours)                    | **MP3**         | [CS498W5Notes](W5/CS498W5Notes.md)    |                                                                                     |
-| 6    | 06/17 | Data Storage (Part 2): Cloud Based Databases & Data               | MP6: AWS RDS & ElastiCache (~ 6 hours)              | **MP4**         | [CS498W6Notes](W6/CS498W6Notes.md)    |                                                                                     |
-| 7    | 06/24 | Data Storage (Part 3): Scalable Data Storage                      | MP7: HBase (~ 6 hours) + MP8: Spark SQL (~ 4 hours) | **MP5**         | [CS498W7Notes](W7/CS498W7Notes.md)    |                                                                                     |
-| 8    | 07/01 | **MIDTERM**                                                       | **-**                                               | **-**           | [CS498W8Notes](W8/CS498W8Notes.md)    |                                                                                     |
-| 9    | 07/08 | **SPRING BREAK**                                                  | **-**                                               | **-**           | [CS498W9Notes](W9/CS498W9Notes.md)    |                                                                                     |
-| 10   | 07/15 | Cloud Based Analytics: Data Cube, Columnar Storage & Data Lake    | MP9: Cloud Analytics & Visualization (~ 6 hours)    | **MP6**         | [CS498W10Notes](W10/CS498W10Notes.md) |                                                                                     |
-| 11   | 07/22 | Graph Processing, Graph Databases & Machine Learning in the Cloud | MP10: Spark GraphFrames & MLLib (~ 6 hours)         | **MP7**         | [CS498W11Notes](W11/CS498W11Notes.md) |                                                                                     |
-| 12   | 07/29 | Fast Data Processing & Streaming in the Cloud                     | MP11: Storm & Flux (~ 6 hours)                      | **MP8**         | [CS498W12Notes](W12/CS498W12Notes.md) |                                                                                     |
+| Week | Dates | Topics                          | MP/ Project              | Deadline | Notes |
+|------|-------|---------------------------------|--------------------------|----------|-------|
+| 1    | 05/13 | Introduction to Data Cleaning   |                          |          |       |
+| 2    | 05/20 | Validation and Transformation   | HW#1:Regular Expressions | 06/02    |       |
+| 3    | 05/27 | Data Profiling                  | HW#2: OpenRefine         | 06/09    |       |
+| 4    | 06/03 | Relational Model                | Group Project Announced  |          |       |
+| 5    | 06/10 | Integrity Constraints (Datalog) | HW#3: Datalog            | 06/23    |       |
+| 6    | 06/17 | Integrity Constraints (SQL)     | HW#4: SQL                | 06/30    |       |
+| 7    | 06/24 | Workflows                       | Group Project: Phase I   | 07/07    |       |
+| 8    | 07/01 | Provenance                      | HW#5: Provenance         | 07/14    |       |
+| 9    | 07/08 | YesWorkflow                     | HW#6: Python             | 07/21    |       |
+| 10   | 07/15 | Data Cleaning Project           | Group Project: Phase II  |          |       |
+| 11   | 07/22 | Data Cleaning Project           | Group Project: Phase II  | 07/28    |       |
+| 12   | 07/29 | Data Cleaning Project           | Peer and Self-Evaluation | 08/04    |       |
