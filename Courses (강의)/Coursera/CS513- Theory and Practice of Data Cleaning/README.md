@@ -1,4 +1,4 @@
-# CS519- Scientific Visualization
+# CS519- Theory and Practice of Data Cleaning
 
 #data_visualization #data_science 
 
@@ -17,7 +17,7 @@
 ## Schedule
 
 - Notes were created using [Obsidian](https://obsidian.md/), which may cause links to break when viewed on GitHub directly.
-- All notes were tagged with the #cloud_computing tag functionality on Obsidian.
+- All notes were tagged with the #data_visualization #data_science tag functionality on Obsidian.
 
 | Week | Dates | Topics                          | MP/ Project              | Deadline | Notes |
 |------|-------|---------------------------------|--------------------------|----------|-------|
