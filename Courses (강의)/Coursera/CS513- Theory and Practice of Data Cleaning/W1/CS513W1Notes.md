@@ -147,9 +147,9 @@
 	- Data Quality Management Phases:
 		- Context Reconstruction
 		- Assessment (Measurement)
-		- Imrpovement
+		- Improvement
 	- Data Quality Dimensions
 		- Accuracy
-		- Completeness
+		- Completeness 
 		- Consistency
 		- Timeliness
