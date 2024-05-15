@@ -1,6 +1,6 @@
 # CS519- Week 1
 
-#data_science 
+#data_visualization #data_science 
 
 ## What is Scientific Visualization?
 
