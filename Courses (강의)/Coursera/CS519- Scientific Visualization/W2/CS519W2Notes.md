@@ -261,10 +261,205 @@
 
 ### Rendering & Visualization
 
-- X
+- Real- Time Rendering
+	- 3D surfaces are modeled with triangle meshes
+		- Each triangle is projected to 2D
+		- Each triangle is rasterized into pixels
+		- Each pixel is shaded according to some arbitrary model
+- Questions to Ask
+	- What determines how performant an application is?
+	- What visual artifacts of the rendering process impact visualization?
+		- Projection
+		- Shading
+		- Hidden Surface Removal
+- Performance
+	- Complicated issue where the number of triangles in the surface model is often the key factor
+		- Fewer Triangles = Faster Rendering
+- Projections & Distortion (Part 1)
+	- Mercator Projection
+		- ![](assets/Mercator.png)
+		- Developed by Gerardus Mercator in 1569
+		- Lines of constant bearing are straight lines on a map
+		- Revolutionary for naval navigation at the time
+			- Easily plots a course of constant bearing between 2 locations
+				- Constant Bearing
+					- Maintaining a constant angle between the direction of navigation and *true* North
+					- A **rhumb line** is a course of constant bearing since it will cross lines of longitude at the same angle and spiral into the pole
+			- Maintains a heading using a compass
+			- Avoids repeated course corrections to new heading
+		- Poor for the task of *comparing* relative areas
+			- Africa is 14 times larger than Greenland
+			- Areas farther from the equator appear larger
+			- Circles on the indicatrix show *relative* distortion
+				- ![](assets/Indicatrix.png)
+- Perspective Projection
+	- ![](assets/PerspectiveProjection.png)
+	- Perspective Distortion
+		- Distance objects appear smaller than the same object close up
+		- Objects closer to the image plane and away from the center of projection (CoP) will look elongated
+- Orthographic Projection
+	- ![](assets/OrthographicProjection.png)
+	- An object has same apparent size regardless of distance from the eye
+	- Foreshortening can *still occur* if the object is angled away from the eye
+- Projections & Distortion (Part 2)
+	- ![](assets/OrthographicPerspective.png)
+- Orthographic Projection for Engineering
+	- If comparing lengths is *important* for application, consider orthographic
+		- ![](assets/OrthographicUseCase.png)
+- Isometric Projection
+	- Commonly used in technical drawings and some computer game graphics
+	- Three axes appear $120\degree$ from each other and are equally foreshortened
+	- Achieved by:
+		- Rotating an object $45\degree$ around the vertical axis $Y$
+		- Rotating ~$35.3\degree$ through the horizontal axis $X$
+		- Projecting orthographically onto the XY plane
+	- ![](assets/IsometricProjection.png)
+- Isometric Projection in Art
+	- ![](assets/IsometricArt.png)
+		- Isometric projection can be used to generate optical illusions
+		- It's difficult to judge distance effectively since objects' different depths project to the same size
+- Shading & Visualization
+	- Shading is an important 3D visual cue
+		- Especially diffuse shading in Blinn- Phong
+	- Need to determine if non- white light was used
+		- This can change the rendered color of the surface
+	- Too much ambient light can wash away details
+		- Too little can leave structures too dark, which makes it difficult to discern details as well
+- Hidden Surface Removal & Z- Fighting
+	- Can occur when 2 surfaces are co- planar or close to co- planar
+		- "Z" refers to depth, the distance from the camera
+		- The rendering engine inconsistently determines which surface is closest
+	- Each fragment has a z- value (positive depth from camera)
+		- Hidden surface removal compares the z- values of fragments at the same screen location
+		- Only the fragment that has the smallest z- value is retained
+		- ![](assets/HiddenSurfaceRemoval.png)
+	- Depths from the camera lie in the range $[n, f]$
+		- $n$ : positive distances to the near clipping plane
+		- $f$ : positive distance to the far clipping plane
+		- ![](assets/Camera.png)
+	- Assume depths are positive integers $\{0, 1, ... B - 1\}$
+		- Map $n$ to $0$ and $f$ to $B - 1$
+			- Each integer in the range corresponds to a *bucket* of depth $\Delta z = \frac{f - n}{B}$
+	- If you render a scene in which surfaces have a separation of $1 m$, if the $\Delta z < 1$, there should be **no** z- fighting
+		- If the separation is less than the bucket depth, you *can* have z- fighting
+			- Cannot determine which surface is closest
+			- Rounding errors may switch which surface is chose as the closest in different parts of the scene
+	- Fixes for z- fighting:
+		- Move the near and far planes closer together 
+		- Move surfaces apart (increasing the depth buffer precision or offsetting the surfaces)
+	- Bucket sizes will vary by depth due to perspective projection
+		- Ability to perform hidden surface removal degrades with distance
 
 ## Scalar Fields
 
 ### Colormaps
 
-- X
+- What is a Scalar Field?
+	- Scalars are a single quantity or number
+	- A scalar field assigns a scalar to every point in a give space
+- For a 2D space, a scalar field is often visualized using color
+	- Render a representation of domain and assign a color to each pixel
+	- In order to do so, we need to construct a colormap
+- Coloring Continuous Data
+	- Coloring to denote *continuous* data is called **pseudo- coloring**
+		- Such a mapping from value to color is called a choropleth
+	- Questions
+		- Standard weather map colors?
+			- Blue, Cyan, Green, Yellow, Orange, Red
+		- Elevation in geography?
+			- Blue, Green, Brown, White
+		- Most used colormap?
+			- Rainbow
+		- Is it useful?
+			- Not really
+- Designing a Colormap: Two Options
+	- Color Table
+		- Precompute colors and store them
+		- ![](assets/ColorTable.png)
+	- Transfer Function
+		- ![](assets/TransferFunction.png)
+- Designing a Colormap: Generate a Color Table
+	- Map each scalar value $x \in R$ to a point to a color via a table lookup
+		- Assume that we know $x \in [x_{min}, x_{max})$
+	- Color Tables
+		- Precompute colors and save results into a table of colors $\{c_1 ... c_N\}$
+		- Index table by mapping ranges to integers
+	- Suppose that we have $N$ colors in a table and we index them into $[0, N-1]$
+		- Typically, a color mapping function might generate an index $i$:
+			- $i = min([\frac{x - x_{min}}{\frac{x_{max}-x_{min}}{N}}], N-1)$
+- Transfer Functions
+	- Defines colors at certain scalar values
+		- Points are referred to as knots
+	- Interpolation is then used to define colors for values in between the knots
+	- Example
+		- Consider a function with a range of $[0, 100]$
+		- $c(0) = (0, 0, 0)$ and $c(100) = (1, 1, 1)$
+			- Use linear interpolation in between
+			- ![](assets/SimpleTransferFunction.png)
+- Perceptually Linearized Greyscale
+	- ![](assets/PerceptuallyLinearizedGreyscale.png)
+- Rainbow Colormap
+	- ![](assets/RainbowColormap.png)
+	- Most infamous colormap in visualization
+		- "Cold" Colors `-->` Low Values
+		- "Warm" Colors `-->` High Values
+	- Studies show that this colormap is not as useful as people think it is
+- Example: Implementing the Rainbow Colormap
+	- ![](assets/RainbowColormapExample.png)
+- Criticism
+	- User is **conceptually** mapping a *linear* scale in hue onto a *scalar* variable
+		- **Perceptually**, this scale does *not* appear linear
+		- Equal steps in the scale do not correspond to equal steps in color
+		- Colors appear to change *much* faster in the yellow region than the green region
+	- This gives the impression that the data is organized into discrete regions
+		- This can lead the user to infer structure which is not present in the data
+		- This may also lead to people missing details that lie completely within a single color region
+	- Rainbow colormaps are sensitive to deficiencies in vision
+		- Roughly 5% of the population has deficiencies in distinguishing these colors
+- Alternatives to the Rainbow
+	- ![](assets/PerceptuallyLinearColormap.png)
+	- Perceptually Linear Colormap
+		- Change in the underlying metric is matched by a similar perceptual change in color
+	- [Analysis by Kenneth Moreland](https://www.kennethmoreland.com/color-advice/)
+- Kindlmann Colormap
+	- ![](assets/KindlmannColormap.png)
+		- *Close* to perceptually linear
+- Black Body Colormap
+	- ![](assets/BlackBodyColormap.png)
+		- Based on colors from black body radiation
+		- Designed to have a constant increase in brightness throughout
+- Diverging Colormap
+	- ![](assets/DivergingColormap.png)
+	- Underlying data can inform your choice
+		- Is there a critical value the viewer should be aware of?
+		- A **diverging colormap** would be appropriate
+	- Change in lightness and possibly saturation of two different colors that meet in the middle at an *unsaturated* color
+		- Should be used when information being plotted has a critical *middle* value, such as topography or when the data deviates around zero
+- Colormaps for 3D Surfaces
+	- Ideally, colormaps should use changes in luminance to display changes in value
+		- In 3D scenes, shading cues are vital to understanding shapes
+	- We need to find a way to avoid colormaps and shading from interfering with one another
+		- To achieve this, we limit the colormap to bright colors only, thereby reducing the total range of brightness in the colormap
+	- ![](assets/3DColormaps.png)
+- Keyed Lookup Tasks
+	- Keyed Lookup
+		- User wants to estimate specific data values from color
+	- Some colormaps are better than others for this particular task
+		- Banded colormaps like the rainbow colormap *are* technically better than linear maps such as greyscale
+			- Rainbow colormaps are still bad
+	- ![](assets/KeyedLookup.png)
+	- Contours will also help with estimating the specific value
+- Prefer Interpolating Values to Interpolating Colors
+	- You should apply to colormap per- pixel, as it will achieve better results than per- vertex colormap
+	- ![](assets/ColorInterpolation.png)
+- Colormap Design Advice
+	- Design for accessibility
+		- Minimally, don't depend on red- green differentiation
+	- Use your knowledge of the dataset 
+		- "Is there a critical value?"
+		- "Is there a standard in the field audiences are expecting?"
+	- Often, a perceptually uniform colormap is the best choice
+		- Equal steps in data are perceived as equal steps in the color space
+	- Humans perceive changes in **lightness** as changes in the data pretty well
+		- Not so much with changes in **hue**
+	- Use colormaps with monotonically increasing lightness
