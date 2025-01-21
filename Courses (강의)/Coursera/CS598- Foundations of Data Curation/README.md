@@ -5,6 +5,7 @@
 ## Professor
 
 - Allen Renear
+- Craig Willis
 
 ## Grading
 

@@ -189,7 +189,9 @@
 
 ## Long- Tailed Distributions
 
-- X
+- Distribution found in raw data is often not normal and may be highly skewed (asymmetric) or discrete
+- Tails found in both symmetric and asymmetric distributions indicate the presence of extreme values, which must be addressed/ guarded against properly in real world applications
+- [Nassim Taleb](https://en.wikipedia.org/wiki/Nassim_Nicholas_Taleb) proposed the *black swan theory*, which predicts that events such as a stock market crash are much more likely to be detected using asymmetric distributions than models using normal distributions
 
 ## t- Distribution
 
