@@ -5,7 +5,7 @@
 -- Table --> Activity
 -- PK --> machine_id, process_id, activity_type
 
--- Find averagae time of each machine
+-- Find average time of each machine
 -- Time = End Timestamp - Start Timestamp
 -- Average Time = Total Time / # of Processes
 -- Return machine_id, average_time AS processing_time (round to 3)
