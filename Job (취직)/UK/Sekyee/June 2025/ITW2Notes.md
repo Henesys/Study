@@ -82,11 +82,99 @@
 
 ## Firewalls (Functions, Protocols, Policies, Routing Tables)
 
-- 
+- Firewalls
+	- Network security device that monitors and controls incoming and outgoing network traffic based on *predetermined* security rules
+- Protocols & Policies
+	- Protocols
+		- Firewalls operate under various network protocols (e.g. TCP, UDP, ICMP, HTTP, HTTPS, FTP, SSH)
+		- These rules can be configured to allow or deny traffic based on the protocol being utilized
+			- Example
+				- A rule may allow outbound web traffic (e.g. HTTP: port 80, HTTPS: port 443), but blocks SSH: port 20 connections from the Internet to internal servers
+	- Policies
+		- The core of a firewall's operation lies in its security policies or rules
+		- Policies are sets of instructions that tell the firewall how to *handle* different types of traffic, in order and from top to bottom
+		- Structure
+			- Source
+				- Origin of the traffic (e.g. specific IP address, IP range, network segment, VLAN)
+			- Destination
+				- Intended recipient of the traffic
+			- Service/ Port
+				- Specific protocol and port number (e.g. TCP/80 for HTTP, UDP/53 for DNS)
+			- Action
+				- What the firewall should do with the traffic (e.g. Allow/ Permit, Deny/ Block, Drop, Reject)
+			- Logging
+				- Choose to record the event for auditing or troubleshooting
+		- Example
+			- Policy ABCD (Internet Access for Users)
+				- Source
+					- Internal VLAN 120 (192.168.xxx/24)
+				- Destination
+					- Any (Internet)
+				- Service
+					- HTTP (TCP/80)
+					- HTTPS (TCP/443)
+					- DNS (UDP/53)
+				- Action
+					- Allow
+				- Log
+					- Yes
+- Routing Tables
+	- Data structure that is stored in a router or **Layer 3** switch that lists pathways to network destinations
+	- Map that device uses to determine the best way to forward incoming data packets to their intended destinations
+	- Structure
+		- Destination Network
+			- IP address range of the network that the packet is trying to reach
+		- Next Hop
+			- IP address of the *next* router or Layer 3 switch that the packet should be sent to on its path to the destination
+		- Interface
+			- Outgoing network interface on the route/ switch through which the packet should be forwarded
+		- Metric/ Cost
+			- Value indicating the "cost" or "preference" of the route (lower is usually better), which is often shown when multiple paths to the destination exist
+		- Route Type
+			- How the route was established/ learned (e.g. C- Connected, S- Static, D- EIGRP, O- OSPF, B- BGP)
+	- Example
+		- Entry ABCD
+			- Destination Network
+				- 192.168.120.0/24 (VLAN 120)
+			- Next Hop
+				- Directly connected
+			- Interface
+				- Port connected to VLAN 120 L2 switch
 
 ## PoE, Work, Internet, Phone Lines
 
-  - 
+  - Power of Ethernet (PoE)
+	  - Allows network cables (e.g. Ethernet cables such as Cat5e, Cat6) to carry electric power and data to powered devices (PDs), eliminating the need for separate power outlets and adapters for compatible devices
+	  - **Power Sourcing Equipment (PSE)**, usually a device with a PoE enabled switch or a PoE injector injects Direct Current (DC) power onto the data lines of the Ethernet cable
+		  - PDs use this power to operate
+	  - Applications
+		  - (Small) IoT Devices
+			  - Sensors, "Smart" Equipment (e.g. lights, voice activated personal devices), Electric Signs
+		  - IP Cameras
+			  - Useful for surveillance cameras that do not have easy access to power
+		  - **Wireless Access Points (WAPs)**
+			  - WAPs are often mounted to the ceiling or on high walls, where power outlets are scarce
+			  - Example
+				  - Navien's "WLCAP" devices (Smart Plus control + Geofencing) most likely fall under this domain and are powered via PoE
+		  - **Voice over Internet Protocol (VoIP)**
+			  - Simplifies deployment, making it suitable for office installations
+			  - Requires only a single cable drop for both data and power, allowing users to make calls over the Internet rather than traditional phone lines
+	  - PoE allows for reduced equipment overhead, reduced cabling costs, rapid installation and centralized power management (Uninterrupted Power Supply --> UPS for PoE switches)
+  - Work Lines
+	  - Term that colloquially refers to *internal corporate networks* or LANs where employees work with and access internal systems
+		  - Encompasses computing resources, applications and data that are utilized in day-to-day business operations of an organization
+	  - Applications
+		  - Work lines apply to workstations, servers, internal databases, printers, internal applications and switches
+		  - Example
+			  - Vmware vSphere, "Old" File Server and WLCAP would represent a "work" environment 
+			  - Corporate internal operations and data reside in this ecosystem, secured behind a firewall equipped with various policies that police the private traffic 
+  - Phone Lines
+	  - Term that colloquially refers to infrastructure and technology used primarily by VoIP
+		  - Businesses rely on VoIP rather than traditional phone lines to leverage existing data networks
+	  - Example
+		  - WAPs and the general network infrastructure such as L2 switches and VLANs are able to support VoIP usage
+		  - A company may choose to use VoIP for its business
+			  - If they use VoIP, the phone would connect to the L2 switch, reside in a specific VLAN (e.g. a VLAN designated for "voice") and communicate to an internal network to an **IP PBX (Internet Protocol Private Branch Exchange)**, which is a telephone switchboard that carries voice communication over a network, finally connecting to a telecommunications provider 
 
 ## IP Classes, Subnets, CIDR
 
