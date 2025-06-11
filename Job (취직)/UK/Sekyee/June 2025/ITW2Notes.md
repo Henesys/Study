@@ -40,10 +40,45 @@
 	- The work L2 does is simple, which allows it to be generally faster and cheaper than L3
 		- Local Area Network (LAN) segmentation allows the L2 switch to segment LANs into smaller domains, improving performance
 - L3 Switches
-	- asdf
-- L2 vs. L3 Switches
-	- X
+	- Operates at **Layer 2 (Data Link Layer) and Layer 3 (Network Layer)**
+		- Layer 2 is used for switching *within* a subnet
+		- Layer 3 is used for routing *between* subnets
+	- L3 switches have the same capabilities as L2 switches, but they also have **routing** capabilities
+		- L3 switches have the ability to forward data **packets** based on **IP addresses**
+	- If an L3 switch receives a packet designated for a different network segment (different IP subnet), it uses a **routing table** to determine the best route to its destination
+	- L3 switches have the ability to connect to multiple broadcast domains (VLANs), allowing for inter- VLAN routing
+		- This routing is usually done with hardware, allowing for faster speeds than external routers 
+		- Routing capabilities of the L3 make it more expensive than the L2
 - Frames vs. Packets
+	- Frames
+		- Unit of data at **Layer 2 (Data Link Layer)**
+		- Once a *packet* is ready to be sent over a specific *physical* link, it gets encapsulated by the *frame*
+		- Includes 
+			- Header
+				- **Source MAC address** (physical address of sending network interface card) and the **destination MAC address** (physical address of the next device on the local network segment)
+				- Also includes preamble for synchronization and type/ length fields
+			- Payload
+				- Location of the *packet*
+				- The entire packet becomes the payload of the frame
+			- Trailer
+				- Contains error checking information, commonly a **Frame Check Sequence (FCS)** or **Cyclic Redundancy Check (CRC)** to ensure the data wasn't corrupted during transmission over the link
+		- Function
+			- Frames are responsible for hop-to-hop communication within a single LAN
+				- L2 switches forward the frame via the MAC address
+				- Once the frame reaches the destination router, the router "unwraps" the packet from the frame, reads it, encapsulates it into a *new* frame for transmission and send it
+	- Packets
+		- Unit of data at **Layer 3 (Network Layer)**
+		- Includes
+			- Header
+				- Critical information for routing, including the **source IP address** (its origin) and the **destination IP address** (its destination)
+				- Also contains other information such as protocol version, time-to-live (TTL) and checksums for error detection
+			- Payload
+				- Actual information that is being sent (e.g. photo, video, file)
+			- Optional Trailer
+				- May sometimes included for additional error checking
+		- Function
+			- Responsible for end-to-end communication across different **routers** that operate at **Layer 3**
+				- Routers read the destination IP in the packet header to calculate the best route to the destination 
 
 ## Firewalls (Functions, Protocols, Policies, Routing Tables)
 
