@@ -256,6 +256,7 @@
   - **Classless Inter-Domain Routing (CIDR)**
 	  - Method for allocating IP addresses and routing IP *packets* that replaced the classful addressing system
 	  - X
+	  - 
 
 ## Fortinet (FortiGate) Firewalls, VPN & VPN Protocols
 
