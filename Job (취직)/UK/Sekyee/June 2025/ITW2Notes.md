@@ -40,7 +40,7 @@
 	- The work L2 does is simple, which allows it to be generally faster and cheaper than L3
 		- Local Area Network (LAN) segmentation allows the L2 switch to segment LANs into smaller domains, improving performance
 - L3 Switches
-	- X
+	- asdf
 - L2 vs. L3 Switches
 	- X
 - Frames vs. Packets
