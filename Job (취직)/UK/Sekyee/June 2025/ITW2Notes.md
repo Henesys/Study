@@ -6,7 +6,7 @@
 
 - L2 vs. L3 Switches (Functions, Differences, OSI)
 - Firewalls (Functions, Protocols, Policies, Routing Tables)
-- PoE, Work, Internet, Phone Lines
+- PoE, Work, Phone Lines
 - IP Classes, Subnets, CIDR
 - Fortinet (FortiGate) Firewalls, VPN & VPN Protocols
 
@@ -141,7 +141,7 @@
 			- Interface
 				- Port connected to VLAN 120 L2 switch
 
-## PoE, Work, Internet, Phone Lines
+## PoE, Work, Phone Lines
 
   - Power of Ethernet (PoE)
 	  - Allows network cables (e.g. Ethernet cables such as Cat5e, Cat6) to carry electric power and data to powered devices (PDs), eliminating the need for separate power outlets and adapters for compatible devices
@@ -178,7 +178,84 @@
 
 ## IP Classes, Subnets, CIDR
 
-  - 
+  - IP Classes
+	  - IPv4 addresses were previously divided into *classes* to categorize networks based on their size, a practice known as **classful addressing**
+		  - This practice is largely rendered obsolete by CIDR, but a lot companies still rely on older companies, making them still relevant in our case
+	  - Classes
+		  - Class A
+			  - IP Range
+				  - **1.0.0.0 to 126.255.255.255**
+			  - Default Subnet Mask
+				  - **255.0.0.0 (/8)**
+			  - Purpose
+				  - Used for large networks
+				  - First octet *defines* the network
+				  - Remaining 24 bits are designated for hosts, allowing for approximately 16 million hosts per network
+		  - Class B
+			  - IP Range
+				  - **128.0.0.0 to 191.255.255.255**
+			  - Default Subnet Mask
+				  - **255.255.0.0 (/16)**
+			  - Purpose
+				  - Used for medium networks
+				  - First *two* octets define the network
+				  - Remaining 16 bits are designated for hosts, allowing for approximately 65,000 hosts per network
+		  - Class C
+			  - IP Range
+				  - **192.0.0.0 to 223.255.255.255**
+			  - Default Subnet Mask
+				  - **255.255.255.0 (/24)**
+			  - Purpose
+				  - Used for small networks
+				  - First *three* octets define the network
+				  - Remaining 8 bits are designated for hosts, allowing for 254 hosts per network
+		  - Class D (Multicast)
+			  - IP Range
+				  - **224.0.0.0 to 239.255.255.255**
+			  - Default Subnet Mask
+				  - X
+			  - Purpose
+				  - Used for multicasting (one-to-many)
+		  - Class E (Experimental)
+			  - IP Range
+				  - **240.0.0.0 to 255.255.255.255**
+			  - Default Subnet Mask
+				  - X
+			  - Purpose
+				  - Reserved for experimental use
+	  - Obsolescence
+		  - The main limitation of classful addressing is the inefficiency and IP address exhaustion 
+		  - Network blocks were assigned with fixed sizes, which meant that an organization that required 300 IP addresses couldn't use a Class C (254 hosts) and had to adopt a Class B (~ 65,000 hosts), which was incredibly wasteful and quickly depleted the IPv4 address space
+  - Subnets (Subnetting)
+	  - Subnetting is a practice of dividing large IP networks into smaller and manageable subnetworks (hence the name, subnets)
+	  - This is done by "borrowing" bit from the host portion of an IP address to create additional network bits 
+	  - Application
+		  - Reduced Broadcast Traffic
+			  - Smaller subnets allow for smaller broadcast domains, reducing network congestion
+			  - Messages would be sent to the people that need them, not everyone in the network
+		  - Improved Security
+			  - Network segmentation allows for more granular control over traffic flow between different segments (departments), enhancing security
+		  - Efficient IP Address Utilization
+			  - Allows for better IP allocation within an organization, reducing inefficiencies
+		  - Easier Management
+			  - Breaking down a large network into smaller and manageable pieces make it easier to troubleshoot
+	  - Function
+		  - **Subnet masks** are *32 bit* numbers that distinguish the network portion of an IP address from the host portion
+			  - They are often represented in dotted- decimal notation (e.g. 255.255.255.0) or in CIDR notation (e.g. /24)
+			  - Bits in the subnet mask that are set to **1** indicate the *network* portion, bits that are set to **0** indicate the *host* portion
+		  - Example
+			  - Network Information
+				  - 89.248.22.160
+			  - Subnet Mask
+				  - 255.255.255.248
+				  - Binary of the above is **11111111.11111111.11111111.11111000**
+				  - 29 **1's** are present in the binary representation, which means it's a */29* subnet (in CIDR)
+			  - Subnet Capabilities
+				  - $2 ^ {(32 - 29)} - 2 = 6$
+				  - This subnet can accommodate **6** usable host IP addresses (network & broadcast addresses are reserved, which is why we subtract **2**)
+  - **Classless Inter-Domain Routing (CIDR)**
+	  - Method for allocating IP addresses and routing IP *packets* that replaced the classful addressing system
+	  - X
 
 ## Fortinet (FortiGate) Firewalls, VPN & VPN Protocols
 
