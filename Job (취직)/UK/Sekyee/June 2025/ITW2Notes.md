@@ -9,6 +9,7 @@
 - PoE, Work, Phone Lines
 - IP Classes, Subnets, CIDR
 - Fortinet (FortiGate) Firewalls, VPN & VPN Protocols
+- Gateways
 
 ## L2 vs. L3 Switches
 
@@ -354,3 +355,30 @@
 					- Uses specific ports (e.g. UDP 500 for IKE, UDP 4500 for NAT-T), which might require tweaking existing firewall rules
 				- Less Granular Access Control
 					- Typically provides all-or-nothing access to the network, though this can be refined via routing policies
+
+## Gateways
+
+- Gateway
+	- Device or software that acts as a gate between two networks, serving as the entry and exit point for data traffic travelling from one network to the other 
+	- Function
+		- Translates Protocols
+			- Translates traffic between different network protocols, allowing incompatible networks to communicate
+		- Routes Traffic
+			- Forwards traffic from local network to external network (e.g. Internet or another branch office)
+			- Default gateway is the IP address the user uses to send traffic to anything outside of their own subnet
+		- Security
+			- Uses firewall for security, controls what kinds of traffic is allowed to pass between networks
+- "Can a gateway be directly connected to a network switch?"
+	- Answer
+		- Yes
+	- It is often the most efficient way to integrate it into your network infrastructure/ ecosystem, especially when using VLANs for proper traffic management and security
+	- Reasoning (Example: KBI Network System Diagram)
+		- Logical Segregation (VLANs)
+		- Centralized Connectivity
+		- Scalability
+		- High Availability (HA)
+			- Active + Backup Voice Gateways
+			- Both voice gateways are connected to the same **core internal switch** (e.g. Cisco Catalyst 2960-X), allowing them to work as a redundant pair
+- Notes from Meeting
+	- Gate <-> Firewall <-> Switch <-> PBX
+	- Switch <-> Phone(s)
