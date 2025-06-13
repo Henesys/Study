@@ -305,6 +305,52 @@
 			- Connects two or more geographically separate networks (e.g. branch office to HQ) as if they were on a single network 
 	- VPN Protocols
 		- SSL/ TLS VPN (Secure Sockets Layer/ Transport Layer Security VPN)
-			- 
+			- Operates at **Layer 7 (Application Layer)**
+				- Described as operating at **Layer 4 (Transport Layer)** in the context of network security
+			- TLS is the successor to SSL
+			- SSL/ TLS VPN uses a web browser (or a small client software) to provide secure access to specific applications or internal websites 
+				- The encryption itself operates at the application level
+			- Use Case
+				- Remote Access for Web Applications
+					- Beneficial for users who need to access specific web- based applications from anywhere with an Internet connection
+			- Advantages
+				- Ease of Deployment
+					- Often clientless or very light, making it suitable for quick set up and deployment
+				- Granular Access
+					- Can provide access to specific applications instead of the entire network
+				- Firewall Friendly
+					- Typically uses standard TCP 443 web ports, making it easier to traverse firewalls
+			- Disadvantages
+				- Limited Network Access
+					- Generally only provides access to *specific* applications, not full network layer access to *all* resources
+				- Performance
+					- Higher- layer operations makes it slightly less performant than IPsec
 		- IPsec VPN (Internet Protocol Security VPN)
-			- 
+			- Operates at **Layer 3 (Network Layer)**
+			- Encrypts and authenticates almost all IP traffic at the network layer
+				- Creates a secure tunnel that encapsulates entire IP packets
+				- IPsec is a suite of protocols including **Authentication Header (AH)** for data integrity and **Encapsulating Security Protocol (ESP)** for encryption, integrity and authentication
+					- Uses **Internet Key Exchange (IKE)** for key management and authentication
+			- Use Case
+				- Site-to-Site VPNs
+					- Able to connect entire networks, like a branch office to HQ to form a secure VPN over the Internet
+				- Remote Access VPNs (Full Tunnel)
+					- Provides remote users with full network access, making their device behave as if it's physically on the corporate network
+				- Securing Data in Transit
+					- Protecting data between servers or specific hosts within a network
+			- Advantages
+				- Full Network Layer Access
+					- Provides complete network access, allowing users to reach any IP- based resource as if they were on a local network
+				- Strong Security
+					- Considered very robust and secure for encrypting all IP traffic
+				- Standardized
+					- Widely adopted and supported across various vendors (considered vendor neutral)
+				- Performance
+					- Performs generally well for full tunnel scenarios
+			- Disadvantages
+				- More Complex Deployment
+					- Requires dedicated client software on remote user devices and more complex configurations on network devices
+				- Firewall Challenges
+					- Uses specific ports (e.g. UDP 500 for IKE, UDP 4500 for NAT-T), which might require tweaking existing firewall rules
+				- Less Granular Access Control
+					- Typically provides all-or-nothing access to the network, though this can be refined via routing policies
