@@ -266,4 +266,45 @@
 
 ## Fortinet (FortiGate) Firewalls, VPN & VPN Protocols
 
-- 
+- FortiGate Firewalls
+	- ["**Next Generation Firewalls (NGFWs)**"](https://www.fortinet.com/uk/products/next-generation-firewall) developed by Fortinet
+	- NGFWs is a network security device that directly identifies and controls applications, users and traffic to enforce policies
+		- One way to look at NGFWs is an aggressive form of fraud detection in the cybersecurity space that not only identifies threats but also directly contain them
+		- Developed as a means to address the lacking and rigid security measures a perimeter security protocol provides
+	- Benefits of NGFWs
+		- Application Control
+			- Identifies and controls applications running on the network, *even if* it uses standard ports
+		- Intrusion Prevention System (IPS)
+			- Detects *and* prevents known and zero-day attacks by analyzing network traffic for malicious patterns
+		- Antivirus/ Anti-Malware
+			- Scans traffic for viruses, worms and other malicious software
+		- Web Filtering
+			- Blocks access to malicious websites
+		- VPN Capabilities
+			- Supports both IPsec and SSL VPNs for secure remote access and site-to-site connectivity
+		- SD-WAN
+			- Integrates **Software- Defined Wide Area Networking** features for optimizing WAN performance and cost
+		- Threat Intelligence
+			- Leverages Fortinet's FortiGuard Labs, which monitors for new threats in real- time
+		- Deep Packet Inspection (DPI)
+			- Directly inspects the actual contents of the data packets (not just the headers) for more effective threat detection
+- Virtual Private Network (VPN)
+	- Secure, encrypted "tunnel" over a public network to allow remote users or branch offices to securely access a private network 
+		- Makes the user appear as if they are physically connected to the private network, even if they are remote
+	- Functionality
+		- Confidentiality
+			- Encrypts data to prevent it from being observed by uninvolved parties
+		- Integrity
+			- Ensures that the data has not been tampered in any way during transit
+		- Authentication
+			- Verifies the identity of both parties at both ends of the VPN connection
+	- Security
+		- Remote Access VPN
+			- Allows individual users to connect securely to the corporate network from their personal devices (e.g. Cisco Secure Client)
+		- Site-to-Site VPN
+			- Connects two or more geographically separate networks (e.g. branch office to HQ) as if they were on a single network 
+	- VPN Protocols
+		- SSL/ TLS VPN (Secure Sockets Layer/ Transport Layer Security VPN)
+			- 
+		- IPsec VPN (Internet Protocol Security VPN)
+			- 
