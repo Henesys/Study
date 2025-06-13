@@ -255,8 +255,14 @@
 				  - This subnet can accommodate **6** usable host IP addresses (network & broadcast addresses are reserved, which is why we subtract **2**)
   - **Classless Inter-Domain Routing (CIDR)**
 	  - Method for allocating IP addresses and routing IP *packets* that replaced the classful addressing system
-	  - X
-	  - 
+	  - Uses **Variable- Length Subnet Masks (VLSM)**, which allows network prefixes to be any length (not just multiples of 8 bits as mandated in classful addressing)
+	  - Notation
+		  - IP addresses are written with a slash followed by the *number* of bits in the network portion (e.g. 192.168.1.0/24 --> Prefix Length)
+	  - Benefits
+		  - CIDR addresses the rigidity of IP classes and allows for a more flexible allocation of IP address blocks 
+		  - Organizations can directly assign blocks whose size meets their specifications exactly, greatly conserving IPv4 addresses
+		  - CIDR allows for **route aggregation** or **supernetting**, where multiple smaller networks can be grouped into a single, larger route within the routing table 
+			  - Reduces the size of routing tables on critical Internet routers, improving routing performance
 
 ## Fortinet (FortiGate) Firewalls, VPN & VPN Protocols
 
