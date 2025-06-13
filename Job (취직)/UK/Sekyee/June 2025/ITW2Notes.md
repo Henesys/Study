@@ -380,5 +380,8 @@
 			- Active + Backup Voice Gateways
 			- Both voice gateways are connected to the same **core internal switch** (e.g. Cisco Catalyst 2960-X), allowing them to work as a redundant pair
 - Notes from Meeting
-	- Gate <-> Firewall <-> Switch <-> PBX
-	- Switch <-> Phone(s)
+	- Overview
+		- Gate <-> Firewall <-> Switch <-> PBX
+		- Switch <-> Phone(s)
+	- Process
+		- Office Phone --> Voice PoE Switch (10.0.0.30) --> London-2921-R2 (HQ Internal Network Active) --> Voice Gateway Active --> External Voice Network (PSTN/ SIP Provider) --> Destination Phone
