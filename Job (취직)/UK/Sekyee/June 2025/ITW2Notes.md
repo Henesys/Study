@@ -11,7 +11,7 @@
 - Fortinet (FortiGate) Firewalls, VPN & VPN Protocols
 - Gateways
 
-## L2 vs. L3 Switches
+### L2 vs. L3 Switches
 
 - Open Systems Interconnection Model (OSI Model)
 	- OSI is a framework that standardizes the functions of a telecommunication system into different "layers"
@@ -81,7 +81,7 @@
 			- Responsible for end-to-end communication across different **routers** that operate at **Layer 3**
 				- Routers read the destination IP in the packet header to calculate the best route to the destination 
 
-## Firewalls (Functions, Protocols, Policies, Routing Tables)
+### Firewalls (Functions, Protocols, Policies, Routing Tables)
 
 - Firewalls
 	- Network security device that monitors and controls incoming and outgoing network traffic based on *predetermined* security rules
@@ -142,7 +142,7 @@
 			- Interface
 				- Port connected to VLAN 120 L2 switch
 
-## PoE, Work, Phone Lines
+### PoE, Work, Phone Lines
 
   - Power of Ethernet (PoE)
 	  - Allows network cables (e.g. Ethernet cables such as Cat5e, Cat6) to carry electric power and data to powered devices (PDs), eliminating the need for separate power outlets and adapters for compatible devices
@@ -177,7 +177,7 @@
 		  - A company may choose to use VoIP for its business
 			  - If they use VoIP, the phone would connect to the L2 switch, reside in a specific VLAN (e.g. a VLAN designated for "voice") and communicate to an internal network to an **IP PBX (Internet Protocol Private Branch Exchange)**, which is a telephone switchboard that carries voice communication over a network, finally connecting to a telecommunications provider 
 
-## IP Classes, Subnets, CIDR
+### IP Classes, Subnets, CIDR
 
   - IP Classes
 	  - IPv4 addresses were previously divided into *classes* to categorize networks based on their size, a practice known as **classful addressing**
@@ -265,7 +265,7 @@
 		  - CIDR allows for **route aggregation** or **supernetting**, where multiple smaller networks can be grouped into a single, larger route within the routing table 
 			  - Reduces the size of routing tables on critical Internet routers, improving routing performance
 
-## Fortinet (FortiGate) Firewalls, VPN & VPN Protocols
+### Fortinet (FortiGate) Firewalls, VPN & VPN Protocols
 
 - FortiGate Firewalls
 	- ["**Next Generation Firewalls (NGFWs)**"](https://www.fortinet.com/uk/products/next-generation-firewall) developed by Fortinet
@@ -356,7 +356,7 @@
 				- Less Granular Access Control
 					- Typically provides all-or-nothing access to the network, though this can be refined via routing policies
 
-## Gateways
+### Gateways
 
 - Gateway
 	- Device or software that acts as a gate between two networks, serving as the entry and exit point for data traffic travelling from one network to the other 
