@@ -13,7 +13,81 @@
 
 ### IT Concepts & Terminology
 
-- X
+- Notational Systems
+	- Binary
+		- Language of computers, denoted with 1's and 0's
+			- e.g. `110100`
+	- Hexadecimal
+		- Easier way to represent binary values in a computer system because they reduce the number of digits, as *1* hexadecimal digit is equivalent to *4* binary digits
+			- e.g. `00:25:96:FF:FE:12:34:56`
+	- Decimal
+		- Can refer to decimal numbering system or decimal notation
+		- Written according to their place value
+			- e.g. `192.1.0.2`
+- Data Types
+	- Character
+		- Stores data in fixed-length field
+	- Strings
+		- Sequence of characters or numbers
+	- Integers
+		- Represents a range of mathematical integers, represented as a group of binary digits known as bits
+	- Floats
+		- Used to represent high precision fractional values
+	- Boolean
+		- Data type that stores `True` or `False` values
+- Storage Types
+	- Byte
+		- 8 bits
+	- Kilobyte
+		- 1024 B
+	- Megabyte
+		- 1024 KB
+	- Gigabyte
+		- 1024 MB
+	- Terabyte
+		- 1024 GB
+	- Petabyte
+		- 1024 TB
+- Throughput
+	- Rate of production or the rate at which something is processed
+		- e.g. Mbps = Megabits per second
+- Processing Speed
+	- e.g. GHz = Gigahertz
+- Input vs. Output Devices
+	- Input
+		- Keyboards
+		- Pointing Devices
+		- Scanners
+		- Microphones
+	- Output
+		- Printers
+		- Display Devices
+		- Speakers
+	- Both
+		- Flash Drives
+		- External Hard Drives
+		- Memory Cards
+		- Smartphones
+- Input vs. Output Interfaces
+	- Networking
+		- Wired
+			- Telephone/ Dial Up (RJ-11 Connector)
+			- Ethernet (RJ-45 Connector)
+		- Wireless
+			- Bluetooth
+			- Near Field Communication (NFC)
+	- Peripherals Connection Types
+		- Firewire
+			- Also known as 1394
+			- Mostly replaced by USB
+		- USB
+		- Thunderbolt
+			- Introduced as a faster version of USB
+		- Bluetooth
+			- Wireless connection
+		- Radio Frequency (RF)
+			- Old piece of technology, still used today (e.g. remote controller)
+			- Requires a line of sight
 
 ### Infrastructure
 
