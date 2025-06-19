@@ -109,6 +109,22 @@
 
 - X
 
+## [CompTIA A+ 1101 Core Series Guide](https://uniontestprep.com/comptia-a-core-series-exam/study-guide/220-1101-hardware/pages/1)
+
+### Hardware
+
+- General Information
+	- Hardware concepts make up about *25%* of the CompTIA A+ 1101 exam
+	- Recent increase in remote work makes it necessary to know about different devices that support the workforce 
+	- Nearly all hardware questions involve a *scenario*
+- Basic Cable Types: Connectors, Features & Purposes
+	- Network Cables
+		- 
+- Adapters
+	- 
+- Connector Types
+	- 
+
 ## On-Site Observations
 
 - Internal IP Mesh Setup
