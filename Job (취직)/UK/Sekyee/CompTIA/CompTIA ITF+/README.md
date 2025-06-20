@@ -15,6 +15,19 @@ In _CompTIA ITF+ CertMike: Prepare. Practice. Pass the Exam! Get Certified! Exa
 With a laser-focus on getting you job- and exam-ready, the book skips the fluff and gets right to the point of getting you familiar with IT basics and on the road to an in-demand IT certification and a new career in tech. You'll also get complimentary access to additional online study tools, complete with a bonus practice exam and audio recordings of the CertMike Exam Essentials. Banish test anxiety and feel ready to pass the test—the first time around!
 
 A must-read guide for anyone considering a career in IT and looking for a resource that assumes no background knowledge or experience, _CompTIA ITF+ CertMike: Prepare. Practice. Pass the Test! Get Certified! Exam FC0-U61_ is your ticket to basic IT competency and confidence.
+
+## Breakdown
+
+| Domain | % of Exam |
+| ------ | --------- |
+| Part 1 | ~ 17%     |
+| Part 2 | ~ 22%     |
+| Part 3 | ~ 18%     |
+| Part 4 | ~ 12%     |
+| Part 5 | ~ 11%     |
+| Part 6 | ~ 20%     |
+|        |           |
+
 ## Notes
 
 - Notes were created using [Obsidian](https://obsidian.md/), which may cause links to break when viewed on GitHub directly.
